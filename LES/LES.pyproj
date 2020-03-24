@@ -30,6 +30,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dia_Aberto\admin.py" />
+    <Compile Include="Dia_Aberto\apps.py" />
+    <Compile Include="Dia_Aberto\migrations\__init__.py" />
+    <Compile Include="Dia_Aberto\models.py" />
+    <Compile Include="Dia_Aberto\tests.py" />
+    <Compile Include="Dia_Aberto\views.py" />
+    <Compile Include="Dia_Aberto\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="LES\__init__.py" />
     <Compile Include="LES\settings.py" />
@@ -37,9 +44,14 @@
     <Compile Include="LES\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dia_Aberto\templates\Dia_Aberto\index.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dia_Aberto\" />
+    <Folder Include="Dia_Aberto\migrations\" />
+    <Folder Include="Dia_Aberto\templates\" />
+    <Folder Include="Dia_Aberto\templates\Dia_Aberto\" />
     <Folder Include="LES\" />
   </ItemGroup>
   <ItemGroup>
