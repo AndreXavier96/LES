@@ -44,12 +44,16 @@
     <Compile Include="LES\wsgi.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Dia_Aberto\static\main\css\materialize.css" />
     <Content Include="Dia_Aberto\templates\Dia_Aberto\index.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dia_Aberto\" />
     <Folder Include="Dia_Aberto\migrations\" />
+    <Folder Include="Dia_Aberto\static\" />
+    <Folder Include="Dia_Aberto\static\main\" />
+    <Folder Include="Dia_Aberto\static\main\css\" />
     <Folder Include="Dia_Aberto\templates\" />
     <Folder Include="Dia_Aberto\templates\Dia_Aberto\" />
     <Folder Include="LES\" />
