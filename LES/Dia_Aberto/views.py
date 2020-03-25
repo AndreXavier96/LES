@@ -18,3 +18,12 @@ def login(request):
             'content': " Login"
             }
         )
+
+def inscricao(request):
+    return render(
+        request,
+        "Dia_Aberto/inscricao.html",
+        {
+            'content': " paquito"
+            }
+        )
