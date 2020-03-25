@@ -25,7 +25,7 @@ Including another URLconf
     #path('admin/', admin.site.urls)
 #]
 
-from django.urls import path
+from django.urls import path, include
 import Dia_Aberto.views
 
 # Django processes URL patterns in the order they appear in the array
