@@ -18,3 +18,12 @@ def login(request):
             'content': " Login"
             }
         )
+
+def register(request):
+    return render(
+        request,
+        "Dia_Aberto/register.html",
+        {
+            'content': " Register"
+            }
+        )
