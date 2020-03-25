@@ -9,3 +9,12 @@ def index(request):
             'content': " hello"
             }
         )
+
+def login(request):
+    return render(
+        request,
+        "Dia_Aberto/login.html",
+        {
+            'content': " Login"
+            }
+        )

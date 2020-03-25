@@ -30,6 +30,7 @@ import Dia_Aberto.views
 
 # Django processes URL patterns in the order they appear in the array
 urlpatterns = [
-    url(r'^$', Dia_Aberto.views.index, name='index')
+    url(r'^$', Dia_Aberto.views.index, name='index'),
+    url('login/', Dia_Aberto.views.login, name='login'),
     #url(r'^home$', HelloDjangoApp.views.index, name='home'),
 ]
