@@ -19,11 +19,11 @@ def login(request):
             }
         )
 
-def register(request):
+def inscricao(request):
     return render(
         request,
-        "Dia_Aberto/register.html",
+        "Dia_Aberto/inscricao.html",
         {
-            'content': " Register"
+            'content': " paquito"
             }
         )
