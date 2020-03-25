@@ -34,4 +34,5 @@ urlpatterns = [
     url('login/', Dia_Aberto.views.login, name='login'),
     path("logout", views.logout_request, name="logout"),
     url('inscricao/', Dia_Aberto.views.inscricao, name='inscricao'),
+    url('register/', Dia_Aberto.views.register, name='register'),
 ]
