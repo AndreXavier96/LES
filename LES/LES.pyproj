@@ -62,6 +62,7 @@
     <Folder Include="Dia_Aberto\static\main\css\" />
     <Folder Include="Dia_Aberto\templates\" />
     <Folder Include="Dia_Aberto\templates\Dia_Aberto\" />
+    <Folder Include="Dia_Aberto\templates\Dia_Aberto\includes\" />
     <Folder Include="LES\" />
   </ItemGroup>
   <ItemGroup>
