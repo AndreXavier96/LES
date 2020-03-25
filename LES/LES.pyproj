@@ -51,6 +51,7 @@
     <Content Include="Dia_Aberto\templates\Dia_Aberto\index.html" />
     <Content Include="Dia_Aberto\templates\Dia_Aberto\inscricao.html" />
     <Content Include="Dia_Aberto\templates\Dia_Aberto\login.html" />
+    <Content Include="Dia_Aberto\templates\Dia_Aberto\register.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
