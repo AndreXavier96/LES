@@ -19,14 +19,14 @@ def login(request):
             }
         )
 
-<<<<<<< HEAD
 def register(request):
     return render(
         request,
         "Dia_Aberto/register.html",
         {
             'content': " Register"
-=======
+            }
+        )
 
 def inscricao(request):
     return render(
@@ -34,6 +34,6 @@ def inscricao(request):
         "Dia_Aberto/inscricao.html",
         {
             'content': " paquito"
->>>>>>> a78af35ae88cfeac685958d4b3925b078a718c63
+
             }
         )
