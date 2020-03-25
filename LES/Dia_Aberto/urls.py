@@ -25,15 +25,13 @@ Including another URLconf
     #path('admin/', admin.site.urls)
 #]
 
-from django.urls import include, url, path
-import . import views
-
-app_name = "Dia_Aberto"
+from django.conf.urls import include, url, path
+import Dia_Aberto.views
 
 # Django processes URL patterns in the order they appear in the array
 urlpatterns = [
-    path('', Dia_Aberto.views.index, name='index'),
+    path(r'^$', Dia_Aberto.views.index, name='index'),
     path('login/', Dia_Aberto.views.login, name='login'),
-    path('logout', views.logout_request, name="logout"),
+    path("logout", views.logout_request, name="logout"),
     path('inscricao/', Dia_Aberto.views.inscricao, name='inscricao'),
 ]
