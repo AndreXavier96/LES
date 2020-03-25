@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, AuthenticationForm
 from django.http import HttpResponse
 
 def index(request):
@@ -11,13 +11,10 @@ def index(request):
         )
 
 def login(request):
-    return render(
-        request,
-        "Dia_Aberto/login.html",
-        {
-            'content': " Login"
-            }
-        )
+    form = AuthenticationForm()
+    return render(request = request,
+                  template_name = "Dia_Aberto/login.html",
+                  context={"form":form})
 
 def register(request):
     return render(
@@ -34,11 +31,13 @@ def inscricao(request):
         "Dia_Aberto/inscricao.html",
         {
             'content': " paquito"
-
-            }
+        }
         )
 
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect("main:homepage")
+
+
+
