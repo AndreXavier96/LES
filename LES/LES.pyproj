@@ -48,6 +48,7 @@
   <ItemGroup>
     <Content Include="Dia_Aberto\static\main\css\materialize.css" />
     <Content Include="Dia_Aberto\templates\Dia_Aberto\index.html" />
+    <Content Include="Dia_Aberto\templates\Dia_Aberto\inscricao.html" />
     <Content Include="Dia_Aberto\templates\Dia_Aberto\login.html" />
     <Content Include="requirements.txt" />
   </ItemGroup>

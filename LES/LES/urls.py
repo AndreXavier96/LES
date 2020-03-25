@@ -32,5 +32,5 @@ import Dia_Aberto.views
 urlpatterns = [
     url(r'^$', Dia_Aberto.views.index, name='index'),
     url('login/', Dia_Aberto.views.login, name='login'),
-    #url(r'^home$', HelloDjangoApp.views.index, name='home'),
+    url('inscricao/', Dia_Aberto.views.inscricao, name='inscricao'),
 ]
