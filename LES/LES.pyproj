@@ -36,6 +36,9 @@
     <Compile Include="Dia_Aberto\apps.py" />
     <Compile Include="Dia_Aberto\migrations\__init__.py" />
     <Compile Include="Dia_Aberto\models.py" />
+    <Compile Include="Dia_Aberto\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dia_Aberto\tests.py" />
     <Compile Include="Dia_Aberto\urls.py" />
     <Compile Include="Dia_Aberto\views.py" />
