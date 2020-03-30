@@ -1,5 +1,8 @@
-from django.shortcuts import render, AuthenticationForm
+from django.contrib.auth import logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
 
 def index(request):
     return render(
@@ -7,14 +10,16 @@ def index(request):
         "Dia_Aberto/index.html",
         {
             'content': " hello"
-            }
-        )
+        }
+    )
+
 
 def login(request):
     form = AuthenticationForm()
-    return render(request = request,
-                  template_name = "Dia_Aberto/login.html",
-                  context={"form":form})
+    return render(request=request,
+                  template_name="Dia_Aberto/login.html",
+                  context={"form": form})
+
 
 def register(request):
     return render(
@@ -22,8 +27,9 @@ def register(request):
         "Dia_Aberto/register.html",
         {
             'content': " Register"
-            }
-        )
+        }
+    )
+
 
 def inscricao(request):
     return render(
@@ -32,12 +38,10 @@ def inscricao(request):
         {
             'content': " paquito"
         }
-        )
+    )
+
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "Logged out successfully!")
+    #messages.info(request, "Logged out successfully!")
     return redirect("main:homepage")
-
-
-
