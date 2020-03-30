@@ -31,6 +31,6 @@ from . import views
 app_name = "Dia_Aberto"
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    #path('', views.index, name='index'),
 
 ]
