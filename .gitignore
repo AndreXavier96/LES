@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /LES/env
 /venv/
+/newenv/
