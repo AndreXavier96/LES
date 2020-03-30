@@ -13,7 +13,7 @@ def index(request):
         }
     )
 
-
+#test
 def login(request):
     form = AuthenticationForm()
     return render(request=request,
