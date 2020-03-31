@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Dia_Aberto.apps.Dia_AbertoConfig',
     'inscricao.apps.InscricaoConfig',
+    'utilizadores.apps.UtilizadoresConfig',
 ]
 
 # Middleware framework
