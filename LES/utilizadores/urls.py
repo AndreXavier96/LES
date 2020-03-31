@@ -24,7 +24,7 @@ from . import views
 app_name = "utilizadores"
 
 urlpatterns = [
-    path("register/", views.register, name="register"),
+    path("register/", views.register, name='register'),
     path("logout", views.logout, name="logout"),
     path("login/", views.login, name="login"),
 ]

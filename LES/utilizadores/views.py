@@ -3,9 +3,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 def register(request):
-    form = UserCreationForm
+    form = UserCreationForm()
     return render(request,
-                  "register.html",
+                  'register.html',
                   context={"form": form})
 
 
