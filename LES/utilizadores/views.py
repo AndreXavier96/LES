@@ -7,3 +7,8 @@ def register(request):
     return render(request,
                   "utilizadores/register.html",
                   context={"form":form})
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect("main:homepage")
