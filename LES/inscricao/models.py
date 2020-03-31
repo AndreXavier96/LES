@@ -8,6 +8,9 @@ class Escola(models.Model):
     contacto = models.IntegerField(blank=True, null=True)
     localidade = models.CharField(max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        return self.nome
+
     class Meta:
         managed = False
         db_table = 'escola'

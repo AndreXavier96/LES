@@ -22,5 +22,5 @@ from . import views
 app_name = "inscricao"
 
 urlpatterns = [
-    path('', views.inscricao_prof, name='inscricao'),
+    path('', views.escola, name='escola'),
 ]

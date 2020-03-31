@@ -4,10 +4,21 @@
     <title></title>
 </head>
 <body>
+
+{% block content %}
 <div class="row">
+    {% for esc in escolas %}
+    <br><br>
     <div class="col s12 m6">
-                <p>{{inscricao_title}}</p>
+                <a>{{esc.nome}}</a>
+                <a>{{esc.morada}}</a>
+                <a>{{esc.codigo_postal}}</a>
+                <a>{{esc.contacto}}</a>
+                <a>{{esc.localidade}}</a>
     </div>
+    {% endfor %}
 </div>
+{% endblock %}
+
 </body>
 </html>

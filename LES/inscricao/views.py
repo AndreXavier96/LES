@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from .models import Inscricao
+from .models import Inscricao, Escola
 
 
-def inscricao_prof(request):
+def escola(request):
     return render(request=request,
                   template_name="inscricao.html",
-                  context={"inscricao": Inscricao.objects.all}
+                  context={"escolas": Escola.objects.all}
                   )
