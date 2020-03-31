@@ -3,9 +3,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import RegisterForm
 
 
-def signup(request):
+def register(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -14,7 +14,7 @@ def signup(request):
             login(request, user)
             return redirect()
     else:
-        form = SignUpForm()
+        form = RegisterForm()
     return render(request, 'register.html', {'form': form})
 
 
