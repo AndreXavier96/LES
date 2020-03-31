@@ -1,9 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Inscricao, Escola
+from .forms import InscricaoForm
 
-
-def escola(request):
+'''
+ def view_inscricao(request):
+    newinscricao = inscricaoForm()
     return render(request=request,
-                  template_name="inscricao.html",
-                  context={"escolas": Escola.objects.all}
-                  )
+               template_name="inscricao.html",
+                )
+ '''
+
+
+def create_inscricao(request):
+    form = InscricaoForm(request.POST)
+    if form.is_valid():
+        form.save()
+    context = {
+        'form': form
+    }
+    return render(request, 'inscricao.html', context)

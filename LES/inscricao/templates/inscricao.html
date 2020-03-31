@@ -1,22 +1,55 @@
 ﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title></title>
 </head>
 <body>
-
 {% block content %}
-<div class="row">
-    {% for esc in escolas %}
-    <br><br>
-    <div class="col s12 m6">
-                <a>{{esc.nome}}</a>
-                <a>{{esc.morada}}</a>
-                <a>{{esc.codigo_postal}}</a>
-                <a>{{esc.contacto}}</a>
-                <a>{{esc.localidade}}</a>
-    </div>
-    {% endfor %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col s12 m6">
+            <h2>Responsaveis</h2>
+        </div>
+
+        <div class="col s12 m6">
+
+            <!--
+            <h2>Escola</h2>
+            <h3>Informação da Escola</h3>
+            <label for="escola_nome">Nome da Escola:</label>
+            <input type="text" id="escola_nome" name="escola_nome" value="{{ XX }}">
+            <label for="localidade_nome">Localidade:</label>
+            <input type="text" id="localidade_nome" name="localidade_nome" value="{{ XX }}">
+            <h3>Informação da turma</h3>
+            <label for="ano_turma">Ano:</label>
+            <input type="number" id="ano_turma" name="ano_turma" value="{{ XX }}">
+            <label for="turma_turma">Turma:</label>
+            <input type="text" id="turma_turma" name="turma_turma" value="{{ XX }}">
+            <label for="n_alunos">Número de alunos:</label>
+            <input type="number" id="n_alunos" name="n_alunos" value="{{ XX }}">
+            <label for="area_turma">Área científica:</label>
+            <input type="text" id="area_turma" name="area_turma" value="{{ XX }}">
+            //-->
+        {{ form.as_p }}
+        </div>
+
+        <div class="col s12 m6">
+            <h2>Transporte</h2>
+        </div>
+
+        <div class="col s12 m6">
+            <h2>Almoço</h2>
+        </div>
+
+        <div class="col s12 m6">
+            <h2>Sessões</h2>
+        </div>
+
+        <div class="col s12 m6">
+            <h2>Submissão</h2>
+        </div>
+        <input type="submit" value="Submeter">
+    </form>
 </div>
 {% endblock %}
 

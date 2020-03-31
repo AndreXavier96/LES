@@ -32,8 +32,8 @@ app_name = "Dia_Aberto"
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', views.login, name='login'),
-    path('register/', views.register, name='register'),
-    path('inscricao/', views.inscricao, name='inscricao'),
-    path("logout", views.logout_request, name="logout"),
+    # path('login/', urls.login, name='login'),
+    # path('register/', views.register, name='register'),
+    # path('inscricao/', views.inscricao, name='inscricao'),
+    # path("logout", views.logout_request, name="logout"),
 ]
