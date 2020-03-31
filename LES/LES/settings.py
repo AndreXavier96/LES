@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Dia_Aberto',
+    'Dia_Aberto.apps.Dia_AbertoConfig',
+    'inscricao.apps.InscricaoConfig',
 ]
 
 # Middleware framework

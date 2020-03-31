@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from .models import Inscricao
 
-# Create your views here.
+
+def inscricao_prof(request):
+    return render(request=request,
+                  template_name="inscricao.html",
+                  context={"inscricao": Inscricao.objects}
+                  )
