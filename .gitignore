@@ -341,3 +341,6 @@ healthchecksdb
 /LES/env
 /venv/
 /newenv/
+/newenv/
+/venv/
+/venv3.8/
