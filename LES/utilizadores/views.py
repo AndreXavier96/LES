@@ -40,7 +40,6 @@ def login(request):
                     template_name = "login.html",
                     context={"form":form})
 
-
 def password_change(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
