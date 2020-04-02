@@ -1,6 +1,10 @@
+from django.contrib import messages
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import RegisterForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def register(request):
@@ -13,11 +17,13 @@ def register(request):
     return render(request, 'register.html', context)
 
 
-def logout(request):
+def logout_request(request):
+    logout(request)
     messages.info(request, "Logged out successfully!")
-    return redirect("main:homepage")
+    return redirect('/utilizadores/login')
 
-def login(request):
+
+def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -27,7 +33,7 @@ def login(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect('/')
+                return redirect('/utilizadores/success')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -36,3 +42,10 @@ def login(request):
     return render(request = request,
                     template_name = "login.html",
                     context={"form":form})
+
+def success(request):
+    context = {}
+    context['user'] = request.user
+    return render(request = request,
+                    template_name = "success.html",
+                    context={})
