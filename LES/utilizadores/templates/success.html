@@ -7,7 +7,7 @@
 <body>
 {% block content %}
     <p>User <b>{{user.username}}</b> is logged in successfully.</p>
-    <form method="POST" action="/logout/">
+    <form method="POST" action="/utilizadores/login/">
         {% csrf_token %}
         <input type="submit" value="Logout">
     </form>
