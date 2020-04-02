@@ -42,6 +42,7 @@ def login_request(request):
                     template_name = "login.html",
                     context={"form":form})
 
+
 def success(request):
     context = {}
     context['user'] = request.user
