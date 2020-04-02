@@ -16,7 +16,6 @@ def register(request):
     }
     return render(request, 'register.html', context)
 
-
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
