@@ -10,3 +10,4 @@ class RegisterForm(UserCreationForm):
         model = Utilizador
         fields = ['nome', 'email', 'utilizadortipo', 'data_nascimento', 'numero_telemovel', 'cartao_cidadao', 'deficiencias',
                   'permitir_localizacao', 'utilizar_dados_pessoais', 'unidadeorganica',  'password1', 'password2']
+

@@ -9,7 +9,6 @@ class Campus(models.Model):
         managed = False
         db_table = 'campus'
 
-
 class Unidadeorganica(models.Model):
     nome = models.CharField(max_length=255)
     campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus')
@@ -17,14 +16,6 @@ class Unidadeorganica(models.Model):
     class Meta:
         managed = False
         db_table = 'unidadeorganica'
-
-class Utilizadortipo(models.Model):
-    id = models.IntegerField(primary_key=True)
-    tipo = models.CharField(max_length=45, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'utilizadortipo'
 
 class Utilizador(models.Model):
     utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
@@ -43,3 +34,32 @@ class Utilizador(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizador'
+
+class Utilizadortipo(models.Model):
+    id = models.IntegerField(primary_key=True)
+    tipo = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizadortipo'
+
+
+class Utilizadorparticipante(models.Model):
+    utilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='utilizador')
+    escola = models.IntegerField()
+    area_estudos = models.CharField(max_length=45)
+    ano_estudos = models.IntegerField()
+    turma = models.CharField(max_length=45)
+    total_participantes = models.IntegerField(db_column='total__participantes', blank=True, null=True)  # Field renamed because it contained more than one '_' in a row.
+    total_professores = models.IntegerField(blank=True, null=True)
+    autorizacao = models.CharField(max_length=45, blank=True, null=True)
+    ficheiro_autorizacao = models.CharField(max_length=45, blank=True, null=True)
+    numero_acompanhantes = models.IntegerField(blank=True, null=True)
+    check_in = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizadorparticipante'
+
+
+

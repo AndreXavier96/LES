@@ -20,6 +20,7 @@ Including another URLconf
 
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = "utilizadores"
 
@@ -28,4 +29,7 @@ urlpatterns = [
     path("logout", views.logout_request, name="logout"),
     path("login/", views.login_request, name="login"),
     path("success/", views.success, name="success"),
+    path("password_change/", views.password_change, name="password-change"),
+    path("password_change_done/", views.password_change_done, name="password-change-done"),
+
 ]

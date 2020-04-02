@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.http import HttpResponseRedirect
@@ -21,7 +21,6 @@ def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect('/utilizadores/login')
-
 
 def login_request(request):
     if request.method == 'POST':
@@ -49,3 +48,23 @@ def success(request):
     return render(request = request,
                     template_name = "success.html",
                     context={})
+
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'password_change.html', {
+        'form': form
+    })
+
+def password_change_done(request):
+    messages.info(request, "Password changed")
+    return render(request, 'password_change_done.html')

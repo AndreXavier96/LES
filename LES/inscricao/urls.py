@@ -18,9 +18,11 @@ Including another URLconf
 
 from django.urls import path
 from . import views
+from .views import InscricaoView, HomeView
 
 app_name = "inscricao"
 
 urlpatterns = [
-    path('', views.create_inscricao, name="inscricao"),
+    path('', InscricaoView.as_view(), name='inscricao'),
+    path('home/', HomeView.as_view(), name="home"),
 ]
