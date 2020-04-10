@@ -1,79 +1,85 @@
-﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+﻿{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title></title>
+
+        <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+        <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
+        <script>
+            var options = {
+                twentyFour: true,
+                now: "00:00",
+                close: 'wickedpicker__close',
+                hoverState: 'hover-state',
+                title: 'Escolher Hora',
+                minutesInterval: 5,
+            }
+            $(document).ready(function(){
+                $('.timepicker-12-hr').wickedpicker(options);
+            });
+        </script>
+        <script type="text/javascript">
+    function CheckEscola(val) {
+        var element = document.getElementById('form_escola');
+        if (val === 'others')
+            element.style.display = 'block';
+        else
+            element.style.display = 'none';
+    }
+
+</script>
 </head>
+
+
+
+
 <body>
 {% block content %}
 <form method="POST">
     {% csrf_token %}
     <div class="col s12 m6">
-        <h2>Responsaveis</h2>
+        <h2>Escola_test</h2>
+        <select name="Escola" onchange='CheckEscola(this.value);'>
+            <option>Escolha uma escola</option>
+            {% for e in escolas %}
+            <option value="{{ e.nome }}">{{ e.nome }}</option>
+            {% endfor %}
+            <option value="others">others</option>
+        </select>
+        <div id="form_escola" style="display:none;">{{ form_escola.as_p }}</div>
     </div>
-
+    <!--    <div class="col s12 m6">-->
+    <!--        <h2>Escola</h2>-->
+    <!--        {{ form_escola.as_p }}-->
+    <!--    </div>-->
     <div class="col s12 m6">
-
-
-        <!--   <h2>Escola</h2>
-        <h3>Informação da Escola</h3>
-        <label for="nome">Nome da Escola:</label>
-        <input type="text" id="nome" name="nome" value=""><br>
-        <label for="morada">Morada:</label>
-        <input type="text" id="morada" name="morada" value=""><br>
-        <label for="codigo_postal">codigo postal:</label>
-        <input type="text" id="codigo_postal" name="codigo_postal" value=""><br>
-         <label for="contacto">contacto:</label>
-        <input type="text" id="contacto" name="contacto" value=""><br>
-        <label for="localidade">Localidade:</label>
-        <input type="text" id="localidade" name="localidade" value="">
-
-      <h3>Informação da turma</h3>
-        <label for="ano_turma">Ano:</label>
-        <input type="number" id="ano_turma" name="ano_turma" value="{{ XX }}">
-        <label for="turma_turma">Turma:</label>
-        <input type="text" id="turma_turma" name="turma_turma" value="{{ XX }}">
-        <label for="n_alunos">Número de alunos:</label>
-        <input type="number" id="n_alunos" name="n_alunos" value="{{ XX }}">
-        <label for="area_turma">Área científica:</label>
-        <input type="text" id="area_turma" name="area_turma" value="{{ XX }}">
-        //-->
-       {{ form2.as_p }}
- <!--    </div>
-
-
+        <h2>Refeição</h2>
+        <h3>tipo prato:</h3>
+        {{form_prato.prato}}
+        <h3>quantidades:</h3>
+        {% for v in values %}
+        <p>Preço aluno bolseiro: {{v.preco_aluno_economico}}&euro;</p>
+        <p>Preço aluno normal: {{v.preco_aluno_normal}}&euro;</p>
+        <p>Preço aluno externo bolseiro: {{v.preco_outro_economico}}&euro;</p>
+        <p>Preço aluno externo normal: {{v.preco_outro_normal}}&euro;</p>
+        {% endfor %}
+        {{form_epi.as_p}}
+    </div>
     <div class="col s12 m6">
         <h2>Transporte</h2>
+        {{ form_trans.as_p }}
+        <label for="timepicker-one" >Hora Chegada: </label>
+          <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
 
-    </div>
+        <label for="timepicker-two" >Hora Partida: </label>
+          <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
 
-    <div class="col s12 m6">
-        <h2>Almoço</h2>
-        {% for em in ementas %}
-        <a>Preço Normal={{em.preco_aluno_normal}}</a>
-        <a>Preço Bolseiro={{em.preco_aluno_economico}}</a>
-        {{ epis.as_p }}
-        {% endfor %}
-
-        {% for p in pratos %}
-        <input type="radio" id="{{p.tipo}}" name="tipos" value="{{p.tipo}}">
-        <label for="{{p.tipo}}">{{p.tipo}}</label>
         <br>
-        {% endfor %}
+        <input type="submit" value="Submeter">
     </div>
-
-    <div class="col s12 m6">
-        <h2>Sessões</h2>
-    </div>
-
-    <div class="col s12 m6">
-        <h2>Submissão</h2>
-    </div>-->
-    </div>
-    {{form.prato}}
-    <input type="submit" value="Submeter">
 </form>
-</div>
 {% endblock %}
-
 </body>
 </html>

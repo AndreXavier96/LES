@@ -1,5 +1,7 @@
 from django.db import models
 
+from utilizadores.models import Utilizador
+
 
 class Escola(models.Model):
     nome = models.CharField(unique=True, max_length=255, blank=True, null=True)
@@ -9,7 +11,7 @@ class Escola(models.Model):
     localidade = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        #managed = False
+        managed = False
         db_table = 'escola'
 
     def __str__(self):
@@ -41,7 +43,7 @@ class Ementa(models.Model):
         db_table = 'ementa'
 
     def __str__(self):
-        return "apanhei a puta"
+        return "ementa"
 
 
 class Prato(models.Model):
@@ -75,12 +77,34 @@ class EmentaPratoInscricao(models.Model):
 
 
 class Transporteproprio(models.Model):
-    data = models.DateField(blank=True, null=True)
+    data = models.DateField(auto_now_add=True)
     hora_chegada = models.TimeField()
     hora_partida = models.TimeField()
     tipo_transporte = models.CharField(max_length=255)
+    inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'transporteproprio'
+
+    def __str__(self):
+        return self.inscricao
+
+
+class Utilizadorparticipante(models.Model):
+    utilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='utilizador')
+    escola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola')
+    area_estudos = models.CharField(max_length=45)
+    ano_estudos = models.IntegerField()
+    turma = models.CharField(max_length=45)
+    total_participantes = models.IntegerField(blank=True, null=True)
+    total_professores = models.IntegerField(blank=True, null=True)
+    autorizacao = models.CharField(max_length=45, blank=True, null=True)
+    ficheiro_autorizacao = models.CharField(max_length=45, blank=True, null=True)
+    numero_acompanhantes = models.IntegerField(blank=True, null=True)
+    check_in = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizadorparticipante'
 
