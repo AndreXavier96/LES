@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'Dia_Aberto.apps.Dia_AbertoConfig',
     'inscricao.apps.InscricaoConfig',
     'utilizadores.apps.UtilizadoresConfig',
-
+    'colaboradores.apps.ColaboradoresConfig'
 ]
 
 # Middleware framework
@@ -121,7 +121,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-STATIC_URL = '/inscricao/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 
 

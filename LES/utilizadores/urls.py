@@ -21,11 +21,11 @@ Including another URLconf
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-
+from .views import register
 app_name = "utilizadores"
 
 urlpatterns = [
-    path("register/", views.register, name='register'),
+    path("register/", register.as_view(), name='add'),
     path("logout", views.logout_request, name="logout"),
     path("login/", views.login_request, name="login"),
     path("success/", views.success, name="success"),

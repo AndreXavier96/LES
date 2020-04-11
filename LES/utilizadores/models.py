@@ -30,7 +30,7 @@ class Utilizadortipo(models.Model):
 
 
 class Utilizador(models.Model):
-    utilizadortipo = models.ForeignKey(Utilizadortipo, models.DO_NOTHING)
+    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
     email = models.CharField(max_length=255)
     password_digest = models.CharField(max_length=255, blank=True, null=True)
     nome = models.CharField(max_length=255)
