@@ -96,15 +96,31 @@ class Utilizadorparticipante(models.Model):
     escola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola')
     area_estudos = models.CharField(max_length=45)
     ano_estudos = models.IntegerField()
-    turma = models.CharField(max_length=45)
-    total_participantes = models.IntegerField(blank=True, null=True)
-    total_professores = models.IntegerField(blank=True, null=True)
-    autorizacao = models.CharField(max_length=45, blank=True, null=True)
-    ficheiro_autorizacao = models.CharField(max_length=45, blank=True, null=True)
-    numero_acompanhantes = models.IntegerField(blank=True, null=True)
     check_in = models.IntegerField(blank=True, null=True)
+    inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'utilizadorparticipante'
 
+
+class ParticipanteIndividual(models.Model):
+    autorizacao = models.IntegerField()
+    ficheiro_autorizacao = models.CharField(max_length=255)
+    acompanhantes = models.IntegerField()
+    participante = models.ForeignKey(Utilizadorparticipante, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'participante_individual'
+
+
+class ParticipanteGrupo(models.Model):
+    total_participantes = models.IntegerField()
+    total_professores = models.IntegerField()
+    turma = models.CharField(max_length=255)
+    participante = models.ForeignKey(Utilizadorparticipante, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'participante_grupo'

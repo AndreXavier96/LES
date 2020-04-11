@@ -1,85 +1,111 @@
-﻿{% load static %}
+﻿﻿{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title></title>
-
-        <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-        <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
-        <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
-        <script>
-            var options = {
-                twentyFour: true,
-                now: "00:00",
-                close: 'wickedpicker__close',
-                hoverState: 'hover-state',
-                title: 'Escolher Hora',
-                minutesInterval: 5,
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
+    <script>
+        var options = {
+            twentyFour: true,
+            now: "00:00",
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        }
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
+    </script>
+    <script type="text/javascript">
+        function CheckEscola(val) {
+            var element = document.getElementById('form_escola');
+            if (val === 'others')
+                element.style.display = 'block';
+            else
+                element.style.display = 'none';
+        }
+    </script>
+    <script type="text/javascript">
+        function CheckTipoParticipante(val) {
+            var individual = document.getElementById('form_individual');
+            var grupo = document.getElementById('form_grupo');
+            if (val === 'individual') {
+                individual.style.display = 'block';
+                grupo.style.display = 'none';
+                document.getElementById("id_turma").removeAttribute("required");
+                document.getElementById("id_total_participantes").removeAttribute("required");
+                document.getElementById("id_total_professores").removeAttribute("required");
+                document.getElementById("id_acompanhantes").setAttribute("required","required")
+            } else if (val === 'grupo') {
+                individual.style.display = 'none';
+                grupo.style.display = 'block';
+                document.getElementById("id_turma").setAttribute("required","required")
+                document.getElementById("id_total_participantes").setAttribute("required","required")
+                document.getElementById("id_total_professores").setAttribute("required","required")
+                document.getElementById("id_acompanhantes").removeAttribute("required");
             }
-            $(document).ready(function(){
-                $('.timepicker-12-hr').wickedpicker(options);
-            });
-        </script>
-        <script type="text/javascript">
-    function CheckEscola(val) {
-        var element = document.getElementById('form_escola');
-        if (val === 'others')
-            element.style.display = 'block';
-        else
-            element.style.display = 'none';
-    }
-
-</script>
+        }
+    </script>
 </head>
-
-
-
-
 <body>
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="col s12 m6">
-        <h2>Escola_test</h2>
-        <select name="Escola" onchange='CheckEscola(this.value);'>
-            <option>Escolha uma escola</option>
-            {% for e in escolas %}
-            <option value="{{ e.nome }}">{{ e.nome }}</option>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col s12 m6">
+            <div>
+                <h2>dados participante</h2>
+                {{ form_participante.as_p }}
+                {{ radio_tipo_participante }}
+                <div id="form_individual" style="display:none;">
+                    {{ form_part_ind.as_p }}
+                </div>
+                <div id="form_grupo" style="display:none;">
+                    {{ form_part_gru.as_p }}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col s12 m6">
+            <h2>Dados da Escola</h2>
+            <label>
+                <select name="Escola" onchange='CheckEscola(this.value);'>
+                    <option>Escolha uma escola</option>
+                    {% for e in escolas %}
+                        <option value="{{ e.nome }}">{{ e.nome }}</option>
+                    {% endfor %}
+                    <option value="others">others</option>
+                </select>
+            </label>
+            <div id="form_escola" style="display:none;">{{ form_escola.as_p }}</div>
+        </div>
+        <div class="col s12 m6">
+            <h2>Refeição</h2>
+            <h3>tipo prato:</h3>
+            {{ form_prato.prato }}
+            <h3>quantidades:</h3>
+            {% for v in values %}
+                <p>Preço aluno bolseiro: {{ v.preco_aluno_economico }}&euro;</p>
+                <p>Preço aluno normal: {{ v.preco_aluno_normal }}&euro;</p>
+                <p>Preço aluno externo bolseiro: {{ v.preco_outro_economico }}&euro;</p>
+                <p>Preço aluno externo normal: {{ v.preco_outro_normal }}&euro;</p>
             {% endfor %}
-            <option value="others">others</option>
-        </select>
-        <div id="form_escola" style="display:none;">{{ form_escola.as_p }}</div>
-    </div>
-    <!--    <div class="col s12 m6">-->
-    <!--        <h2>Escola</h2>-->
-    <!--        {{ form_escola.as_p }}-->
-    <!--    </div>-->
-    <div class="col s12 m6">
-        <h2>Refeição</h2>
-        <h3>tipo prato:</h3>
-        {{form_prato.prato}}
-        <h3>quantidades:</h3>
-        {% for v in values %}
-        <p>Preço aluno bolseiro: {{v.preco_aluno_economico}}&euro;</p>
-        <p>Preço aluno normal: {{v.preco_aluno_normal}}&euro;</p>
-        <p>Preço aluno externo bolseiro: {{v.preco_outro_economico}}&euro;</p>
-        <p>Preço aluno externo normal: {{v.preco_outro_normal}}&euro;</p>
-        {% endfor %}
-        {{form_epi.as_p}}
-    </div>
-    <div class="col s12 m6">
-        <h2>Transporte</h2>
-        {{ form_trans.as_p }}
-        <label for="timepicker-one" >Hora Chegada: </label>
-          <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
-
-        <label for="timepicker-two" >Hora Partida: </label>
-          <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
-
-        <br>
-        <input type="submit" value="Submeter">
-    </div>
-</form>
+            {{ form_epi.as_p }}
+        </div>
+        <div class="col s12 m6">
+            <h2>Transporte</h2>
+            {{ form_trans.as_p }}
+            <label for="timepicker-one">Hora Chegada: </label>
+            <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+            <label for="timepicker-two">Hora Partida: </label>
+            <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
+            <br>
+            <input type="submit" value="Submeter">
+        </div>
+    </form>
 {% endblock %}
 </body>
 </html>
