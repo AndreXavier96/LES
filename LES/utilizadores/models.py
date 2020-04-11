@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Campus(models.Model):
     nome = models.CharField(max_length=255)
     morada = models.TextField(blank=True, null=True)
@@ -9,6 +10,7 @@ class Campus(models.Model):
         managed = False
         db_table = 'campus'
 
+
 class Unidadeorganica(models.Model):
     nome = models.CharField(max_length=255)
     campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus')
@@ -17,8 +19,18 @@ class Unidadeorganica(models.Model):
         managed = False
         db_table = 'unidadeorganica'
 
+
+class Utilizadortipo(models.Model):
+    id = models.IntegerField(primary_key=True)
+    tipo = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizadortipo'
+
+
 class Utilizador(models.Model):
-    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
+    utilizadortipo = models.ForeignKey(Utilizadortipo, models.DO_NOTHING)
     email = models.CharField(max_length=255)
     password_digest = models.CharField(max_length=255, blank=True, null=True)
     nome = models.CharField(max_length=255)
@@ -35,13 +47,7 @@ class Utilizador(models.Model):
         managed = False
         db_table = 'utilizador'
 
-class Utilizadortipo(models.Model):
-    id = models.IntegerField(primary_key=True)
-    tipo = models.CharField(max_length=45, blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'utilizadortipo'
 
 
 class Utilizadorparticipante(models.Model):
@@ -50,7 +56,7 @@ class Utilizadorparticipante(models.Model):
     area_estudos = models.CharField(max_length=45)
     ano_estudos = models.IntegerField()
     turma = models.CharField(max_length=45)
-    total_participantes = models.IntegerField(db_column='total__participantes', blank=True, null=True)  # Field renamed because it contained more than one '_' in a row.
+    total_participantes = models.IntegerField(db_column='total__participantes', blank=True, null=True)
     total_professores = models.IntegerField(blank=True, null=True)
     autorizacao = models.CharField(max_length=45, blank=True, null=True)
     ficheiro_autorizacao = models.CharField(max_length=45, blank=True, null=True)
@@ -60,6 +66,3 @@ class Utilizadorparticipante(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizadorparticipante'
-
-
-
