@@ -22,38 +22,73 @@
     <script type="text/javascript">
         function CheckEscola(val) {
             var element = document.getElementById('form_escola');
-            if (val === 'others')
+            var x = document.getElementById("form_escola").querySelectorAll("input");
+            if (val === 'others') {
                 element.style.display = 'block';
-            else
+                for (var i = 0; i < x.length; i++) {
+                    x[i].setAttribute("required", "required")
+                }
+            } else {
                 element.style.display = 'none';
+                for (var i = 0; i < x.length; i++) {
+                    x[i].removeAttribute("required");
+                    x[i].value = '';
+                }
+            }
         }
-    </script>
-    <script type="text/javascript">
+
         function CheckTipoParticipante(val) {
             var individual = document.getElementById('form_individual');
             var grupo = document.getElementById('form_grupo');
+            var x = document.getElementById("form_grupo").querySelectorAll("input");
             if (val === 'individual') {
                 individual.style.display = 'block';
                 grupo.style.display = 'none';
-                document.getElementById("id_turma").removeAttribute("required");
-                document.getElementById("id_total_participantes").removeAttribute("required");
-                document.getElementById("id_total_professores").removeAttribute("required");
-                document.getElementById("id_acompanhantes").setAttribute("required","required")
+                document.getElementById("id_acompanhantes").setAttribute("required", "required");
+                for (var i = 0; i < x.length; i++) {
+                    x[i].removeAttribute("required");
+                    x[i].value = '';
+                }
             } else if (val === 'grupo') {
                 individual.style.display = 'none';
                 grupo.style.display = 'block';
-                document.getElementById("id_turma").setAttribute("required","required")
-                document.getElementById("id_total_participantes").setAttribute("required","required")
-                document.getElementById("id_total_professores").setAttribute("required","required")
                 document.getElementById("id_acompanhantes").removeAttribute("required");
+                document.getElementById('id_acompanhantes').value = '';
+                for (var i = 0; i < x.length; i++) {
+                    x[i].setAttribute("required", "required");
+                }
             }
         }
+
+        function CheckRefeicao(val) {
+            var refeicao = document.getElementById('quer_refeicao');
+            if (val === "sim") {
+                refeicao.style.display = 'block';
+            } else if (val === 'nao') {
+                refeicao.style.display = 'none';
+                document.getElementById("id_numero_aluno_normal").value = '0';
+                document.getElementById("id_numero_outro_normal").value = '0';
+                MultiplicaPreco();
+            }
+        }
+
+        function MultiplicaPreco() {
+            var num1 = document.getElementById("id_numero_aluno_normal").value;
+            var num2 = document.getElementById("id_numero_outro_normal").value;
+            var preco1 = parseFloat(document.getElementById("preco_aluno_normal").value);
+            var preco2 = parseFloat(document.getElementById("preco_outro_normal").value);
+            var final = (num1 * preco1) + (num2 * preco2);
+            document.getElementById("preco_total").setAttribute("value", final.toFixed(2).toString());
+
+        }
+
     </script>
 </head>
-<body>
+<body onload="document.inscricao_form.reset();">
 {% block content %}
-    <form method="POST">
+    <form method="POST" name="inscricao_form">
         {% csrf_token %}
+
         <div class="col s12 m6">
             <div>
                 <h2>dados participante</h2>
@@ -68,38 +103,48 @@
             </div>
         </div>
 
-
         <div class="col s12 m6">
             <h2>Dados da Escola</h2>
             <label>
-                <select name="Escola" onchange='CheckEscola(this.value);'>
-                    <option>Escolha uma escola</option>
+                <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
+                    <option hidden>Escolha uma escola</option>
                     {% for e in escolas %}
                         <option value="{{ e.nome }}">{{ e.nome }}</option>
                     {% endfor %}
                     <option value="others">others</option>
                 </select>
             </label>
-            <div id="form_escola" style="display:none;">{{ form_escola.as_p }}</div>
+            <div id="form_escola" style="display:none;">
+                {{ form_escola.as_p }}
+            </div>
         </div>
+
         <div class="col s12 m6">
             <h2>Refeição</h2>
-            <h3>tipo prato:</h3>
-            {{ form_prato.prato }}
-            <h3>quantidades:</h3>
-            {% for v in values %}
-                <p>Preço aluno bolseiro: {{ v.preco_aluno_economico }}&euro;</p>
-                <p>Preço aluno normal: {{ v.preco_aluno_normal }}&euro;</p>
-                <p>Preço aluno externo bolseiro: {{ v.preco_outro_economico }}&euro;</p>
-                <p>Preço aluno externo normal: {{ v.preco_outro_normal }}&euro;</p>
-            {% endfor %}
-            {{ form_epi.as_p }}
+            {{ radio_refeicao }}
+            <div id="quer_refeicao" style="display:none;">
+                <h3>quantidades:</h3>
+                {% for v in values %}
+                    <input id="preco_aluno_normal" type="text" style="display:none;" value="{{ v.preco_aluno_normal }}">
+                    <input id="preco_outro_normal" type="text" style="display:none;" value="{{ v.preco_outro_normal }}">
+                    <p onchange="MultiplicaPreco()">Refeições aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
+                        {{ v.preco_aluno_normal }}&euro;/refeição</p>
+                    <p onchange="MultiplicaPreco()">Refeições não aluno:{{ form_ementa_inscricao.numero_outro_normal }}
+                        {{ v.preco_outro_normal }}&euro;/refeição</p>
+                    <p>
+                        Preço total:<input type="number" name="preco_total" id="preco_total"
+                                           value="0" disabled>&euro;
+                    </p>
+                {% endfor %}
+            </div>
         </div>
+
         <div class="col s12 m6">
             <h2>Transporte</h2>
             {{ form_trans.as_p }}
             <label for="timepicker-one">Hora Chegada: </label>
             <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+            <br>
             <label for="timepicker-two">Hora Partida: </label>
             <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
             <br>

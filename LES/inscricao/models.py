@@ -46,23 +46,9 @@ class Ementa(models.Model):
         return "ementa"
 
 
-class Prato(models.Model):
-    nome = models.CharField(max_length=255)
-    tipo = models.CharField(max_length=255)
-    descricao = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'prato'
-
-    def __str__(self):
-        return self.tipo
-
-
-class EmentaPratoInscricao(models.Model):
+class EmentaInscricao(models.Model):
     ementa = models.ForeignKey(Ementa, models.DO_NOTHING)
-    prato = models.ForeignKey(Prato, models.DO_NOTHING)
-    inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
+    inscricao = models.ForeignKey('Inscricao', models.DO_NOTHING)
     numero_aluno_normal = models.IntegerField(blank=True, null=True)
     numero_aluno_economico = models.IntegerField(blank=True, null=True)
     numero_outro_normal = models.IntegerField(blank=True, null=True)
@@ -70,7 +56,7 @@ class EmentaPratoInscricao(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'ementa_prato_inscricao'
+        db_table = 'ementa_inscricao'
 
     def __str__(self):
         return self.inscricao
@@ -81,6 +67,7 @@ class Transporteproprio(models.Model):
     hora_chegada = models.TimeField()
     hora_partida = models.TimeField()
     tipo_transporte = models.CharField(max_length=255)
+    transporte_campus = models.IntegerField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
