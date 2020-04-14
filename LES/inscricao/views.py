@@ -5,7 +5,7 @@ from utilizadores.models import Utilizador
 from .forms import EscolaForm, EmentaInscricaoForm, TransportForm, ParticipanteForm, \
     TipoParticipanteForm, ParticipanteIndForm, ParticipanteGrupoForm, QuerRefeicaoForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
-    EmentaInscricao, Transporteproprio
+    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade
 
 
 def remove(string):
@@ -33,8 +33,11 @@ class InscricaoView(View):
         radio_tipo_participante = TipoParticipanteForm()
         form_part_ind = ParticipanteIndForm()
         form_part_gru = ParticipanteGrupoForm()
-        # ----------
         radio_refeicao = QuerRefeicaoForm()
+        # ------------------
+        atividades = Atividade.objects.all
+        sessaoatividade = SessaoAtividade.objects.all
+        # campus = Atividade.objects.filter(localizacao__andar="1")
         return render(request, self.template_name, {'form_escola': form_escola,
                                                     'form_ementa_inscricao': form_ementa_inscricao,
                                                     'values': values,
@@ -45,6 +48,8 @@ class InscricaoView(View):
                                                     'form_part_gru': form_part_gru,
                                                     'form_part_ind': form_part_ind,
                                                     'radio_refeicao': radio_refeicao,
+                                                    'atividades': atividades,
+                                                    'sessaoatividade': sessaoatividade,
                                                     })
 
     def post(self, request):
@@ -117,10 +122,9 @@ class InscricaoView(View):
                                            )
             # -----------transporte
             drop_value = form_trans.cleaned_data.get("tipo_transporte")
+            trans_campus = 0
             if form_trans['transporte_campus'].value() == "sim":
                 trans_campus = 1
-            elif form_trans['transporte_campus'].value() == "nao":
-                trans_campus = 0
             chegada = remove(request.POST['timepicker-one'])
             partida = remove(request.POST['timepicker-two'])
             Transporteproprio.objects.create(hora_chegada=chegada, hora_partida=partida,

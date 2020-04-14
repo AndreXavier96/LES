@@ -24,15 +24,12 @@ class EmentaInscricaoForm(forms.Form):
 
 
 class TransportForm(forms.Form):
-    # hora_chegada = forms.TimeField(label='hora_chegada', required=False)
-    # hora_partida = forms.TimeField(label='hora_partida', required=False)
     transporte_campus = forms.CharField(label='vai desejar transporte entre os campus?',
                                         widget=forms.RadioSelect(choices=CHOICE_BOL)
                                         )
     tipo_transporte = forms.CharField(label='tipo transporte para a universidade',
                                       widget=forms.Select(choices=CHOICES_TRANS)
                                       )
-
 
 
 class ParticipanteForm(forms.Form):
@@ -62,6 +59,10 @@ class QuerRefeicaoForm(forms.Form):
                                    widget=forms.RadioSelect(choices=CHOICE_BOL,
                                                             attrs={'onchange': 'CheckRefeicao(this.value);'})
                                    )
+
+
+# class InscreverSessaoForm(forms.Form):
+#     inscritos = forms.IntegerField()
 
 # class UtilizarDadosForm(forms.Form):
 #     bol = forms.CharField(label="Utilizar dados da conta para inscrição?",

@@ -6,6 +6,15 @@
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
     <script>
         var options = {
             twentyFour: true,
@@ -22,41 +31,41 @@
     <script type="text/javascript">
         function CheckEscola(val) {
             var element = document.getElementById('form_escola');
-            var x = document.getElementById("form_escola").querySelectorAll("input");
             if (val === 'others') {
                 element.style.display = 'block';
-                for (var i = 0; i < x.length; i++) {
-                    x[i].setAttribute("required", "required")
-                }
+                document.getElementById("id_nome").setAttribute("required", "required")
+                document.getElementById("id_morada").setAttribute("required", "required")
+                document.getElementById("id_codigo_postal").setAttribute("required", "required")
+                document.getElementById("id_contacto").setAttribute("required", "required")
+                document.getElementById("id_localidade").setAttribute("required", "required")
             } else {
                 element.style.display = 'none';
-                for (var i = 0; i < x.length; i++) {
-                    x[i].removeAttribute("required");
-                    x[i].value = '';
-                }
+                document.getElementById("id_nome").removeAttribute("required");
+                document.getElementById("id_morada").removeAttribute("required");
+                document.getElementById("id_codigo_postal").removeAttribute("required");
+                document.getElementById("id_contacto").removeAttribute("required");
+                document.getElementById("id_localidade").removeAttribute("required");
             }
         }
 
         function CheckTipoParticipante(val) {
             var individual = document.getElementById('form_individual');
             var grupo = document.getElementById('form_grupo');
-            var x = document.getElementById("form_grupo").querySelectorAll("input");
             if (val === 'individual') {
                 individual.style.display = 'block';
                 grupo.style.display = 'none';
                 document.getElementById("id_acompanhantes").setAttribute("required", "required");
-                for (var i = 0; i < x.length; i++) {
-                    x[i].removeAttribute("required");
-                    x[i].value = '';
-                }
+                document.getElementById("id_turma").removeAttribute("required");
+                document.getElementById("id_total_participantes").removeAttribute("required");
+                document.getElementById("id_total_professores").removeAttribute("required");
             } else if (val === 'grupo') {
                 individual.style.display = 'none';
                 grupo.style.display = 'block';
                 document.getElementById("id_acompanhantes").removeAttribute("required");
                 document.getElementById('id_acompanhantes').value = '';
-                for (var i = 0; i < x.length; i++) {
-                    x[i].setAttribute("required", "required");
-                }
+                document.getElementById("id_turma").setAttribute("required", "required");
+                document.getElementById("id_total_participantes").setAttribute("required", "required");
+                document.getElementById("id_total_professores").setAttribute("required", "required");
             }
         }
 
@@ -125,15 +134,18 @@
             <div id="quer_refeicao" style="display:none;">
                 <h3>quantidades:</h3>
                 {% for v in values %}
+                    <label for="preco_aluno_normal"></label>
                     <input id="preco_aluno_normal" type="text" style="display:none;" value="{{ v.preco_aluno_normal }}">
+                    <label for="preco_outro_normal"></label>
                     <input id="preco_outro_normal" type="text" style="display:none;" value="{{ v.preco_outro_normal }}">
                     <p onchange="MultiplicaPreco()">Refeições aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
                         {{ v.preco_aluno_normal }}&euro;/refeição</p>
                     <p onchange="MultiplicaPreco()">Refeições não aluno:{{ form_ementa_inscricao.numero_outro_normal }}
                         {{ v.preco_outro_normal }}&euro;/refeição</p>
                     <p>
-                        Preço total:<input type="number" name="preco_total" id="preco_total"
-                                           value="0" disabled>&euro;
+                        <label for="preco_total">Preço total:</label>
+                        <input type="number" name="preco_total" id="preco_total"
+                               value="0" disabled>&euro;
                     </p>
                 {% endfor %}
             </div>
@@ -148,6 +160,102 @@
             <label for="timepicker-two">Hora Partida: </label>
             <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
             <br>
+        </div>
+
+        <div>
+            <h2>Actividades</h2>
+            <h3>Sessões Disponiveis</h3>
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th style="width: 35%;">Nome</th>
+                    <th style="width: 15%;">Tipo</th>
+                    <th style="width: 35%;">Publico alvo</th>
+                    <th style="width: 15%;">Campus</th>
+                </tr>
+                </thead>
+                {% for atividade in atividades %}
+                    <thead class="text-center" data-toggle="collapse" href="#collapse_{{ atividade.id }}" aria-expanded="false"
+                           aria-controls="collapse_{{ atividade.id }}">
+                    <tr>
+                        <th style="width: 35%;">{{ atividade.nome }}</th>
+                        <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
+                        <th style="width: 35%;">{{ atividade.publico_alvo }}</th>
+                        <th style="width: 15%;">{{ atividade.localizacao.campus.nome }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="collapse" id="collapse_{{ atividade.id }}">
+                    <tr>
+                        <th scope="row" class="text-center" colspan="4">
+                            <div style="padding: 10px">
+                                <div>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="5">Descricao: {{ atividade.descricao }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5">Responsavel: {{ atividade.docente.nome }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Hora:</th>
+                                            <th>Duração:</th>
+                                            <th>Vagas:</th>
+                                            <th>Localização:</th>
+                                            <th>Inscrever:</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for s in sessaoatividade %}
+                                            {% if s.atividade.id == atividade.id %}
+                                                <tr>
+                                                    <th>{{ s.sessao.hora_inicio }}</th>
+                                                    <th>{{ atividade.duracao }}</th>
+                                                    <th>{{ s.n_alunos }}</th>
+                                                    <th>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</th>
+                                                    <th><label for="quantity"></label>
+                                                        <input type="number" id="quantity" name="quantity" value="0"
+                                                               min="0" max="5">
+                                                    </th>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <br><br>
+            <h3>Sessoes Escolhidas</h3>
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th style="width: 15%;">Hórario</th>
+                    <th style="width: 15%;">Inscritos</th>
+                    <th style="width: 35%;">Atividade</th>
+                    <th style="width: 15%;">Localização</th>
+                    <th style="width: 15%;">Campus</th>
+                    <th style="width: 5%;">Ações</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr>
+                    <th name="horario">1</th>
+                    <th name="inscritos">2</th>
+                    <th name="atividade">3</th>
+                    <th name="local">4</th>
+                    <th name="campus">5</th>
+                    <th name="acao">6</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+        <div class="col s12 m6">
             <input type="submit" value="Submeter">
         </div>
     </form>
