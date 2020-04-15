@@ -13,31 +13,20 @@ from .models import Utilizador
 
 '''CHOICES = (('Administrador', "ADMINISTRADOR"), ('Participante', "PARTICIPANTE"), ('Colaborador', "COLABORADOR"),
            ('Docente', "DOCENTE"), ('Coordenador', "COORDENADOR"))
-CHOICES2 = (('Faculdade de Economia', "Faculdade de Economia"),
-            ('Faculdade de Letras', "Faculdade de Letras"))'''
+CHOICES2 = (('Sim', "Sim"),
+            ('Nao', "Nao"))'''
 
-class Criar_Colab_Form(forms.Form):
-    primeiro_dia = forms.IntegerField(label='primeiro_dia')
+'''class Criar_Colab_Form(forms.Form):
+    primeiro_dia = forms.CharField(label='primeiro_dia', widget=forms.RadioSelect(choices=CHOICES2))
     segundo_dia = forms.IntegerField(label='segundo_dia')
     sala_de_aula = forms.IntegerField(label='sala_de_aula')
-    percurso = forms.IntegerField(label='percurso')
+    percurso = forms.IntegerField(label='percurso')'''
+
+'''class Editar_Colab_Form(forms.Form):
+    primeiro_dia = forms.CharField(label='primeiro_dia', widget=forms.RadioSelect(choices=CHOICES2))
+    segundo_dia = forms.CharField(label='segundo_dia', widget=forms.RadioSelect(choices=CHOICES2))
+    sala_de_aula = forms.CharField(label='sala_de_aula', widget=forms.RadioSelect(choices=CHOICES2))
+    percurso = forms.CharField(label='percurso', widget=forms.RadioSelect(choices=CHOICES2))'''
 
 
-
-""" utilizadortipo = forms.IntegerField(label='utilizadortipo')
- password_digest = forms.CharField(label='password_digest', max_length=50)
- data_nascimento = forms.DateField(label='data_nascimento')
- numero_telemovel = forms.IntegerField(label='numero_telemovel')
- cartao_cidadao = forms.IntegerField(label='cartao_cidadao')
- deficiencias = forms.CharField(label='deficiencias', max_length=50)
- permitir_localizacao = forms.IntegerField(label='permitir_localizacao')
- utilizar_dados_pessoais = forms.IntegerField(label='utilizar_dados_pessoais')
- validado = forms.IntegerField(label='validado')
- unidadeorganica = forms.CharField(label='unidadeorganica', max_length=50)"""
-
-"""'email', 'utilizadortipo', 'data_nascimento', 'numero_telemovel', 'cartao_cidadao', 'deficiencias',
-                  'permitir_localizacao', 'utilizar_dados_pessoais', 'unidadeorganica',"""
-
-"""['nome', 'email', 'utilizadortipo', 'data_nascimento', 'numero_telemovel', 'cartao_cidadao', 'deficiencias',
-                  'permitir_localizacao', 'utilizar_dados_pessoais', 'unidadeorganica',  'password_digest']"""
 
