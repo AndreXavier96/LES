@@ -188,9 +188,6 @@ class SessaoAtividade(models.Model):
         managed = False
         db_table = 'sessao_atividade'
 
-    def __str__(self):
-        return self.sessao
-
 
 class SessaoAtividadeInscricao(models.Model):
     sessao_atividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING,

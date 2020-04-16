@@ -5,7 +5,7 @@ from utilizadores.models import Utilizador
 from .forms import EscolaForm, EmentaInscricaoForm, TransportForm, ParticipanteForm, \
     TipoParticipanteForm, ParticipanteIndForm, ParticipanteGrupoForm, QuerRefeicaoForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
-    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade
+    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
 
 
 def remove_all_space(string):
@@ -136,5 +136,22 @@ class InscricaoView(View):
                                              transporte_campus=trans_campus,
                                              inscricao=inscricao
                                              )
+            row_count = int(request.POST['row_countt'])
+            # int(row_count)
+            print("rows:")
+            print(row_count)
+            for x in range(row_count):
+                sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
+                n_inscritos = request.POST['inscritos_sessao_' + str(x)]
+                print(sessao_actividade_id)
+                print(n_inscritos)
+                sessao_actividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
+                SessaoAtividadeInscricao.objects.create(sessao_atividade=sessao_actividade,
+                                                        inscricao=inscricao, numero_alunos=n_inscritos
+                                                        )
+                novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(n_inscritos)
+                print(novo_numero_alunos)
+                sessao_actividade.n_alunos = novo_numero_alunos
+                sessao_actividade.save()
             return redirect('/inscricao/home')
         return redirect('/inscricao')
