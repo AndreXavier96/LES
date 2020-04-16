@@ -1,4 +1,4 @@
-﻿﻿{% load static %}
+﻿{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
@@ -100,7 +100,7 @@
 
         <div class="col s12 m6">
             <div>
-                <h2>dados participante</h2>
+                <h2>Dados participante</h2>
                 {{ form_participante.as_p }}
                 {{ radio_tipo_participante }}
                 <div id="form_individual" style="display:none;">
@@ -164,8 +164,8 @@
 
         <div>
             <h2>Actividades</h2>
-            <h3>Sessões Disponiveis</h3>
-            <table class="table">
+            <h4>Sessões Disponiveis</h4>
+            <table id="table_atividades" class="table">
                 <thead class="thead-dark text-center">
                 <tr>
                     <th style="width: 35%;">Nome</th>
@@ -175,7 +175,8 @@
                 </tr>
                 </thead>
                 {% for atividade in atividades %}
-                    <thead class="text-center" data-toggle="collapse" href="#collapse_{{ atividade.id }}" aria-expanded="false"
+                    <thead class="text-center" data-toggle="collapse" href="#collapse_{{ atividade.id }}"
+                           aria-expanded="false"
                            aria-controls="collapse_{{ atividade.id }}">
                     <tr>
                         <th style="width: 35%;">{{ atividade.nome }}</th>
@@ -189,13 +190,13 @@
                         <th scope="row" class="text-center" colspan="4">
                             <div style="padding: 10px">
                                 <div>
-                                    <table class="table">
+                                    <table id="sessao_atividade_{{ atividade.id }}" class="table">
                                         <thead>
                                         <tr>
-                                            <th colspan="5">Descricao: {{ atividade.descricao }}</th>
+                                            <td colspan="5">Descricao: {{ atividade.descricao }}</td>
                                         </tr>
                                         <tr>
-                                            <th colspan="5">Responsavel: {{ atividade.docente.nome }}</th>
+                                            <td colspan="5">Responsavel: {{ atividade.docente.nome }}</td>
                                         </tr>
                                         <tr>
                                             <th>Hora:</th>
@@ -208,15 +209,22 @@
                                         <tbody>
                                         {% for s in sessaoatividade %}
                                             {% if s.atividade.id == atividade.id %}
-                                                <tr>
-                                                    <th>{{ s.sessao.hora_inicio }}</th>
-                                                    <th>{{ atividade.duracao }}</th>
-                                                    <th>{{ s.n_alunos }}</th>
-                                                    <th>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</th>
-                                                    <th><label for="quantity"></label>
-                                                        <input type="number" id="quantity" name="quantity" value="0"
-                                                               min="0" max="5">
-                                                    </th>
+                                                <tr id="sessao_{{ s.id }}">
+                                                    <td>{{ s.sessao.hora_inicio }}</td>
+                                                    <td>{{ atividade.duracao }}</td>
+                                                    <td>{{ s.n_alunos }}</td>
+                                                    <td>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</td>
+                                                    <td><label for="quantity"></label>
+                                                        <input type="number" id="quantity_{{ s.id }}"
+                                                               name="quantity_{{ s.id }}" value="0"
+                                                               min="0" max="{{ s.n_alunos }}"
+                                                               onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
+                                                                       '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',
+                                                                       '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',
+                                                                       '{{ atividade.localizacao.campus }}', this.value, '{{ s.n_alunos }}',
+                                                                       this.id
+                                                                       )">
+                                                    </td>
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
@@ -230,11 +238,12 @@
                 {% endfor %}
             </table>
             <br><br>
-            <h3>Sessoes Escolhidas</h3>
-            <table class="table">
+            <h4>Sessoes Escolhidas</h4>
+            <table id="table_inscritos" class="table">
                 <thead class="thead-dark text-center">
                 <tr>
-                    <th style="width: 15%;">Hórario</th>
+                    <th style="width: 10%;">Hórario</th>
+                    <th style="width: 5%;">Duracao</th>
                     <th style="width: 15%;">Inscritos</th>
                     <th style="width: 35%;">Atividade</th>
                     <th style="width: 15%;">Localização</th>
@@ -242,16 +251,6 @@
                     <th style="width: 5%;">Ações</th>
                 </tr>
                 </thead>
-                <tbody class="text-center">
-                <tr>
-                    <th name="horario">1</th>
-                    <th name="inscritos">2</th>
-                    <th name="atividade">3</th>
-                    <th name="local">4</th>
-                    <th name="campus">5</th>
-                    <th name="acao">6</th>
-                </tr>
-                </tbody>
             </table>
         </div>
         <br><br>
@@ -259,6 +258,65 @@
             <input type="submit" value="Submeter">
         </div>
     </form>
+    <script type="text/javascript">
+        function EscolherSessao(atividade_id, sessao_id, ini, dur,
+                                nome, loc, cam, val, vag, ses_id) {
+            var table_inscrito = document.getElementById("table_inscritos");
+            var table_inscrito_length = document.getElementById("table_inscritos").rows.length;
+            var row_id = 0;
+            let i;
+            for (i = 0; i < table_inscrito_length; i++) {
+                if (table_inscrito.rows[i].id === sessao_id)
+                    row_id = table_inscrito.rows[i].id
+            }
+            let ses_id_plica = "'" + ses_id + "'"
+            let sessao_id_plica = "'" + sessao_id + "'"
+            if (row_id !== 0) {
+                {#alterar o numero inscritos#}
+                let row = document.getElementById(sessao_id).cells;
+                row[2].innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
+                    '"  name="inscritos_sessao" value="' + val +
+                    '" min="0" max="' + vag +
+                    '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
+            } else if (val !== "0") {
+                {#adicionar row #}
+                let row = table_inscrito.insertRow(-1)
+                row.id = sessao_id
+                let inicio = row.insertCell(0)
+                let duracao = row.insertCell(1)
+                let inscritos = row.insertCell(2)
+                let atividade = row.insertCell(3)
+                let local = row.insertCell(4)
+                let campus = row.insertCell(5)
+                let acao = row.insertCell(6)
+                inicio.innerHTML = ini
+                duracao.innerHTML = dur
+                inscritos.innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
+                    '"  name="inscritos_sessao" value="' + val +
+                    '" min="0" max="' + vag +
+                    '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
+                atividade.innerHTML = nome
+                local.innerHTML = loc.toString()
+                campus.innerHTML = cam.toString()
+                let inscritos_value = "'0'"
+                acao.innerHTML = '<p onclick="AlterarInscritos(' + ses_id_plica + ', ' + inscritos_value + ', ' + sessao_id_plica + ')">&#10060;</p>'
+            }
+            if (document.getElementById("inscritos_sessao_" + sessao_id).value === "0")
+                deleteSessao(sessao_id)
+        }
+
+        function AlterarInscritos(ses_id, val, row_id) {
+            document.getElementById(ses_id).value = val
+            if (val === "0")
+                deleteSessao(row_id)
+        }
+
+        function deleteSessao(row_id) {
+            let row = document.getElementById(row_id)
+            row.parentElement.removeChild(row)
+        }
+
+    </script>
 {% endblock %}
 </body>
 </html>
