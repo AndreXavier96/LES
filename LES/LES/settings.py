@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'Dia_Aberto.apps.Dia_AbertoConfig',
     'inscricao.apps.InscricaoConfig',
     'utilizadores.apps.UtilizadoresConfig',
-    'colaboradores.apps.ColaboradoresConfig'
+    'colaboradores.apps.ColaboradoresConfig',
+    'notificacao.apps.NotificacaoConfig',
 ]
 
 # Middleware framework

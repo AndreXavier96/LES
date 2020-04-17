@@ -26,5 +26,5 @@ urlpatterns = [
     path('utilizadores/', include('utilizadores.urls')),
     path('notificacao/', include('notificacao.urls')),
     path('colaboradores/', include('colaboradores.urls')),
-
+    path('notificacao/', include('notificacao.urls')),
 ]

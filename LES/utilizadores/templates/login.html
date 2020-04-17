@@ -6,20 +6,32 @@
     <title></title>
 </head>
 <body>
+<h1>Login</h1>
+
 {% block content %}
-    <h1>Login</h1>
-    <div class="container">
+<div class="container">
         <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
             <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
 
         </form>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
         Don't have an account? <a href="/register" target="blank"><strong>register here</strong></a>!
         <p></p>
         <a href="/utilizadores/password_change" target="blank"><strong>Forget your password?</strong></a>!
     </div>
 {% endblock %}
+
+
 </body>
 </html>
 
