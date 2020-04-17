@@ -1,0 +1,24 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="col s12 m6">
+        <h2>Notificações</h2>
+    </div>
+    <div class="col s12 m6">
+        <p>Assunto: {{ form.assunto}}</p>
+        <p>Conteudo: {{ form.conteudo}}</p>
+        <p>Hora: {{ form.hora}}</p>
+        <p>Prioridade: {{ form.prioridade}}</p>
+    </div>
+    <input type="submit" value="Enviar">
+</form>
+{% endblock %}
+
+</body>
+</html>

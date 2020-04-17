@@ -27,10 +27,10 @@ Including another URLconf
 
 from django.urls import path
 from . import views
+from .views import notificacao
 
 app_name = "notificacao"
 
 urlpatterns = [
-    # path('', views.index, name='index'),
-
+    path("notificacao/", notificacao.as_view(), name='notificacao'),
 ]
