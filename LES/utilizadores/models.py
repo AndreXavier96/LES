@@ -1,5 +1,14 @@
 from django.db import models
-from inscricao.models import Campus
+
+
+class Campus(models.Model):
+    nome = models.CharField(max_length=255)
+    morada = models.TextField(blank=True, null=True)
+    contacto = models.CharField(max_length=45, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'campus'
 
 
 class Unidadeorganica(models.Model):
@@ -37,5 +46,3 @@ class Utilizador(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizador'
-
-
