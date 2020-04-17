@@ -1,5 +1,5 @@
 from django.db import models
-from LES.utilizadores.models import Utilizador
+from utilizadores.models import Utilizador
 
 
 class Notificacoes(models.Model):
@@ -7,8 +7,8 @@ class Notificacoes(models.Model):
     hora = models.DateTimeField()
     prioridade = models.IntegerField(blank=True, null=True)
     assunto = models.TextField(blank=True, null=True)
-    utilizador_env = models.ForeignKey('Utilizador', models.DO_NOTHING)
-    utilizador_rec = models.ForeignKey('Utilizador', models.DO_NOTHING)
+    utilizador_env = models.ForeignKey(Utilizador, models.DO_NOTHING)
+    utilizador_rec = models.ForeignKey(Utilizador, models.DO_NOTHING)
 
     class Meta:
         managed = False

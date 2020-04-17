@@ -137,7 +137,6 @@ class InscricaoView(View):
                                              inscricao=inscricao
                                              )
             row_count = int(request.POST['row_countt'])
-            # int(row_count)
             print("rows:")
             print(row_count)
             for x in range(row_count):
