@@ -1,14 +1,5 @@
 from django.db import models
-
-
-class Campus(models.Model):
-    nome = models.CharField(max_length=255)
-    morada = models.TextField(blank=True, null=True)
-    contacto = models.CharField(max_length=45, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'campus'
+from inscricao.models import Campus
 
 
 class Unidadeorganica(models.Model):
@@ -30,7 +21,7 @@ class Utilizadortipo(models.Model):
 
 
 class Utilizador(models.Model):
-    utilizadortipo = models.ForeignKey(Utilizadortipo, models.DO_NOTHING)
+    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
     email = models.CharField(max_length=255)
     password_digest = models.CharField(max_length=255, blank=True, null=True)
     nome = models.CharField(max_length=255)
@@ -48,21 +39,3 @@ class Utilizador(models.Model):
         db_table = 'utilizador'
 
 
-
-
-class Utilizadorparticipante(models.Model):
-    utilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='utilizador')
-    escola = models.IntegerField()
-    area_estudos = models.CharField(max_length=45)
-    ano_estudos = models.IntegerField()
-    turma = models.CharField(max_length=45)
-    total_participantes = models.IntegerField(db_column='total__participantes', blank=True, null=True)
-    total_professores = models.IntegerField(blank=True, null=True)
-    autorizacao = models.CharField(max_length=45, blank=True, null=True)
-    ficheiro_autorizacao = models.CharField(max_length=45, blank=True, null=True)
-    numero_acompanhantes = models.IntegerField(blank=True, null=True)
-    check_in = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'utilizadorparticipante'
