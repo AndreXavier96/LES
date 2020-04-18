@@ -78,7 +78,6 @@ class register(View):
             return redirect('/inscricao/home')"""
         return redirect('/register')
 
-
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
@@ -98,11 +97,12 @@ def login_request(request):
             else:
                 messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "Username ou Password inválida")
     form = AuthenticationForm()
     return render(request = request,
                     template_name = "login.html",
                     context={"form":form})
+
 
 def success(request):
     context = {}

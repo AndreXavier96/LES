@@ -1,79 +1,339 @@
-﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+﻿{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <title></title>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script>
+        var options = {
+            twentyFour: true,
+            now: "00:00",
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        }
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
+    </script>
+    <script type="text/javascript">
+        function CheckEscola(val) {
+            var element = document.getElementById('form_escola');
+            if (val === 'others') {
+                element.style.display = 'block';
+                document.getElementById("id_nome").setAttribute("required", "required")
+                document.getElementById("id_morada").setAttribute("required", "required")
+                document.getElementById("id_codigo_postal").setAttribute("required", "required")
+                document.getElementById("id_contacto").setAttribute("required", "required")
+                document.getElementById("id_localidade").setAttribute("required", "required")
+            } else {
+                element.style.display = 'none';
+                document.getElementById("id_nome").removeAttribute("required");
+                document.getElementById("id_morada").removeAttribute("required");
+                document.getElementById("id_codigo_postal").removeAttribute("required");
+                document.getElementById("id_contacto").removeAttribute("required");
+                document.getElementById("id_localidade").removeAttribute("required");
+            }
+        }
+
+        function CheckTipoParticipante(val) {
+            var individual = document.getElementById('form_individual');
+            var grupo = document.getElementById('form_grupo');
+            if (val === 'individual') {
+                individual.style.display = 'block';
+                grupo.style.display = 'none';
+                document.getElementById("id_acompanhantes").setAttribute("required", "required");
+                document.getElementById("id_turma").removeAttribute("required");
+                document.getElementById("id_total_participantes").removeAttribute("required");
+                document.getElementById("id_total_professores").removeAttribute("required");
+            } else if (val === 'grupo') {
+                individual.style.display = 'none';
+                grupo.style.display = 'block';
+                document.getElementById("id_acompanhantes").removeAttribute("required");
+                document.getElementById('id_acompanhantes').value = '';
+                document.getElementById("id_turma").setAttribute("required", "required");
+                document.getElementById("id_total_participantes").setAttribute("required", "required");
+                document.getElementById("id_total_professores").setAttribute("required", "required");
+            }
+        }
+
+        function CheckRefeicao(val) {
+            var refeicao = document.getElementById('quer_refeicao');
+            if (val === "sim") {
+                refeicao.style.display = 'block';
+            } else if (val === 'nao') {
+                refeicao.style.display = 'none';
+                document.getElementById("id_numero_aluno_normal").value = '0';
+                document.getElementById("id_numero_outro_normal").value = '0';
+                MultiplicaPreco();
+            }
+        }
+
+        function MultiplicaPreco() {
+            var num1 = document.getElementById("id_numero_aluno_normal").value;
+            var num2 = document.getElementById("id_numero_outro_normal").value;
+            var preco1 = parseFloat(document.getElementById("preco_aluno_normal").value);
+            var preco2 = parseFloat(document.getElementById("preco_outro_normal").value);
+            var final = (num1 * preco1) + (num2 * preco2);
+            document.getElementById("preco_total").setAttribute("value", final.toFixed(2).toString());
+
+        }
+
+    </script>
 </head>
-<body>
+<body onload="document.inscricao_form.reset();">
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="col s12 m6">
-        <h2>Responsaveis</h2>
-    </div>
+    <form method="POST" name="inscricao_form">
+        {% csrf_token %}
 
-    <div class="col s12 m6">
+        <div class="col s12 m6">
+            <div>
+                <h2>Dados participante</h2>
+                {{ form_participante.as_p }}
+                {{ radio_tipo_participante }}
+                <div id="form_individual" style="display:none;">
+                    {{ form_part_ind.as_p }}
+                </div>
+                <div id="form_grupo" style="display:none;">
+                    {{ form_part_gru.as_p }}
+                </div>
+            </div>
+        </div>
 
+        <div class="col s12 m6">
+            <h2>Dados da Escola</h2>
+            <label>
+                <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
+                    <option hidden>Escolha uma escola</option>
+                    {% for e in escolas %}
+                        <option value="{{ e.nome }}">{{ e.nome }}</option>
+                    {% endfor %}
+                    <option value="others">others</option>
+                </select>
+            </label>
+            <div id="form_escola" style="display:none;">
+                {{ form_escola.as_p }}
+            </div>
+        </div>
 
-        <!--   <h2>Escola</h2>
-        <h3>Informação da Escola</h3>
-        <label for="nome">Nome da Escola:</label>
-        <input type="text" id="nome" name="nome" value=""><br>
-        <label for="morada">Morada:</label>
-        <input type="text" id="morada" name="morada" value=""><br>
-        <label for="codigo_postal">codigo postal:</label>
-        <input type="text" id="codigo_postal" name="codigo_postal" value=""><br>
-         <label for="contacto">contacto:</label>
-        <input type="text" id="contacto" name="contacto" value=""><br>
-        <label for="localidade">Localidade:</label>
-        <input type="text" id="localidade" name="localidade" value="">
+        <div class="col s12 m6">
+            <h2>Refeição</h2>
+            {{ radio_refeicao }}
+            <div id="quer_refeicao" style="display:none;">
+                <h3>quantidades:</h3>
+                {% for v in values %}
+                    <label for="preco_aluno_normal"></label>
+                    <input id="preco_aluno_normal" type="text" style="display:none;" value="{{ v.preco_aluno_normal }}">
+                    <label for="preco_outro_normal"></label>
+                    <input id="preco_outro_normal" type="text" style="display:none;" value="{{ v.preco_outro_normal }}">
+                    <p onchange="MultiplicaPreco()">Refeições aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
+                        {{ v.preco_aluno_normal }}&euro;/refeição</p>
+                    <p onchange="MultiplicaPreco()">Refeições não aluno:{{ form_ementa_inscricao.numero_outro_normal }}
+                        {{ v.preco_outro_normal }}&euro;/refeição</p>
+                    <p>
+                        <label for="preco_total">Preço total:</label>
+                        <input type="number" name="preco_total" id="preco_total"
+                               value="0" disabled>&euro;
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
 
-      <h3>Informação da turma</h3>
-        <label for="ano_turma">Ano:</label>
-        <input type="number" id="ano_turma" name="ano_turma" value="{{ XX }}">
-        <label for="turma_turma">Turma:</label>
-        <input type="text" id="turma_turma" name="turma_turma" value="{{ XX }}">
-        <label for="n_alunos">Número de alunos:</label>
-        <input type="number" id="n_alunos" name="n_alunos" value="{{ XX }}">
-        <label for="area_turma">Área científica:</label>
-        <input type="text" id="area_turma" name="area_turma" value="{{ XX }}">
-        //-->
-       {{ form2.as_p }}
- <!--    </div>
+        <div class="col s12 m6">
+            <h2>Transporte</h2>
+            {{ form_trans.as_p }}
+            <label for="timepicker-one">Hora Chegada: </label>
+            <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+            <br>
+            <label for="timepicker-two">Hora Partida: </label>
+            <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
+            <br>
+        </div>
 
+        <div>
+            <h2>Actividades</h2>
+            <h4>Sessões Disponiveis</h4>
+            <table id="table_atividades" class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th style="width: 35%;">Nome</th>
+                    <th style="width: 15%;">Tipo</th>
+                    <th style="width: 35%;">Publico alvo</th>
+                    <th style="width: 15%;">Campus</th>
+                </tr>
+                </thead>
+                {% for atividade in atividades %}
+                    <thead class="text-center" data-toggle="collapse" href="#collapse_{{ atividade.id }}"
+                           aria-expanded="false"
+                           aria-controls="collapse_{{ atividade.id }}">
+                    <tr>
+                        <th style="width: 35%;">{{ atividade.nome }}</th>
+                        <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
+                        <th style="width: 35%;">{{ atividade.publico_alvo }}</th>
+                        <th style="width: 15%;">{{ atividade.localizacao.campus.nome }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="collapse" id="collapse_{{ atividade.id }}">
+                    <tr>
+                        <th scope="row" class="text-center" colspan="4">
+                            <div style="padding: 10px">
+                                <div>
+                                    <table id="sessao_atividade_{{ atividade.id }}" class="table">
+                                        <thead>
+                                        <tr>
+                                            <td colspan="5">Descricao: {{ atividade.descricao }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">Responsavel: {{ atividade.docente.nome }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Hora:</th>
+                                            <th>Duração:</th>
+                                            <th>Vagas:</th>
+                                            <th>Localização:</th>
+                                            <th>Inscrever:</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for s in sessaoatividade %}
+                                            {% if s.atividade.id == atividade.id %}
+                                                <tr id="sessao_{{ s.id }}">
+                                                    <td>{{ s.sessao.hora_inicio }}</td>
+                                                    <td>{{ atividade.duracao }}</td>
+                                                    <td>{{ s.n_alunos }}</td>
+                                                    <td>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</td>
+                                                    <td><label for="quantity"></label>
+                                                        <input type="number" id="quantity_{{ s.id }}"
+                                                               name="quantity_{{ s.id }}" value="0"
+                                                               min="0" max="{{ s.n_alunos }}"
+                                                               onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
+                                                                       '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',
+                                                                       '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',
+                                                                       '{{ atividade.localizacao.campus }}', this.value, '{{ s.n_alunos }}',
+                                                                       this.id
+                                                                       )">
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <br><br>
+            <h4>Sessoes Escolhidas</h4>
+            <table id="table_inscritos" class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th style="width: 10%;">Hórario</th>
+                    <th style="width: 5%;">Duracao</th>
+                    <th style="width: 15%;">Inscritos</th>
+                    <th style="width: 35%;">Atividade</th>
+                    <th style="width: 15%;">Localização</th>
+                    <th style="width: 15%;">Campus</th>
+                    <th style="width: 5%;">Ações</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <br><br>
+        <input type="number" id="row_countt" name="row_countt" value="" hidden>
+        <div class="col s12 m6">
+            <input type="submit" value="Submeter">
+        </div>
+    </form>
+    <script type="text/javascript">
+        let row_count = 0
 
-    <div class="col s12 m6">
-        <h2>Transporte</h2>
+        function EscolherSessao(atividade_id, sessao_id, ini, dur,
+                                nome, loc, cam, val, vag, ses_id) {
+            var table_inscrito = document.getElementById("table_inscritos");
+            var table_inscrito_length = document.getElementById("table_inscritos").rows.length;
+            var row_id = 0;
+            let i;
+            for (i = 0; i < table_inscrito_length; i++) {
+                if (table_inscrito.rows[i].id === sessao_id)
+                    row_id = table_inscrito.rows[i].id
+            }
+            let ses_id_plica = "'" + ses_id + "'"
+            let sessao_id_plica = "'" + sessao_id + "'"
+            if (row_id !== 0) {
+                {#alterar o numero inscritos#}
+                row_count--
+                let row = document.getElementById(sessao_id).cells;
+                row[2].innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
+                    '"  name="inscritos_sessao_' + row_count + '" value="' + val +
+                    '" min="0" max="' + vag +
+                    '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
+                row_count++
+            } else if (val !== "0") {
+                {#adicionar row #}
+                let row = table_inscrito.insertRow(-1)
+                row.id = sessao_id
+                row.name = "row_"+row_count
+                let inicio = row.insertCell(0)
+                let duracao = row.insertCell(1)
+                let inscritos = row.insertCell(2)
+                let atividade = row.insertCell(3)
+                let local = row.insertCell(4)
+                let campus = row.insertCell(5)
+                let acao = row.insertCell(6)
+                {#atividade.id = "atividade_"+sessao_id#}
+                inicio.innerHTML = ini
+                duracao.innerHTML = dur
+                inscritos.innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
+                    '"  name="inscritos_sessao_' + row_count + '" value="' + val +
+                    '" min="0" max="' + vag +
+                    '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
+                atividade.innerHTML = nome + '<input type="number" id="sessao_atividade_' + sessao_id +
+                    '" name="sessao_atividade_' + row_count + '" value="' + sessao_id + '" hidden>'
+                local.innerHTML = loc.toString()
+                campus.innerHTML = cam.toString()
+                let inscritos_value = "'0'"
+                acao.innerHTML = '<p onclick="AlterarInscritos(' + ses_id_plica + ', ' + inscritos_value +
+                    ', ' + sessao_id_plica + ')">&#10060;</p>'
+                row_count++
+                makecount()
+            }
+            if (document.getElementById("inscritos_sessao_" + sessao_id).value === "0")
+                deleteSessao(sessao_id)
+        }
 
-    </div>
+        function AlterarInscritos(ses_id, val, row_id) {
+            document.getElementById(ses_id).value = val
+            if (val === "0")
+                deleteSessao(row_id)
+        }
 
-    <div class="col s12 m6">
-        <h2>Almoço</h2>
-        {% for em in ementas %}
-        <a>Preço Normal={{em.preco_aluno_normal}}</a>
-        <a>Preço Bolseiro={{em.preco_aluno_economico}}</a>
-        {{ epis.as_p }}
-        {% endfor %}
+        function deleteSessao(row_id) {
+            let row = document.getElementById(row_id)
+            row.parentElement.removeChild(row)
+            row_count--
+            makecount()
+        }
 
-        {% for p in pratos %}
-        <input type="radio" id="{{p.tipo}}" name="tipos" value="{{p.tipo}}">
-        <label for="{{p.tipo}}">{{p.tipo}}</label>
-        <br>
-        {% endfor %}
-    </div>
+        function makecount() {
+            document.getElementById("row_countt").setAttribute("value", row_count.toString());
+        }
 
-    <div class="col s12 m6">
-        <h2>Sessões</h2>
-    </div>
-
-    <div class="col s12 m6">
-        <h2>Submissão</h2>
-    </div>-->
-    </div>
-    {{form.prato}}
-    <input type="submit" value="Submeter">
-</form>
-</div>
+    </script>
 {% endblock %}
-
 </body>
 </html>

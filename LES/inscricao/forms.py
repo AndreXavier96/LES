@@ -1,38 +1,77 @@
 from django import forms
-from .models import Escola, EmentaPratoInscricao
-from django.forms.widgets import CheckboxSelectMultiple
+
+CHOICES_TRANS = (('proprio', "Transporte Proprio"),
+                 ('comboio', "Comboio"),
+                 ('autocarro', "Autocarro")
+                 )
+
+CHOICE_BOL = (('sim', "sim"), ('nao', "nao"))
+
+CHOICE_TIPO_PARTICIPANTE = (('individual', "individual"), ('grupo', "grupo"))
 
 
 class EscolaForm(forms.Form):  # ModelForm):
-    # class Meta:
-    #     model = Escola
-    #     fields = ['nome', 'morada', 'codigo_postal', 'contacto', 'localidade']
-    nome = forms.CharField(label='nome', max_length=50)
-    morada = forms.CharField(label='morada', max_length=50)
-    codigo_postal = forms.CharField(label='codigo_postal', max_length=50)
-    contacto = forms.CharField(label='contacto', max_length=50)
-    localidade = forms.CharField(label='localidade', max_length=50)
+    nome = forms.CharField(label='nome_escola', max_length=50, required=False)
+    morada = forms.CharField(label='morada', max_length=50, required=False)
+    codigo_postal = forms.CharField(label='codigo_postal', max_length=50, required=False)
+    contacto = forms.IntegerField(label='contacto', max_value=999999999, min_value=0, required=False)
+    localidade = forms.CharField(label='localidade', max_length=50, required=False)
 
 
-CHOICES = (('carne', "CARNE"), ('peixe', "PEIXE"), ('vegetariano', "VEGETARIANO"))
+class EmentaInscricaoForm(forms.Form):
+    numero_aluno_normal = forms.IntegerField(initial=0)
+    numero_outro_normal = forms.IntegerField(initial=0)
 
 
-class PratoForm(forms.Form):
-    prato = forms.CharField(label='test', widget=forms.RadioSelect(choices=CHOICES))
+class TransportForm(forms.Form):
+    transporte_campus = forms.CharField(label='vai desejar transporte entre os campus?',
+                                        widget=forms.RadioSelect(choices=CHOICE_BOL)
+                                        )
+    tipo_transporte = forms.CharField(label='tipo transporte para a universidade',
+                                      widget=forms.Select(choices=CHOICES_TRANS)
+                                      )
 
 
-class EpiForm(forms.ModelForm):
-    class Meta:
-        model = EmentaPratoInscricao
-        fields = ['numero_aluno_normal',
-                  'numero_aluno_economico'
-                  ]
+class ParticipanteForm(forms.Form):
+    area_estudos = forms.CharField(label='area_estudos', required=True)
+    ano_estudos = forms.IntegerField(label='ano_estudos', required=True)
 
 
-'''class Form(forms.ModelForm):
-    class Meta:
-        model = Escola, EmentaPratoInscricao
-        fields = [{'nome', 'morada', 'codigo_postal', 'contacto',
-                  'localidade'}, {'numero_aluno_normal',
-                  'numero_aluno_economico'}
-                  ]'''
+class ParticipanteGrupoForm(forms.Form):
+    turma = forms.CharField(label='turma', required=True)
+    total_participantes = forms.IntegerField(label='total_participantes', required=True)
+    total_professores = forms.IntegerField(label='total_professores', required=True)
+
+
+class ParticipanteIndForm(forms.Form):
+    acompanhantes = forms.CharField(label='acompanhantes', required=True)
+
+
+class TipoParticipanteForm(forms.Form):
+    TipoParticipante = forms.CharField(label='TipoParticipante (automatico com a sessao)',
+                                       widget=forms.RadioSelect(choices=CHOICE_TIPO_PARTICIPANTE,
+                                                                attrs={'onchange': 'CheckTipoParticipante(this.value);'}
+                                                                ))
+
+
+class QuerRefeicaoForm(forms.Form):
+    QuerRefeicao = forms.CharField(label="Deseja refeição?",
+                                   widget=forms.RadioSelect(choices=CHOICE_BOL,
+                                                            attrs={'onchange': 'CheckRefeicao(this.value);'})
+                                   )
+
+
+# class InscreverSessaoForm(forms.Form):
+#     inscritos = forms.IntegerField()
+
+# class UtilizarDadosForm(forms.Form):
+#     bol = forms.CharField(label="Utilizar dados da conta para inscrição?",
+#                           widget=forms.RadioSelect(choices=CHOICE_BOL,
+#                                                    attrs={'onchange': 'CheckUtilizar(this.value);'}
+#                                                    ))
+
+#
+# class DadosForm(forms.Form):
+#     nome = forms.CharField(label='nome', required=False)
+#     email = forms.EmailField(label='email', required=False)
+#     contacto = forms.IntegerField(label='telemovel', required=False)
