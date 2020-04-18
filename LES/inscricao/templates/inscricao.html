@@ -16,21 +16,21 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <script>
-        var options = {
+        let options = {
             twentyFour: true,
             now: "00:00",
             close: 'wickedpicker__close',
             hoverState: 'hover-state',
             title: 'Escolher Hora',
             minutesInterval: 5,
-        }
+        };
         $(document).ready(function () {
             $('.timepicker-12-hr').wickedpicker(options);
         });
     </script>
     <script type="text/javascript">
         function CheckEscola(val) {
-            var element = document.getElementById('form_escola');
+            let element = document.getElementById('form_escola');
             if (val === 'others') {
                 element.style.display = 'block';
                 document.getElementById("id_nome").setAttribute("required", "required")
@@ -49,8 +49,8 @@
         }
 
         function CheckTipoParticipante(val) {
-            var individual = document.getElementById('form_individual');
-            var grupo = document.getElementById('form_grupo');
+            let individual = document.getElementById('form_individual');
+            let grupo = document.getElementById('form_grupo');
             if (val === 'individual') {
                 individual.style.display = 'block';
                 grupo.style.display = 'none';
@@ -69,8 +69,57 @@
             }
         }
 
+        function tipoTransporte(val) {
+            let transporte_para_campus = document.getElementById('transporte_para_campus')
+            if (val === 'proprio') {
+                transporte_para_campus.style.display = 'none';
+                document.getElementById('id_QuerTransportePara_0').removeAttribute("required");
+                document.getElementById('id_QuerTransportePara_1').removeAttribute("required");
+            } else {
+                transporte_para_campus.style.display = 'block';
+                document.getElementById('id_QuerTransportePara_0').setAttribute("required", "required");
+                document.getElementById('id_QuerTransportePara_1').removeAttribute("required");
+            }
+        }
+
+        function paraCampus(val) {
+            let qual_campus = document.getElementById('qual_campus')
+            let qual_campus2 = document.getElementById('id_QuerTransportePara')
+            let qual_campus3 = document.getElementById('qual_campus_2')
+            if (val === 'nao') {
+                qual_campus.style.display = 'none';
+                qual_campus2.removeAttribute("required");
+                qual_campus3.removeAttribute("required");
+            } else {
+                qual_campus.style.display = 'block';
+                qual_campus2.setAttribute("required", "required");
+                qual_campus3.setAttribute("required", "required");
+            }
+        }
+
+        function entreCampus(val) {
+            let relogio3 = document.getElementById('entre_campus')
+            if (val === 'nao') {
+                relogio3.style.display = 'none'
+            } else {
+                relogio3.style.display = 'block'
+            }
+        }
+
+        function entreCampusRelogio(val) {
+            let DivRelogio3 = document.getElementById('timepicker-three_div')
+            if (val === 'penha_para_gambelas' || val === 'gambelas_para_penha') {
+                DivRelogio3.style.display = 'block'
+                if (val === 'penha_para_gambelas')
+                    document.getElementById('timepicker-three_label').textContent = "Horario saida da Penha"
+                else if (val === 'gambelas_para_penha')
+                    document.getElementById('timepicker-three_label').textContent = "Horario saida das Gambelas"
+            } else
+                DivRelogio3.style.display = 'none'
+        }
+
         function CheckRefeicao(val) {
-            var refeicao = document.getElementById('quer_refeicao');
+            let refeicao = document.getElementById('quer_refeicao');
             if (val === "sim") {
                 refeicao.style.display = 'block';
             } else if (val === 'nao') {
@@ -82,11 +131,11 @@
         }
 
         function MultiplicaPreco() {
-            var num1 = document.getElementById("id_numero_aluno_normal").value;
-            var num2 = document.getElementById("id_numero_outro_normal").value;
-            var preco1 = parseFloat(document.getElementById("preco_aluno_normal").value);
-            var preco2 = parseFloat(document.getElementById("preco_outro_normal").value);
-            var final = (num1 * preco1) + (num2 * preco2);
+            let num1 = document.getElementById("id_numero_aluno_normal").value;
+            let num2 = document.getElementById("id_numero_outro_normal").value;
+            let preco1 = parseFloat(document.getElementById("preco_aluno_normal").value);
+            let preco2 = parseFloat(document.getElementById("preco_outro_normal").value);
+            let final = (num1 * preco1) + (num2 * preco2);
             document.getElementById("preco_total").setAttribute("value", final.toFixed(2).toString());
 
         }
@@ -114,15 +163,14 @@
 
         <div class="col s12 m6">
             <h2>Dados da Escola</h2>
-            <label>
-                <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
-                    <option hidden>Escolha uma escola</option>
-                    {% for e in escolas %}
-                        <option value="{{ e.nome }}">{{ e.nome }}</option>
-                    {% endfor %}
-                    <option value="others">others</option>
-                </select>
-            </label>
+            <label for="Escola">Escola :</label>
+            <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
+                <option hidden>Escolher</option>
+                {% for e in escolas %}
+                    <option value="{{ e.nome }}">{{ e.nome }}</option>
+                {% endfor %}
+                <option value="others">others</option>
+            </select>
             <div id="form_escola" style="display:none;">
                 {{ form_escola.as_p }}
             </div>
@@ -153,15 +201,81 @@
 
         <div class="col s12 m6">
             <h2>Transporte</h2>
-            {{ form_trans.as_p }}
+            <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
+            <select name="tipo_transporte" id="tipo_transporte"
+                    onchange="tipoTransporte(this.value)">
+                <option hidden>Escolher</option>
+                <option value="proprio">Transporte próprio</option>
+                <option value="autocarro">Autocarro Publico</option>
+                <option value="comboio">Comboio</option>
+            </select>
+            {##}
+            <div id="transporte_para_campus" style="display: none">
+                <ul id="id_QuerTransportePara">
+                    <label for="id_QuerTransportePara_0">Vai desejar transporte entre a estação e algum dos
+                        Campus?</label>
+                    <li><label for="id_QuerTransportePara_0"><input type="radio" name="QuerTransportePara" value="sim"
+                                                                    onchange="paraCampus(this.value);"
+                                                                    required="required"
+                                                                    id="id_QuerTransportePara_0">
+                        Sim</label>
+
+                    </li>
+                    <li><label for="id_QuerTransportePara_1"><input type="radio" name="QuerTransportePara" value="nao"
+                                                                    onchange="paraCampus(this.value);"
+                                                                    id="id_QuerTransportePara_1" checked>
+                        Não</label>
+
+                    </li>
+                </ul>
+                <div id="qual_campus" style="display: none">
+                    <label for="qual_campus_2">Para qual Campus?</label>
+                    <select name="qual" id="qual_campus_2">
+                        <option hidden="">Escolher</option>
+                        <option value="penha">Campus da Penha</option>
+                        <option value="gambelas">Campus das Gambelas</option>
+                    </select>
+                </div>
+            </div>
+            <br>
             <label for="timepicker-one">Hora Chegada: </label>
             <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
             <br>
             <label for="timepicker-two">Hora Partida: </label>
             <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
             <br>
-        </div>
+            <br>
+            <label for="id_QuerTransporteEntre_0">Vai desejar transporte entre os Campus?</label>
+            <ul id="id_QuerTransporteEntre">
+                <li><label for="id_QuerTransporteEntre_0"><input type="radio" name="QuerTransporteEntre" value="sim"
+                                                                 onchange="entreCampus(this.value);" required=""
+                                                                 id="id_QuerTransporteEntre_0">
+                    Sim</label>
 
+                </li>
+                <li><label for="id_QuerTransporteEntre_1"><input type="radio" name="QuerTransporteEntre" value="nao"
+                                                                 onchange="entreCampus(this.value);" required=""
+                                                                 id="id_QuerTransporteEntre_1" checked>
+                    Não</label>
+
+                </li>
+            </ul>
+            {##}
+            <div id="entre_campus" style="display: none">
+                <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
+                <select name="transporte_campus" id="transporte_campus" onchange="entreCampusRelogio(this.value)">
+                    <option hidden>Escolher</option>
+                    <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
+                    <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
+                </select>
+                <br>
+                <div id="timepicker-three_div" style="display: none">
+                    <label id="timepicker-three_label" for="timepicker-three"></label>
+                    <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
+                </div>
+            </div>
+        </div>
+        <br><br>
         <div>
             <h2>Actividades</h2>
             <h4>Sessões Disponiveis</h4>
@@ -215,6 +329,7 @@
                                                     <td>{{ s.n_alunos }}</td>
                                                     <td>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</td>
                                                     <td><label for="quantity"></label>
+                                                        <label for="quantity_{{ s.id }}"></label>
                                                         <input type="number" id="quantity_{{ s.id }}"
                                                                name="quantity_{{ s.id }}" value="0"
                                                                min="0" max="{{ s.n_alunos }}"
@@ -254,6 +369,7 @@
             </table>
         </div>
         <br><br>
+        <label for="row_countt"></label>
         <input type="number" id="row_countt" name="row_countt" value="" hidden>
         <div class="col s12 m6">
             <input type="submit" value="Submeter">
@@ -264,9 +380,9 @@
 
         function EscolherSessao(atividade_id, sessao_id, ini, dur,
                                 nome, loc, cam, val, vag, ses_id) {
-            var table_inscrito = document.getElementById("table_inscritos");
-            var table_inscrito_length = document.getElementById("table_inscritos").rows.length;
-            var row_id = 0;
+            let table_inscrito = document.getElementById("table_inscritos");
+            let table_inscrito_length = document.getElementById("table_inscritos").rows.length;
+            let row_id = 0;
             let i;
             for (i = 0; i < table_inscrito_length; i++) {
                 if (table_inscrito.rows[i].id === sessao_id)
@@ -287,7 +403,7 @@
                 {#adicionar row #}
                 let row = table_inscrito.insertRow(-1)
                 row.id = sessao_id
-                row.name = "row_"+row_count
+                row.name = "row_" + row_count
                 let inicio = row.insertCell(0)
                 let duracao = row.insertCell(1)
                 let inscritos = row.insertCell(2)
