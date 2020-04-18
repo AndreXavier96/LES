@@ -1,5 +1,6 @@
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from .forms import RegisterForm
@@ -22,24 +23,41 @@ class register(View):
         #form_prato = PratoForm(request.POST)
         print(form_register.errors)
         if form_register.is_valid():
-            print("dasd")
-            print(form_register.errors)
+            #regex = '\w[\w\.-]*@\w[\w\.-]+\.\w+'
+            #print("dasd")
+            #print(form_register.errors)
             utilizadortipo_value = form_register.cleaned_data.get("utilizadortipo")
             utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
-            print(utilizadortipo)
-            print(utilizadortipo_value)
+            #print(utilizadortipo)
+            #print(utilizadortipo_value)
             email = form_register['email'].value()
+            print(email)
             password_digest = form_register['password_digest'].value()
+            password_conf = form_register['password_conf'].value()
+            if password_digest != password_conf:
+                messages.error(request, "as passwords não coincidem")
+                return redirect('/utilizadores/register/')
             nome = form_register['nome'].value()
             data_nascimento = form_register['data_nascimento'].value()
             numero_telemovel = form_register['numero_telemovel'].value()
             cartao_cidadao = form_register['cartao_cidadao'].value()
             deficiencias = form_register['deficiencias'].value()
-            permitir_localizacao = form_register['permitir_localizacao'].value()
-            utilizar_dados_pessoais = form_register['utilizar_dados_pessoais'].value()
+            #permitir_localizacao = form_register['permitir_localizacao'].value()
+            permitir_localizacao = request.POST['permitir_localizacao']
+            if permitir_localizacao == "sim":
+                permitir_localizacao = 1
+            else:
+                permitir_localizacao = 0
+            #utilizar_dados_pessoais = form_register['utilizar_dados_pessoais'].value()
+            utilizar_dados_pessoais = request.POST['utilizar_dados_pessoais']
+            if utilizar_dados_pessoais == "sim":
+                utilizar_dados_pessoais = 1
+            else:
+                utilizar_dados_pessoais = 0
             unidadeorganica_value = form_register.cleaned_data.get("unidadeorganica")
             print(unidadeorganica_value)
             unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica_value)
+            User.objects.create_user(username=nome, password=password_digest)
             Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email, password_digest=password_digest,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,

@@ -11,7 +11,7 @@ from .models import Utilizador, Campus, Unidadeorganica, Utilizadortipo
         model = User
         fields = ('username', 'first_name', 'utilizadortipo', 'password1', 'password2')"""
 
-CHOICES = (('Administrador', "ADMINISTRADOR"), ('Participante', "PARTICIPANTE"), ('Colaborador', "COLABORADOR"),
+CHOICES = (('Participante', "PARTICIPANTE"), ('Colaborador', "COLABORADOR"),
            ('Docente', "DOCENTE"), ('Coordenador', "COORDENADOR"))
 CHOICES2 = (('Faculdade de Economia', "Faculdade de Economia"),
             ('Faculdade de Letras', "Faculdade de Letras"))
@@ -21,13 +21,14 @@ class RegisterForm(forms.Form):
     utilizadortipo = forms.CharField(label='utilizadortipo', widget=forms.Select(choices=CHOICES))
     email = forms.CharField(label='email', max_length=50)
     password_digest = forms.CharField(label='password_digest', widget=forms.PasswordInput)
+    password_conf = forms.CharField(label='password_digest', widget=forms.PasswordInput)###########
     nome = forms.CharField(label='nome', max_length=50)
     data_nascimento = forms.DateField(label='data_nascimento')
     numero_telemovel = forms.IntegerField(label='numero_telemovel')
     cartao_cidadao = forms.IntegerField(label='cartao_cidadao')
-    deficiencias = forms.CharField(label='deficiencias', max_length=50)
-    permitir_localizacao = forms.IntegerField(label='permitir_localizacao')
-    utilizar_dados_pessoais = forms.IntegerField(label='utilizar_dados_pessoais')
+    deficiencias = forms.CharField(label='deficiencias', max_length=50, required = False)
+   # permitir_localizacao = forms.IntegerField(label='permitir_localizacao')
+    #utilizar_dados_pessoais = forms.IntegerField(label='utilizar_dados_pessoais')
     # unidadeorganica = forms.CharField(label='unidadeorganica', max_length=50)
     unidadeorganica = forms.CharField(label='unidadeorganica', widget=forms.Select(choices=CHOICES2))
 
