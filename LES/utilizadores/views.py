@@ -57,7 +57,7 @@ class register(View):
             unidadeorganica_value = form_register.cleaned_data.get("unidadeorganica")
             print(unidadeorganica_value)
             unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica_value)
-            User.objects.create(username=nome, password=password_digest)
+            User.objects.create_user(username=nome, password=password_digest)
             Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email, password_digest=password_digest,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
