@@ -98,4 +98,19 @@ class Editar_colab(View):
 
         return redirect('/register')
 
+class Apagar_colab(View):
+    template_name = 'apagar_colaboracao.html'
+    def get(self,request):
+        obj = Utilizador.objects.get(pk=3)
+        #form = Editar_Colab_Form()
+        #form = Editar_Colab_Form(instance=Utilizador.objects.get(pk=3))
+        return render(request,self.template_name, {
+                                                    #'form': form,
+                                                    'obj': obj,
+                                                    })
+    def post(self, request):
+        Utilizador.objects.filter(pk=3).update(primeiro_dia=None, segundo_dia=None,
+                                                        sala_de_aula=None, percurso=None)
+
+        return redirect('/register')
 

@@ -20,11 +20,12 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 #from .views import register
-from .views import Criar_colab, Editar_colab
+from .views import Criar_colab, Editar_colab, Apagar_colab
 
 app_name = "colaboradores"
 
 urlpatterns = [
     path("criar_colab/", Criar_colab.as_view(), name='criar_colab'),
     path("editar_colab/", Editar_colab.as_view(), name='editar_colab'),
+    path("apagar_colab/", Apagar_colab.as_view(), name='apagar_colab'),
 ]
