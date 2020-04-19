@@ -2,14 +2,12 @@ from django import forms
 
 CHOICE_BOL = (('sim', "Sim"), ('nao', "Não"))
 
-CHOICE_TIPO_PARTICIPANTE = (('individual', "individual"), ('grupo', "grupo"))
-
 CHOICES_AREA = (('escolha', {'label': 'Escolher', 'hidden': True}), ('ciencias', "Ciências e Tecnologias"),
                 ('humanidades', "Línguas e Humanidades"),
                 ('artes', "Artes Visuais"), ('socioeconomicas', "Ciências Socioeconómicas"))
 
 
-class EscolaForm(forms.Form):  # ModelForm):
+class EscolaForm(forms.Form):
     nome = forms.CharField(label='nome_escola', max_length=50, required=False)
     morada = forms.CharField(label='morada', max_length=50, required=False)
     codigo_postal = forms.CharField(label='codigo_postal', max_length=50, required=False)
@@ -35,14 +33,7 @@ class ParticipanteGrupoForm(forms.Form):
 
 
 class ParticipanteIndForm(forms.Form):
-    acompanhantes = forms.CharField(label='acompanhantes', required=True)
-
-
-class TipoParticipanteForm(forms.Form):
-    TipoParticipante = forms.CharField(label='TipoParticipante (automatico com a sessao)',
-                                       widget=forms.RadioSelect(choices=CHOICE_TIPO_PARTICIPANTE,
-                                                                attrs={'onchange': 'CheckTipoParticipante(this.value);'}
-                                                                ))
+    acompanhantes = forms.IntegerField(label='acompanhantes', required=True)
 
 
 class QuerRefeicaoForm(forms.Form):

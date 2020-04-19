@@ -6,10 +6,11 @@
 </head>
 <script type="text/javascript">
     function user_type(val) {
-        if (val !== "Participante") {
-            document.getElementById('naoparticipante').style.display = 'block';
-        } else {
-            document.getElementById('naoparticipante').style.display = 'none';
+        let element = document.getElementById('asda');
+        if (val === "Docente" || val === "Colaborador" || val === "Coordenador" ){
+            element.style.display = 'block';
+        } else if (val === "Participante Individual" || val === "Participante em Grupo") {
+            element.style.display = 'none';
         }
     }
 
@@ -21,11 +22,13 @@
         <div class="col s12 m6">
             <h2>Criar Utilizador</h2>
         </div>
-        <h3 style="color:red;">{% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}</h3>
+        <h3 style="color:red;">
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+        </h3>
         <div class="col s12 m6">
             <p>Nome: {{ form.nome }}</p>
             <p>Email: {{ form.email }}</p>
@@ -40,36 +43,33 @@
             <input type="radio" id="nao3" name="deficiencias" value="nao">
             <label for="nao3">NAO</label>
             &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias }}
-            <p>
+            <br>
                 Permite o acesso à sua localização?
                 <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
                 <label for="sim1">SIM</label>
                 <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
                 <label for="nao1">NAO</label>
-            <p>
+            <br>
                 Permite a utilização dos seus dados pessoais?
                 <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
                 <label for="sim2">SIM</label>
                 <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
                 <label for="nao2">NAO</label>
-{#            -----------------------------------------------------------------------#}
-            <br>
-            <label for="utilizadortipo">Tipo de Utilziador:</label>
-            <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
-                <option hidden>Escolher</option>
-                {% for u in  utilizadortipo %}
-                    {% if u.tipo != 'Administrador' %}
-                        <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-{#        ******************************************************************************#}
-            <div id="naoparticipante" style="display:none;">
-                <p>Indique a sua unidade orgânica: {{ form.unidadeorganica }}</p>
-                <p>Indique o seu departamento:</p>
-            </div>
-
-
+                {#            -----------------------------------------------------------------------#}
+                <br>
+                <label for="utilizadortipo">Tipo de Utilziador:</label>
+                <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
+                    <option hidden>Escolher</option>
+                    {% for u in  utilizadortipo %}
+                        {% if u.tipo != 'Administrador' %}
+                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div id="asda" style="display:none;">
+                    <p>Indique a sua unidade orgânica: {{ form.unidadeorganica }}</p>
+                    <p>Indique o seu departamento:</p>
+                </div>
         </div>
         <input type="submit" value="Submeter">
     </form>

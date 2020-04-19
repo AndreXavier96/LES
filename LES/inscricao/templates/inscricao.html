@@ -29,6 +29,8 @@
         });
     </script>
     <script type="text/javascript">
+        let tipo_Participante = ""
+
         function CheckEscola(val) {
             let element = document.getElementById('form_escola');
             if (val === 'others') {
@@ -45,27 +47,6 @@
                 document.getElementById("id_codigo_postal").removeAttribute("required");
                 document.getElementById("id_contacto").removeAttribute("required");
                 document.getElementById("id_localidade").removeAttribute("required");
-            }
-        }
-
-        function CheckTipoParticipante(val) {
-            let individual = document.getElementById('form_individual');
-            let grupo = document.getElementById('form_grupo');
-            if (val === 'individual') {
-                individual.style.display = 'block';
-                grupo.style.display = 'none';
-                document.getElementById("id_acompanhantes").setAttribute("required", "required");
-                document.getElementById("id_turma").removeAttribute("required");
-                document.getElementById("id_total_participantes").removeAttribute("required");
-                document.getElementById("id_total_professores").removeAttribute("required");
-            } else if (val === 'grupo') {
-                individual.style.display = 'none';
-                grupo.style.display = 'block';
-                document.getElementById("id_acompanhantes").removeAttribute("required");
-                document.getElementById('id_acompanhantes').value = '';
-                document.getElementById("id_turma").setAttribute("required", "required");
-                document.getElementById("id_total_participantes").setAttribute("required", "required");
-                document.getElementById("id_total_professores").setAttribute("required", "required");
             }
         }
 
@@ -137,7 +118,31 @@
             let preco2 = parseFloat(document.getElementById("preco_outro_normal").value);
             let final = (num1 * preco1) + (num2 * preco2);
             document.getElementById("preco_total").setAttribute("value", final.toFixed(2).toString());
+        }
 
+        let max_incritos = 0
+
+        function getMaxInscritos() {
+            if (tipo_Participante === 'grupo') {
+                max_incritos = parseInt(document.getElementById('id_total_participantes').value) + parseInt(document.getElementById('id_total_professores').value)
+                document.getElementById('max_incritos_id').value = max_incritos
+            } else if (tipo_Participante === 'individual') {
+                max_incritos = 1 + parseInt(document.getElementById('id_acompanhantes').value)
+                document.getElementById('max_incritos_id').value = max_incritos
+            }
+        }
+
+        let atividades = [];
+
+        function maxIncritos(val, input_id, act_id, hora) {
+            let atividade_id = "sessao_atividade_" + act_id
+            if (!atividades.includes(atividade_id)) {
+                atividades.push(atividade_id)
+                atividades.push(val)
+            }
+            {#else{#}
+            {#    atividades[atividades.indexOf(atividade_id)+1] = #}
+            {# } #}
         }
 
     </script>
@@ -151,13 +156,15 @@
             <div>
                 <h2>Dados participante</h2>
                 {{ form_participante.as_p }}
-                {{ radio_tipo_participante }}
-                <div id="form_individual" style="display:none;">
-                    {{ form_part_ind.as_p }}
-                </div>
-                <div id="form_grupo" style="display:none;">
-                    {{ form_part_gru.as_p }}
-                </div>
+                {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
+                    <div id="form_individual">
+                        {{ form_part_ind.as_p }}
+                    </div>
+                {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
+                    <div id="form_grupo">
+                        {{ form_part_gru.as_p }}
+                    </div>
+                {% endif %}
             </div>
         </div>
 
@@ -338,7 +345,7 @@
                                                                        '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',
                                                                        '{{ atividade.localizacao.campus }}', this.value, '{{ s.n_alunos }}',
                                                                        this.id
-                                                                       )">
+                                                                       ); maxIncritos(this.value, this.id, '{{ atividade.id }}', '{{ s.sessao.hora_inicio }}' )">
                                                     </td>
                                                 </tr>
                                             {% endif %}
@@ -374,6 +381,7 @@
         <table id="rows_deleted_table" hidden></table>
         <label for="row_deletedd" hidden></label>
         <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
+        <input type="number" id="max_incritos_id" value="">
         <div class="col s12 m6">
             <input type="submit" value="Submeter">
         </div>
@@ -461,6 +469,10 @@
             document.getElementById("row_countt").setAttribute("value", row_count.toString());
             document.getElementById("row_deletedd").setAttribute("value", deleted_rows.toString())
         }
+
+        document.getElementById("id_acompanhantes").addEventListener("change", getMaxInscritos);
+        document.getElementById("id_total_participantes").addEventListener("change", getMaxInscritos);
+        document.getElementById("id_total_professores").addEventListener("change", getMaxInscritos);
 
     </script>
 {% endblock %}
