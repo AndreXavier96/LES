@@ -1,34 +1,38 @@
-from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib import messages
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
-from django.contrib import messages
 from django.views.generic import View
+
+from .forms import RegisterForm
 from .models import Utilizador, Utilizadortipo, Unidadeorganica
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+
 
 class register(View):
     template_name = 'register.html'
+
     def get(self, request):
         form = RegisterForm()
+        utilizadortipo = Utilizadortipo.objects.all
         return render(request, self.template_name, {
-                                                    'form': form,
-                                                    })
+            'form': form,
+            'utilizadortipo': utilizadortipo
+        })
+
     def post(self, request):
         form_register = RegisterForm(request.POST)
         # form_epi = EpiForm()
-        #form_prato = PratoForm(request.POST)
+        # form_prato = PratoForm(request.POST)
         print(form_register.errors)
         if form_register.is_valid():
-            #regex = '\w[\w\.-]*@\w[\w\.-]+\.\w+'
-            #print("dasd")
-            #print(form_register.errors)
+            # regex = '\w[\w\.-]*@\w[\w\.-]+\.\w+'
+            # print("dasd")
+            # print(form_register.errors)
             utilizadortipo_value = form_register.cleaned_data.get("utilizadortipo")
             utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
-            #print(utilizadortipo)
-            #print(utilizadortipo_value)
+            # print(utilizadortipo)
+            # print(utilizadortipo_value)
             email = form_register['email'].value()
             print(email)
             password_digest = form_register['password_digest'].value()
@@ -41,13 +45,13 @@ class register(View):
             numero_telemovel = form_register['numero_telemovel'].value()
             cartao_cidadao = form_register['cartao_cidadao'].value()
             deficiencias = form_register['deficiencias'].value()
-            #permitir_localizacao = form_register['permitir_localizacao'].value()
+            # permitir_localizacao = form_register['permitir_localizacao'].value()
             permitir_localizacao = request.POST['permitir_localizacao']
             if permitir_localizacao == "sim":
                 permitir_localizacao = 1
             else:
                 permitir_localizacao = 0
-            #utilizar_dados_pessoais = form_register['utilizar_dados_pessoais'].value()
+            # utilizar_dados_pessoais = form_register['utilizar_dados_pessoais'].value()
             utilizar_dados_pessoais = request.POST['utilizar_dados_pessoais']
             if utilizar_dados_pessoais == "sim":
                 utilizar_dados_pessoais = 1
@@ -62,7 +66,7 @@ class register(View):
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                       unidadeorganica=unidadeorganica)
+                                      unidadeorganica=unidadeorganica)
             """escola = Escola.objects.get(nome=nome)
             Inscricao.objects.create(escola=escola)
             inscricao = Inscricao.objects.get(escola=escola)
@@ -83,6 +87,7 @@ def logout_request(request):
     messages.info(request, "Logged out successfully!")
     return redirect('/utilizadores/login')
 
+
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
@@ -98,34 +103,34 @@ def login_request(request):
         else:
             messages.error(request, "Username ou Password inválida")
     form = AuthenticationForm()
-    return render(request = request,
-                    template_name = "login.html",
-                    context={"form":form})
+    return render(request=request,
+                  template_name="login.html",
+                  context={"form": form})
+
 
 def success(request):
     context = {}
     context['user'] = request.user
-    return render(request = request,
-                    template_name = "success.html",
-                    context={})
+    return render(request=request,
+                  template_name="success.html",
+                  context={})
 
 #  def password_change(request):
- #   if request.method == 'POST':
-  #      form = PasswordChangeForm(request.user, request.POST)
-   #     if form.is_valid():
-    #        user = form.save()
-     #       update_session_auth_hash(request, user)
-      #      messages.success(request, 'Your password was successfully updated!')
-       #     return redirect('change_password')
-        #else:
-         #   messages.error(request, 'Please correct the error below.')
- #   else:
-  #      form = PasswordChangeForm(request.user)
-   # return render(request, 'password_change.html', {
-    #    'form': form
-   # })
+#   if request.method == 'POST':
+#      form = PasswordChangeForm(request.user, request.POST)
+#     if form.is_valid():
+#        user = form.save()
+#       update_session_auth_hash(request, user)
+#      messages.success(request, 'Your password was successfully updated!')
+#     return redirect('change_password')
+# else:
+#   messages.error(request, 'Please correct the error below.')
+#   else:
+#      form = PasswordChangeForm(request.user)
+# return render(request, 'password_change.html', {
+#    'form': form
+# })
 #
-#def password_change_done(request):
-   # messages.info(request, "Password changed")
-    #return render(request, 'password_change_done.html')
-
+# def password_change_done(request):
+# messages.info(request, "Password changed")
+# return render(request, 'password_change_done.html')

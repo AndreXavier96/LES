@@ -18,7 +18,7 @@ CHOICES2 = (('Faculdade de Economia', "Faculdade de Economia"),
 
 class RegisterForm(forms.Form):
     # utilizadortipo = forms.IntegerField(label='utilizadortipo')
-    utilizadortipo = forms.CharField(label='utilizadortipo', widget=forms.Select(choices=CHOICES))
+    # utilizadortipo = forms.CharField(label='utilizadortipo', widget=forms.Select(choices=CHOICES))
     email = forms.CharField(label='email', max_length=50)
     password_digest = forms.CharField( widget=forms.PasswordInput)
     password_conf = forms.CharField( widget=forms.PasswordInput)###########
