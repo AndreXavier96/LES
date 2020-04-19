@@ -26,3 +26,5 @@ urlpatterns = [
     path('', InscricaoView.as_view(), name='inscricao'),
     path('home/', HomeView.as_view(), name="home"),
 ]
+
+

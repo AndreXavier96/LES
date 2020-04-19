@@ -1,4 +1,8 @@
 from django.db import models
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
+
 
 
 class Campus(models.Model):
@@ -27,6 +31,27 @@ class Utilizadortipo(models.Model):
     class Meta:
         managed = False
         db_table = 'utilizadortipo'
+
+
+class Utilizador(models.Model):
+    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
+    email = models.CharField(max_length=255)
+    password_digest = models.CharField(max_length=255, blank=True, null=True)
+    nome = models.CharField(max_length=255)
+    data_nascimento = models.DateField()
+    numero_telemovel = models.IntegerField()
+    cartao_cidadao = models.IntegerField()
+    deficiencias = models.CharField(max_length=255)
+    permitir_localizacao = models.IntegerField()
+    utilizar_dados_pessoais = models.IntegerField()
+    validado = models.IntegerField(blank=True, null=True)
+    unidadeorganica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilizador'
+
+
 
 
 class Utilizador(models.Model):
