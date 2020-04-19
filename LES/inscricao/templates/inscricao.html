@@ -369,14 +369,19 @@
             </table>
         </div>
         <br><br>
-        <label for="row_countt"></label>
+        <label for="row_countt" hidden></label>
         <input type="number" id="row_countt" name="row_countt" value="" hidden>
+        <table id="rows_deleted_table" hidden></table>
+        <label for="row_deletedd" hidden></label>
+        <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
         <div class="col s12 m6">
             <input type="submit" value="Submeter">
         </div>
     </form>
     <script type="text/javascript">
         let row_count = 0
+        let row_deleted_incremental = 0
+        let deleted_rows = 0
 
         function EscolherSessao(atividade_id, sessao_id, ini, dur,
                                 nome, loc, cam, val, vag, ses_id) {
@@ -411,7 +416,6 @@
                 let local = row.insertCell(4)
                 let campus = row.insertCell(5)
                 let acao = row.insertCell(6)
-                {#atividade.id = "atividade_"+sessao_id#}
                 inicio.innerHTML = ini
                 duracao.innerHTML = dur
                 inscritos.innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
@@ -419,7 +423,8 @@
                     '" min="0" max="' + vag +
                     '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
                 atividade.innerHTML = nome + '<input type="number" id="sessao_atividade_' + sessao_id +
-                    '" name="sessao_atividade_' + row_count + '" value="' + sessao_id + '" hidden>'
+                    '" name="sessao_atividade_' + row_count + '" value="' + sessao_id + '" hidden>' +
+                    '<input type="number" id="deleted_ref_' + sessao_id + '" value="' + row_count + '" hidden>'
                 local.innerHTML = loc.toString()
                 campus.innerHTML = cam.toString()
                 let inscritos_value = "'0'"
@@ -439,14 +444,22 @@
         }
 
         function deleteSessao(row_id) {
+            let x = document.getElementById('deleted_ref_' + row_id).value
+            let table_deleted = document.getElementById("rows_deleted_table");
+            let row_deleted = table_deleted.insertRow(-1)
+            let cell = row_deleted.insertCell(0)
+            cell.innerHTML = '<input type="number" id="row_deleted_' + row_deleted_incremental.toString() +
+                '" name="row_deleted_' + row_deleted_incremental.toString() + '" value="' + x.toString() + '" hidden>'
+            row_deleted_incremental++
             let row = document.getElementById(row_id)
             row.parentElement.removeChild(row)
-            row_count--
+            deleted_rows++
             makecount()
         }
 
         function makecount() {
             document.getElementById("row_countt").setAttribute("value", row_count.toString());
+            document.getElementById("row_deletedd").setAttribute("value", deleted_rows.toString())
         }
 
     </script>
