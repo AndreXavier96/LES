@@ -1,13 +1,12 @@
 from django import forms
 
-CHOICES_TRANS = (('proprio', "Transporte Proprio"),
-                 ('comboio', "Comboio"),
-                 ('autocarro', "Autocarro")
-                 )
-
-CHOICE_BOL = (('sim', "sim"), ('nao', "nao"))
+CHOICE_BOL = (('sim', "Sim"), ('nao', "Não"))
 
 CHOICE_TIPO_PARTICIPANTE = (('individual', "individual"), ('grupo', "grupo"))
+
+CHOICES_AREA = (('escolha', {'label': 'Escolher', 'hidden': True}), ('ciencias', "Ciências e Tecnologias"),
+                ('humanidades', "Línguas e Humanidades"),
+                ('artes', "Artes Visuais"), ('socioeconomicas', "Ciências Socioeconómicas"))
 
 
 class EscolaForm(forms.Form):  # ModelForm):
@@ -23,17 +22,9 @@ class EmentaInscricaoForm(forms.Form):
     numero_outro_normal = forms.IntegerField(initial=0)
 
 
-class TransportForm(forms.Form):
-    transporte_campus = forms.CharField(label='vai desejar transporte entre os campus?',
-                                        widget=forms.RadioSelect(choices=CHOICE_BOL)
-                                        )
-    tipo_transporte = forms.CharField(label='tipo transporte para a universidade',
-                                      widget=forms.Select(choices=CHOICES_TRANS)
-                                      )
-
-
 class ParticipanteForm(forms.Form):
-    area_estudos = forms.CharField(label='area_estudos', required=True)
+    area_estudos = forms.CharField(label='area_estudos', required=True,
+                                   widget=forms.SelectWithHidden(choices=CHOICES_AREA))
     ano_estudos = forms.IntegerField(label='ano_estudos', required=True)
 
 
@@ -61,17 +52,15 @@ class QuerRefeicaoForm(forms.Form):
                                    )
 
 
-# class InscreverSessaoForm(forms.Form):
-#     inscritos = forms.IntegerField()
+class TransporteParaCampusForm(forms.Form):
+    QuerTransportePara = forms.CharField(label="Vai desejar transporte entre a estação e algum dos Campus?",
+                                         widget=forms.RadioSelect(choices=CHOICE_BOL,
+                                                                  attrs={'onchange': 'paraCampus(this.value);'})
+                                         )
 
-# class UtilizarDadosForm(forms.Form):
-#     bol = forms.CharField(label="Utilizar dados da conta para inscrição?",
-#                           widget=forms.RadioSelect(choices=CHOICE_BOL,
-#                                                    attrs={'onchange': 'CheckUtilizar(this.value);'}
-#                                                    ))
 
-#
-# class DadosForm(forms.Form):
-#     nome = forms.CharField(label='nome', required=False)
-#     email = forms.EmailField(label='email', required=False)
-#     contacto = forms.IntegerField(label='telemovel', required=False)
+class TransporteEntreCampusForm(forms.Form):
+    QuerTransporteEntre = forms.CharField(label="Vai desejar transporte entre os Campus?",
+                                          widget=forms.RadioSelect(choices=CHOICE_BOL,
+                                                                   attrs={'onchange': 'entreCampus(this.value);'})
+                                          )

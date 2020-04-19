@@ -63,19 +63,18 @@ class EmentaInscricao(models.Model):
 
 
 class Transporteproprio(models.Model):
-    data = models.DateField(auto_now_add=True)
+    data = models.DateField(blank=True, null=True)
     hora_chegada = models.TimeField()
     hora_partida = models.TimeField()
     tipo_transporte = models.CharField(max_length=255)
-    transporte_campus = models.IntegerField()
+    transporte_para_campus = models.CharField(max_length=255, blank=True, null=True)
+    transporte_entre_campus = models.CharField(max_length=255, blank=True, null=True)
+    hora_entre_campus = models.TimeField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'transporteproprio'
-
-    def __str__(self):
-        return self.inscricao
 
 
 class Utilizadorparticipante(models.Model):
@@ -145,7 +144,8 @@ class Atividade(models.Model):
     validada = models.IntegerField()
     tipo_atividade = models.TextField(blank=True, null=True)
     publico_alvo = models.CharField(max_length=45, blank=True, null=True)
-    localizacao = models.ForeignKey(Localizacaoatividade, models.DO_NOTHING, db_column='localizacao', blank=True, null=True)
+    localizacao = models.ForeignKey(Localizacaoatividade, models.DO_NOTHING, db_column='localizacao', blank=True,
+                                    null=True)
     docente = models.ForeignKey(Utilizador, models.DO_NOTHING)
 
     class Meta:

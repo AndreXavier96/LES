@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from utilizadores.models import Utilizador
-from .forms import EscolaForm, EmentaInscricaoForm, TransportForm, ParticipanteForm, \
-    TipoParticipanteForm, ParticipanteIndForm, ParticipanteGrupoForm, QuerRefeicaoForm
+from .forms import EscolaForm, EmentaInscricaoForm, ParticipanteForm, \
+    TipoParticipanteForm, ParticipanteIndForm, ParticipanteGrupoForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
+    TransporteParaCampusForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
     EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
 
@@ -25,7 +26,6 @@ class InscricaoView(View):
     def get(self, request):
         form_escola = EscolaForm()
         form_ementa_inscricao = EmentaInscricaoForm()
-        form_trans = TransportForm()
         values = Ementa.objects.all
         escolas = Escola.objects.all
         # -----------
@@ -37,11 +37,11 @@ class InscricaoView(View):
         # ------------------
         atividades = Atividade.objects.all
         sessaoatividade = SessaoAtividade.objects.all
-        # campus = Atividade.objects.filter(localizacao__andar="1")
+        transporte_para_campus = TransporteParaCampusForm(initial={'sim': 'Sim'})
+        transporte_entre_campus = TransporteEntreCampusForm(initial={'nao': 'Não'})
         return render(request, self.template_name, {'form_escola': form_escola,
                                                     'form_ementa_inscricao': form_ementa_inscricao,
                                                     'values': values,
-                                                    'form_trans': form_trans,
                                                     'escolas': escolas,
                                                     'form_participante': form_participante,
                                                     'radio_tipo_participante': radio_tipo_participante,
@@ -50,25 +50,24 @@ class InscricaoView(View):
                                                     'radio_refeicao': radio_refeicao,
                                                     'atividades': atividades,
                                                     'sessaoatividade': sessaoatividade,
+                                                    'transporte_para_campus': transporte_para_campus,
+                                                    'transporte_entre_campus': transporte_entre_campus,
                                                     })
 
     def post(self, request):
         form_escola = EscolaForm(request.POST)
         form_ementa_inscricao = EmentaInscricaoForm(request.POST)
-        form_trans = TransportForm(request.POST)
         form_participante = ParticipanteForm(request.POST)
         radio_tipo_participante = TipoParticipanteForm(request.POST)
         form_part_ind = ParticipanteIndForm(request.POST)
         form_part_gru = ParticipanteGrupoForm(request.POST)
         radio_refeicao = QuerRefeicaoForm(request.POST)
+
         # ------------escola
         escola_escolhida = request.POST['Escola']
-        print("escola:")
-        print(escola_escolhida)
-        print(form_escola.errors)
         if form_escola.is_valid() and form_participante.is_valid() and \
                 radio_tipo_participante.is_valid() and form_ementa_inscricao.is_valid() and \
-                radio_refeicao.is_valid() and form_trans.is_valid():
+                radio_refeicao.is_valid():
             if escola_escolhida == 'others':
                 nome = form_escola['nome'].value()
                 morada = form_escola['morada'].value()
@@ -82,8 +81,6 @@ class InscricaoView(View):
                 escola = Escola.objects.get(nome=escola_escolhida)
             inscricao = Inscricao.objects.create(escola=escola, estado="Pendente")
             # ------------inscricao grupo/individual
-            print("form_participante é valida")
-
             # session user--------------------------------------
             utilizador = Utilizador.objects.get(id='2')
             # session user--------------------------------------
@@ -97,7 +94,6 @@ class InscricaoView(View):
             participante = Utilizadorparticipante.objects.get(inscricao=inscricao)
             radio_value_tipo_part = radio_tipo_participante.cleaned_data.get("TipoParticipante")
             if radio_value_tipo_part == "grupo":
-                print("grupo")
                 turma = form_part_gru['turma'].value()
                 total_participantes = form_part_gru['total_participantes'].value()
                 total_professores = form_part_gru['total_professores'].value()
@@ -106,50 +102,53 @@ class InscricaoView(View):
                                                  turma=turma, participante=participante,
                                                  )
             elif radio_value_tipo_part == "individual":
-                print("individual")
                 acompanhantes = form_part_ind['acompanhantes'].value()
                 ParticipanteIndividual.objects.create(acompanhantes=acompanhantes,
                                                       participante=participante,
                                                       )
             # ---------refeicao
-            print(radio_refeicao.errors)
             radio_value_refeicao = radio_refeicao.cleaned_data.get("QuerRefeicao")
-            print(radio_value_refeicao)
             n_aluno = form_ementa_inscricao['numero_aluno_normal'].value()
             n_outro = form_ementa_inscricao['numero_outro_normal'].value()
-            print(n_aluno)
-            print(n_outro)
             ementa = Ementa.objects.first()
             EmentaInscricao.objects.create(ementa=ementa, inscricao=inscricao,
                                            numero_aluno_normal=n_aluno,
                                            numero_outro_normal=n_outro
                                            )
             # -----------transporte
-            drop_value = form_trans.cleaned_data.get("tipo_transporte")
-            trans_campus = 0
-            if form_trans['transporte_campus'].value() == "sim":
-                trans_campus = 1
+            drop_value = request.POST['tipo_transporte']
+            trans_para_campus = ""
+            trans_entre_campus = ""
+            if drop_value == "autocarro" or drop_value == "comboio":
+                trans_para_campus_value = request.POST['QuerTransportePara']
+                if trans_para_campus_value == "sim":
+                    trans_para_campus = request.POST['qual']
+                else:
+                    trans_para_campus = "nao"
+                trans_entre_campus_value = request.POST['QuerTransporteEntre']
+                if trans_entre_campus_value == 'sim':
+                    trans_entre_campus = request.POST['transporte_campus']
+                else:
+                    trans_entre_campus = "nao"
             chegada = remove_all_space(request.POST['timepicker-one'])
             partida = remove_all_space(request.POST['timepicker-two'])
+            entre_campus_horario = remove_all_space(request.POST['timepicker-three'])
             Transporteproprio.objects.create(hora_chegada=chegada, hora_partida=partida,
                                              tipo_transporte=drop_value,
-                                             transporte_campus=trans_campus,
+                                             transporte_para_campus=trans_para_campus,
+                                             transporte_entre_campus=trans_entre_campus,
+                                             hora_entre_campus=entre_campus_horario,
                                              inscricao=inscricao
                                              )
             row_count = int(request.POST['row_countt'])
-            print("rows:")
-            print(row_count)
             for x in range(row_count):
                 sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
                 n_inscritos = request.POST['inscritos_sessao_' + str(x)]
-                print(sessao_actividade_id)
-                print(n_inscritos)
                 sessao_actividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
                 SessaoAtividadeInscricao.objects.create(sessao_atividade=sessao_actividade,
                                                         inscricao=inscricao, numero_alunos=n_inscritos
                                                         )
                 novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(n_inscritos)
-                print(novo_numero_alunos)
                 sessao_actividade.n_alunos = novo_numero_alunos
                 sessao_actividade.save()
             return redirect('/inscricao/home')
