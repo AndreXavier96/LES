@@ -56,8 +56,8 @@ class register(View):
             unidadeorganica_value = form_register.cleaned_data.get("unidadeorganica")
             print(unidadeorganica_value)
             unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica_value)
-            User.objects.create_user(username=nome, password=password_digest)
-            Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email, password_digest=password_digest,
+            User.objects.create_user(username=email, password=password_digest)
+            Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
@@ -75,7 +75,7 @@ class register(View):
                 EmentaPratoInscricao.objects.create(ementa=ementa, prato=prato, inscricao=inscricao)
 
             return redirect('/inscricao/home')"""
-        return redirect('/register')
+        return redirect('/utilizadores/login')
 
 
 def logout_request(request):

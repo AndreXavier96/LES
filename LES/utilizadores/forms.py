@@ -20,8 +20,8 @@ class RegisterForm(forms.Form):
     # utilizadortipo = forms.IntegerField(label='utilizadortipo')
     utilizadortipo = forms.CharField(label='utilizadortipo', widget=forms.Select(choices=CHOICES))
     email = forms.CharField(label='email', max_length=50)
-    password_digest = forms.CharField(label='password_digest', widget=forms.PasswordInput)
-    password_conf = forms.CharField(label='password_digest', widget=forms.PasswordInput)###########
+    password_digest = forms.CharField( widget=forms.PasswordInput)
+    password_conf = forms.CharField( widget=forms.PasswordInput)###########
     nome = forms.CharField(label='nome', max_length=50)
     data_nascimento = forms.DateField(label='data_nascimento')
     numero_telemovel = forms.IntegerField(label='numero_telemovel')
