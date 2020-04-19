@@ -37,3 +37,4 @@ urlpatterns = [
     # path('inscricao/', views.inscricao, name='inscricao'),
     # path("logout", views.logout_request, name="logout"),
 ]
+
