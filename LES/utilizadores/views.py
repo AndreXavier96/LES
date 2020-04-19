@@ -29,7 +29,7 @@ class register(View):
             # regex = '\w[\w\.-]*@\w[\w\.-]+\.\w+'
             # print("dasd")
             # print(form_register.errors)
-            utilizadortipo_value = form_register.cleaned_data.get("utilizadortipo")
+            utilizadortipo_value = request.POST['utilizadortipo']
             utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
             # print(utilizadortipo)
             # print(utilizadortipo_value)
