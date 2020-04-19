@@ -12,7 +12,9 @@
 <div class="container">
         <form method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+
+            <p>Insira o seu email: {{ form.username}}</p>
+            <p>Insira a sua password: {{ form.password}}</p>
             <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
 
         </form>
