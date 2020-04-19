@@ -141,15 +141,27 @@ class InscricaoView(View):
                                              inscricao=inscricao
                                              )
             row_count = int(request.POST['row_countt'])
+            rows_deleted_count = request.POST['row_deletedd']
+            print("total")
+            print(row_count)
+            print("deleted")
+            print(rows_deleted_count)
+            list_deleted = []
+            for y in range(int(rows_deleted_count)):
+                print(y)
+                list_deleted.append(request.POST['row_deleted_' + str(y)])
+            print(list_deleted)
             for x in range(row_count):
-                sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
-                n_inscritos = request.POST['inscritos_sessao_' + str(x)]
-                sessao_actividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
-                SessaoAtividadeInscricao.objects.create(sessao_atividade=sessao_actividade,
-                                                        inscricao=inscricao, numero_alunos=n_inscritos
-                                                        )
-                novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(n_inscritos)
-                sessao_actividade.n_alunos = novo_numero_alunos
-                sessao_actividade.save()
+                if str(x) not in list_deleted:
+                    sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
+                    n_inscritos = request.POST['inscritos_sessao_' + str(x)]
+                    sessao_actividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
+                    SessaoAtividadeInscricao.objects.create(sessao_atividade=sessao_actividade,
+                                                            inscricao=inscricao, numero_alunos=n_inscritos
+                                                            )
+                    novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(
+                        n_inscritos)
+                    sessao_actividade.n_alunos = novo_numero_alunos
+                    sessao_actividade.save()
             return redirect('/inscricao/home')
         return redirect('/inscricao')

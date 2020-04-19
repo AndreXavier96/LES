@@ -1,53 +1,78 @@
 ﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <title></title>
 </head>
+<script type="text/javascript">
+    function user_type(val) {
+        if (val !== "Participante") {
+            document.getElementById('naoparticipante').style.display = 'block';
+        } else {
+            document.getElementById('naoparticipante').style.display = 'none';
+        }
+    }
+
+</script>
 <body>
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="col s12 m6">
-        <h2>Criar Utilizador</h2>
-    </div>
-    <h3 style="color:red;">{% if messages %}
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col s12 m6">
+            <h2>Criar Utilizador</h2>
+        </div>
+        <h3 style="color:red;">{% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
         {% endif %}</h3>
-    <div class="col s12 m6">
-        <p>Nome: {{ form.nome}}</p>
-        <p>Email: {{ form.email}}</p>
-        <p>Password: {{ form.password_digest}}</p>
-        <p>Confirme a sua Password: {{ form.password_conf}}</p>
-        <p>Data de nascimento: {{ form.data_nascimento}}</p>
-        <p>Número de telemovel: {{ form.numero_telemovel}}</p>
-        <p>Cartão de Cidadão: {{ form.cartao_cidadao}}</p>
-        Tem algumas deficiências?
-        <input type="radio" id="sim3" name="deficiencias" value="sim">
-        <label for="sim3">SIM</label>
-        <input type="radio" id="nao3" name="deficiencias" value="nao">
-        <label for="nao3">NAO</label>
-              &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias}}
-        <p>
-        Permite o acesso à sua localização?
-        <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
-        <label for="sim1">SIM</label>
-        <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
-        <label for="nao1">NAO</label>
-        <p>
-        Permite a utilização dos seus dados pessoais?
-        <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
-        <label for="sim2">SIM</label>
-        <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
-        <label for="nao2">NAO</label>
-        <p>Tipo de utilizador: {{ form.utilizadortipo}}</p>
-        <p>Indique a sua unidade orgânica: {{ form.unidadeorganica}}</p>
-        <p>Indique o seu departamento:</p>
-    </div>
-    <input type="submit" value="Submeter">
-</form>
-</div>
+        <div class="col s12 m6">
+            <p>Nome: {{ form.nome }}</p>
+            <p>Email: {{ form.email }}</p>
+            <p>Password: {{ form.password_digest }}</p>
+            <p>Confirme a sua Password: {{ form.password_conf }}</p>
+            <p>Data de nascimento: {{ form.data_nascimento }}</p>
+            <p>Número de telemovel: {{ form.numero_telemovel }}</p>
+            <p>Cartão de Cidadão: {{ form.cartao_cidadao }}</p>
+            Tem algumas deficiências?
+            <input type="radio" id="sim3" name="deficiencias" value="sim">
+            <label for="sim3">SIM</label>
+            <input type="radio" id="nao3" name="deficiencias" value="nao">
+            <label for="nao3">NAO</label>
+            &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias }}
+            <p>
+                Permite o acesso à sua localização?
+                <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
+                <label for="sim1">SIM</label>
+                <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
+                <label for="nao1">NAO</label>
+            <p>
+                Permite a utilização dos seus dados pessoais?
+                <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
+                <label for="sim2">SIM</label>
+                <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
+                <label for="nao2">NAO</label>
+{#            -----------------------------------------------------------------------#}
+            <br>
+            <label for="utilizadortipo">Tipo de Utilziador:</label>
+            <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
+                <option hidden>Escolher</option>
+                {% for u in  utilizadortipo %}
+                    {% if u.tipo != 'Administrador' %}
+                        <option value="{{ u.tipo }}">{{ u.tipo }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+{#        ******************************************************************************#}
+            <div id="naoparticipante" style="display:none;">
+                <p>Indique a sua unidade orgânica: {{ form.unidadeorganica }}</p>
+                <p>Indique o seu departamento:</p>
+            </div>
+
+
+        </div>
+        <input type="submit" value="Submeter">
+    </form>
 {% endblock %}
 
 </body>
