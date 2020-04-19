@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path("register/", register.as_view(), name='add'),
-    path("logout", views.logout_request, name="logout"),
+    path("logout/", views.logout_request, name="logout"),
     path("login/", views.login_request, name="login"),
     path("success/", views.success, name="success"),
 
