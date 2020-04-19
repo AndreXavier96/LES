@@ -3,6 +3,16 @@
     <meta charset="utf-8"/>
     <title></title>
 </head>
+<script type="text/javascript">
+    function user_type(val){
+        if (val!="Participante"){
+            document.getElementById('naoparticipante').style.display='block';
+        }else{
+            document.getElementById('naoparticipante').style.display='none';
+        }
+    }
+
+</script>
 <body>
 {% block content %}
 <form method="POST">
@@ -28,22 +38,26 @@
         <label for="sim3">SIM</label>
         <input type="radio" id="nao3" name="deficiencias" value="nao">
         <label for="nao3">NAO</label>
-              &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias}}
+        &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias}}
         <p>
-        Permite o acesso à sua localização?
-        <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
-        <label for="sim1">SIM</label>
-        <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
-        <label for="nao1">NAO</label>
+            Permite o acesso à sua localização?
+            <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
+            <label for="sim1">SIM</label>
+            <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
+            <label for="nao1">NAO</label>
         <p>
-        Permite a utilização dos seus dados pessoais?
-        <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
-        <label for="sim2">SIM</label>
-        <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
-        <label for="nao2">NAO</label>
+            Permite a utilização dos seus dados pessoais?
+            <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
+            <label for="sim2">SIM</label>
+            <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
+            <label for="nao2">NAO</label>
         <p>Tipo de utilizador: {{ form.utilizadortipo}}</p>
-        <p>Indique a sua unidade orgânica: {{ form.unidadeorganica}}</p>
-        <p>Indique o seu departamento:</p>
+        <div id="naoparticipante" style="display:none;">
+            <p>Indique a sua unidade orgânica: {{ form.unidadeorganica}}</p>
+            <p>Indique o seu departamento:</p>
+        </div>
+
+
     </div>
     <input type="submit" value="Submeter">
 </form>

@@ -33,8 +33,6 @@ class Utilizadortipo(models.Model):
         db_table = 'utilizadortipo'
 
 
-
-
 class Utilizador(models.Model):
     utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
     email = models.CharField(unique=True, max_length=255)
