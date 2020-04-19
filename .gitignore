@@ -345,6 +345,7 @@ healthchecksdb
 /venv/
 /venv3.8/
 /venv1/
-/LES/utilizadores/templates/password_change_done.html
-/LES/utilizadores/templates/password_reset_email.html
-/LES/utilizadores/templates/password_reset_subject.html
+/LES/utilizadores/templates/registration/password_change_done.html
+/LES/utilizadores/templates/registration/password_reset_email.html
+/LES/utilizadores/templates/registration/password_reset_subject.html
+/LES/utilizadores/templates/registration/password_change_done1.html
