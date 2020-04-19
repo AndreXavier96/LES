@@ -7,9 +7,9 @@
 <body>
 {% block content %}
     <p>User <b>{{user.username}}</b> is logged in successfully.</p>
-    <form method="POST" action="/utilizadores/login/">
+    <form method="POST">
         {% csrf_token %}
-        <input type="submit" value="Logout">
+          <p><a href="{% url 'logout' %}">logout</a></p>
     </form>
 {% endblock content %}
 </body>
