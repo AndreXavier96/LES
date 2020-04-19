@@ -4,8 +4,9 @@
     <title></title>
 </head>
 <script type="text/javascript">
+    document.getElementById('id_utilizadortipo').addEventListener("change", user_type);
     function user_type(val){
-        if (val!="Participante"){
+        if (val!=="Participante"){
             document.getElementById('naoparticipante').style.display='block';
         }else{
             document.getElementById('naoparticipante').style.display='none';
