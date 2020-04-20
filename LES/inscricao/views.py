@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.core.mail import send_mail
 
 from utilizadores.models import Utilizador
 from .forms import EscolaForm, EmentaInscricaoForm, ParticipanteForm, \
@@ -147,15 +148,9 @@ class InscricaoView(View):
                 row_count = int(request.POST['row_countt'])
                 if row_count > 0:
                     rows_deleted_count = request.POST['row_deletedd']
-                    print("total")
-                    print(row_count)
-                    print("deleted")
-                    print(rows_deleted_count)
                     list_deleted = []
                     for y in range(int(rows_deleted_count)):
-                        print(y)
                         list_deleted.append(request.POST['row_deleted_' + str(y)])
-                    print(list_deleted)
                     for x in range(row_count):
                         if str(x) not in list_deleted:
                             sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
@@ -168,6 +163,12 @@ class InscricaoView(View):
                                 n_inscritos)
                             sessao_actividade.n_alunos = novo_numero_alunos
                             sessao_actividade.save()
+                    send_mail(
+                        'Inscricao Dia Aberto',
+                        'Seguem em anexo um pdf com os dados relativos á sua Inscricao',
+                        'xavidolol@gmail.com',
+                        [utilizador.email],
+                    )
                     return render(request, 'home.html', context={'MSG': "Inscricao com Sucesso"})
                 else:
                     return render(request, 'home.html', context={'MSG': "Deve de escolher pelo menos uma Sessao"})

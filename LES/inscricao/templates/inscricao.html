@@ -29,8 +29,6 @@
         });
     </script>
     <script type="text/javascript">
-        let tipo_Participante = ""
-
         function CheckEscola(val) {
             let element = document.getElementById('form_escola');
             if (val === 'others') {
@@ -120,30 +118,74 @@
             document.getElementById("preco_total").setAttribute("value", final.toFixed(2).toString());
         }
 
-        let max_incritos = 0
+        let max_incritos = 0;
+        let atividades = [];
+        let inscritos = [];
+        let sessao = [];
 
-        function getMaxInscritos() {
-            if (tipo_Participante === 'grupo') {
+        function getMaxInscritos(u) {
+            if (u === "Participante em Grupo") {
                 max_incritos = parseInt(document.getElementById('id_total_participantes').value) + parseInt(document.getElementById('id_total_professores').value)
                 document.getElementById('max_incritos_id').value = max_incritos
-            } else if (tipo_Participante === 'individual') {
+            } else if (u === 'Participante Individual') {
                 max_incritos = 1 + parseInt(document.getElementById('id_acompanhantes').value)
                 document.getElementById('max_incritos_id').value = max_incritos
             }
         }
 
-        let atividades = [];
-
         function maxIncritos(val, input_id, act_id, hora) {
-            let atividade_id = "sessao_atividade_" + act_id
-            if (!atividades.includes(atividade_id)) {
-                atividades.push(atividade_id)
-                atividades.push(val)
-            }
-            {#else{#}
-            {#    atividades[atividades.indexOf(atividade_id)+1] = #}
+            {#let atividade_id = "sessao_atividade_" + act_id#}
+            {#if (!atividades.includes(atividade_id)) {#}
+            {#    if (val<=max_incritos) {#}
+            {#        atividades.push(atividade_id)#}
+            {#        inscritos.push(max_incritos)#}
+            {#        sessao.push(input_id)#}
+            {#        document.getElementById(input_id).max = inscritos[atividades.indexOf(atividade_id)]#}
+            {#    }#}
+            {# } else if (atividades.includes(atividade_id) && !sessao.includes(input_id)){ #}
+            {#    #}
             {# } #}
+            document.getElementById(input_id).max = max_incritos
         }
+
+        function pagSeguinte(pag_atual) {
+            if (pag_atual === '1') {
+                document.getElementById('pag_1').style.display = 'none'
+                document.getElementById('pag_2').style.display = 'block'
+            } else if (pag_atual === '2') {
+                document.getElementById('pag_2').style.display = 'none'
+                document.getElementById('pag_3').style.display = 'block'
+            } else if (pag_atual === '3') {
+                document.getElementById('pag_3').style.display = 'none'
+                document.getElementById('pag_4').style.display = 'block'
+            } else if (pag_atual === '4') {
+                document.getElementById('pag_4').style.display = 'none'
+                document.getElementById('pag_5').style.display = 'block'
+            } else if (pag_atual === '5') {
+                document.getElementById('pag_5').style.display = 'none'
+                document.getElementById('pag_6').style.display = 'block'
+            }
+        }
+
+        function pagAnterior(pag_atual) {
+            if (pag_atual === '2') {
+                document.getElementById('pag_2').style.display = 'none'
+                document.getElementById('pag_1').style.display = 'block'
+            } else if (pag_atual === '3') {
+                document.getElementById('pag_3').style.display = 'none'
+                document.getElementById('pag_2').style.display = 'block'
+            } else if (pag_atual === '4') {
+                document.getElementById('pag_4').style.display = 'none'
+                document.getElementById('pag_3').style.display = 'block'
+            } else if (pag_atual === '5') {
+                document.getElementById('pag_5').style.display = 'none'
+                document.getElementById('pag_4').style.display = 'block'
+            } else if (pag_atual === '6') {
+                document.getElementById('pag_6').style.display = 'none'
+                document.getElementById('pag_5').style.display = 'block'
+            }
+        }
+
 
     </script>
 </head>
@@ -152,7 +194,7 @@
     <form method="POST" name="inscricao_form">
         {% csrf_token %}
 
-        <div class="col s12 m6">
+        <div class="col s12 m6" id="pag_1">
             <div>
                 <h2>Dados participante</h2>
                 {{ form_participante.as_p }}
@@ -162,13 +204,35 @@
                     </div>
                 {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                     <div id="form_grupo">
-                        {{ form_part_gru.as_p }}
+                        {#  { form_part_gru.as_p }}#}
+
+                        <p><label for="id_turma">turma:</label> <input type="text" name="turma" required=""
+                                                                       id="id_turma"></p>
+                        <p><label for="id_total_participantes">total_participantes:</label>
+                            <input type="number"
+                                   name="total_participantes"
+                                   required=""
+                                   value="0"
+                                   id="id_total_participantes"
+                                   onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                        </p>
+                        <p><label for="id_total_professores">total_professores:</label>
+                            <input type="number"
+                                   name="total_professores"
+                                   required=""
+                                   value="0"
+                                   id="id_total_professores"
+                                   onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                        </p>
+
                     </div>
                 {% endif %}
+
             </div>
+            <button type="button" onclick="pagSeguinte('1')" formnovalidate>Próximo</button>
         </div>
 
-        <div class="col s12 m6">
+        <div class="col s12 m6" id="pag_2"  style="display:none;">
             <h2>Dados da Escola</h2>
             <label for="Escola">Escola :</label>
             <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
@@ -181,9 +245,12 @@
             <div id="form_escola" style="display:none;">
                 {{ form_escola.as_p }}
             </div>
+            <br>
+            <button type="button" onclick="pagAnterior('2')" formnovalidate>Anterior</button>
+            <button type="button" onclick="pagSeguinte('2')" formnovalidate>Próximo</button>
         </div>
 
-        <div class="col s12 m6">
+        <div class="col s12 m6" id="pag_3"  style="display:none;">
             <h2>Refeição</h2>
             {{ radio_refeicao }}
             <div id="quer_refeicao" style="display:none;">
@@ -204,9 +271,11 @@
                     </p>
                 {% endfor %}
             </div>
+            <button type="button" onclick="pagAnterior('3')" formnovalidate>Anterior</button>
+            <button type="button" onclick="pagSeguinte('3')" formnovalidate>Próximo</button>
         </div>
 
-        <div class="col s12 m6">
+        <div class="col s12 m6" id="pag_4"  style="display:none;">
             <h2>Transporte</h2>
             <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
             <select name="tipo_transporte" id="tipo_transporte"
@@ -281,9 +350,11 @@
                     <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
                 </div>
             </div>
+            <button type="button" onclick="pagAnterior('4')" formnovalidate>Anterior</button>
+            <button type="button" onclick="pagSeguinte('4')" formnovalidate>Próximo</button>
         </div>
-        <br><br>
-        <div>
+
+        <div class="col s12 m6" id="pag_5"  style="display:none;">
             <h2>Actividades</h2>
             <h4>Sessões Disponiveis</h4>
             <table id="table_atividades" class="table">
@@ -374,16 +445,22 @@
                 </tr>
                 </thead>
             </table>
+            <button type="button" onclick="pagAnterior('5')" formnovalidate>Anterior</button>
+            <button type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo</button>
         </div>
-        <br><br>
-        <label for="row_countt" hidden></label>
+        <label for="row_countt"  style="display:none;"></label>
         <input type="number" id="row_countt" name="row_countt" value="" hidden>
         <table id="rows_deleted_table" hidden></table>
         <label for="row_deletedd" hidden></label>
         <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
-        <input type="number" id="max_incritos_id" value="">
-        <div class="col s12 m6">
-            <input type="submit" value="Submeter">
+
+        <input type="number" id="max_incritos_id" value="" hidden>
+
+        <div class="col s12 m6" id="pag_6"  style="display:none;">
+            <p>Irá ser enviado um email com todos os Dados da inscricao para {{ utilizador.email }}</p>
+            {#            <input type="submit" value="Submeter">#}
+            <button type="button" onclick="pagAnterior('6')" formnovalidate>Anterior</button>
+            <button type="submit">Submit</button>
         </div>
     </form>
     <script type="text/javascript">
@@ -470,9 +547,6 @@
             document.getElementById("row_deletedd").setAttribute("value", deleted_rows.toString())
         }
 
-        document.getElementById("id_acompanhantes").addEventListener("change", getMaxInscritos);
-        document.getElementById("id_total_participantes").addEventListener("change", getMaxInscritos);
-        document.getElementById("id_total_professores").addEventListener("change", getMaxInscritos);
 
     </script>
 {% endblock %}
