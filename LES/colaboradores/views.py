@@ -171,3 +171,4 @@ class Consultar_colab(View):
         print(id)
         Colaboracao.objects.filter(pk=id).delete()
         return redirect('/register')
+    #
