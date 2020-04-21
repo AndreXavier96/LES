@@ -1,0 +1,41 @@
+.principal{
+    background: white;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 10px;
+}
+
+.form_div{
+    margin-top:20px;
+    border-top: 2px solid;
+    border-top-color: #f5f5f5;
+    background: white;
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 20px;
+}
+
+.form_div h2{
+    color: grey;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.grupo input[type=number] {
+  width: 100%;
+  padding: 10px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.half {
+    width: 49%;
+    display: inline-block;
+}
+

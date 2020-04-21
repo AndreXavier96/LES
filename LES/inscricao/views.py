@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 
 from utilizadores.models import Utilizador
 from .forms import EscolaForm, EmentaInscricaoForm, ParticipanteForm, \
-    ParticipanteIndForm, ParticipanteGrupoForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
+    ParticipanteIndForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
     TransporteParaCampusForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
     EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
@@ -32,7 +32,6 @@ class InscricaoView(View):
         # -----------
         form_participante = ParticipanteForm()
         form_part_ind = ParticipanteIndForm()
-        form_part_gru = ParticipanteGrupoForm()
         radio_refeicao = QuerRefeicaoForm()
         # ------------------
         atividades = Atividade.objects.all
@@ -48,7 +47,6 @@ class InscricaoView(View):
                                                     'values': values,
                                                     'escolas': escolas,
                                                     'form_participante': form_participante,
-                                                    'form_part_gru': form_part_gru,
                                                     'form_part_ind': form_part_ind,
                                                     'radio_refeicao': radio_refeicao,
                                                     'atividades': atividades,
@@ -64,7 +62,6 @@ class InscricaoView(View):
         form_ementa_inscricao = EmentaInscricaoForm(request.POST)
         form_participante = ParticipanteForm(request.POST)
         form_part_ind = ParticipanteIndForm(request.POST)
-        form_part_gru = ParticipanteGrupoForm(request.POST)
         radio_refeicao = QuerRefeicaoForm(request.POST)
 
         # ------------escola
@@ -99,9 +96,9 @@ class InscricaoView(View):
                 participante = Utilizadorparticipante.objects.get(inscricao=inscricao)
                 radio_value_tipo_part = utilizador.utilizadortipo.tipo
                 if radio_value_tipo_part == "Participante em Grupo":
-                    turma = form_part_gru['turma'].value()
-                    total_participantes = form_part_gru['total_participantes'].value()
-                    total_professores = form_part_gru['total_professores'].value()
+                    turma = request.POST['turma'].value()
+                    total_participantes = request.POST['total_participantes'].value()
+                    total_professores = request.POST['total_professores'].value()
                     ParticipanteGrupo.objects.create(total_participantes=total_participantes,
                                                      total_professores=total_professores,
                                                      turma=turma, participante=participante,
@@ -112,7 +109,7 @@ class InscricaoView(View):
                                                           participante=participante,
                                                           )
                 # ---------refeicao
-                radio_value_refeicao = radio_refeicao.cleaned_data.get("QuerRefeicao")
+                # radio_value_refeicao = radio_refeicao.cleaned_data.get("QuerRefeicao")
                 n_aluno = form_ementa_inscricao['numero_aluno_normal'].value()
                 n_outro = form_ementa_inscricao['numero_outro_normal'].value()
                 ementa = Ementa.objects.first()
