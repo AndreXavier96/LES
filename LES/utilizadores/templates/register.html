@@ -44,11 +44,13 @@
             <label for="nao3">NAO</label>
             &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias }}
             <br>
+            <br>
                 Permite o acesso à sua localização?
                 <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
                 <label for="sim1">SIM</label>
                 <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
                 <label for="nao1">NAO</label>
+            <br>
             <br>
                 Permite a utilização dos seus dados pessoais?
                 <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
@@ -57,7 +59,8 @@
                 <label for="nao2">NAO</label>
                 {#            -----------------------------------------------------------------------#}
                 <br>
-                <label for="utilizadortipo">Tipo de Utilziador:</label>
+                <br>
+                <label for="utilizadortipo">Tipo de Utilizador:</label>
                 <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
                     <option hidden>Escolher</option>
                     {% for u in  utilizadortipo %}
@@ -67,8 +70,25 @@
                     {% endfor %}
                 </select>
                 <div id="asda" style="display:none;">
-                    <p>Indique a sua unidade orgânica: {{ form.unidadeorganica }}</p>
-                    <p>Indique o seu departamento:</p>
+                    <br>
+
+                   <label for="unidadeorganica">Indique a sua unidade orgânica:</label>
+                    <select name="unidadeorganica" id="unidadeorganica" >
+                    <option hidden>Escolher</option>
+                    {% for uni in  unidadeorganica %}
+                    <option value="{{ uni.nome }}">{{ uni.nome }}</option>
+                    {% endfor %}
+                    </select>
+                    <br>
+                    <br>
+                    <label for="departamento">Tipo de Utilizador:</label>
+                    <select name="departamento" id="departamento" >
+                    <option hidden>Escolher</option>
+                    {% for d in  departamento %}
+                    <option value="{{ d.nome }}">{{ d.nome }}</option>
+                    {% endfor %}
+                    </select>
+
                 </div>
         </div>
         <input type="submit" value="Submeter">

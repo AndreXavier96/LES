@@ -1,0 +1,46 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+
+</head>
+<script>
+  var d = new Date();
+  var n = d.toString();
+  document.getElementById("demo").innerHTML = n;
+</script>
+<body>
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="col s12 m6">
+        <h2>Consultar Colaborações</h2>
+    </div>
+    {% for lc,h in  lista_colab_final %}
+        <p>Data da Colaboração: {{ h }}</p>
+        <p>Horário da Colaboração: Das {{ lc.hora_inicio_colab }} até às {{ lc.hora_fim_colab }}</p>
+        {% if lc.percurso == 0 %}
+            <p>Auxilio no percurso: Não</p>
+            {% else %}
+            <p>Auxilio no percurso: Sim</p>
+        {% endif %}
+        {% if lc.sala_de_aula == 0 %}
+            <p>Auxilio na sala de aula: Não</p>
+            {% else %}
+            <p>Auxilio na sala de aula: Sim</p>
+        {% endif %}
+        {% if lc.tarefa_atribuida != 1 %}
+        <input type="button" onclick="location.href='editar_colab/{{lc.id}}';"
+               value="Editar Colaboração">
+
+        <button type="submit" id="2" name="del" value="{{lc.id}}">Apagar Colaboração</button>
+        {% endif %}
+        <br>
+        <br>
+    {% endfor %}
+</form>
+</div>
+{% endblock %}
+
+</body>
+</html>

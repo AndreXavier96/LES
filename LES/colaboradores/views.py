@@ -5,6 +5,7 @@ from django.views.generic import View
 
 
 # from .forms import Criar_Colab_Form, Editar_Colab_From
+from utilizadores.models import Colaboracao, Diaaberto
 
 
 class Criar_colab(View):
@@ -12,8 +13,14 @@ class Criar_colab(View):
 
     def get(self, request):
         # form = Criar_Colab_Form()
+        data_fim1 = Diaaberto.objects.get(pk=1).data_fim
+        data_fim = str(data_fim1)
+        data_inicio1 = Diaaberto.objects.get(pk=1).data_inicio
+        data_inicio = str(data_inicio1)
         return render(request, self.template_name, {
-            # 'form': form,
+            'data_fim': data_fim,
+            'data_inicio': data_inicio,
+
         })
 
     def post(self, request):
@@ -24,19 +31,12 @@ class Criar_colab(View):
             segundo_dia = form_colab['segundo_dia'].value()
             sala_de_aula = form_colab['sala_de_aula'].value()
             percurso = form_colab['percurso'].value()'''
-        primeiro_dia = request.POST['primeiro_dia']
-        segundo_dia = request.POST['segundo_dia']
+        data_colaboracao = request.POST['data_colaboracao']
+        # segundo_dia = request.POST['segundo_dia']
+        hora_inicio_colab = request.POST['hora_inicio_colab']
+        hora_fim_colab = request.POST['hora_fim_colab']
         sala_de_aula = request.POST['sala_de_aula']
         percurso = request.POST['percurso']
-        if primeiro_dia == "sim":
-            primeiro_dia = 1
-        else:
-            primeiro_dia = 0
-
-        if segundo_dia == "sim":
-            segundo_dia = 1
-        else:
-            segundo_dia = 0
 
         if sala_de_aula == "sim":
             sala_de_aula = 1
@@ -53,8 +53,9 @@ class Criar_colab(View):
             sala_de_aula = form_colab['sala_de_aula'].value()
             percurso = form_colab['percurso'].value()
         '''
-        # Utilizador.objects.filter(pk=3).update(primeiro_dia=primeiro_dia, segundo_dia=segundo_dia,
-        #                                        sala_de_aula=sala_de_aula, percurso=percurso)
+        Colaboracao.objects.create(colaborador_id=1, data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
+                                   percurso=percurso, hora_inicio_colab=hora_inicio_colab,
+                                   hora_fim_colab=hora_fim_colab)
 
         return redirect('/register')
 
@@ -62,48 +63,67 @@ class Criar_colab(View):
 class Editar_colab(View):
     template_name = 'editar_colaboracao.html'
 
-    def get(self, request):
-        # obj = Utilizador.objects.get(pk=3)
+    def get(self, request,pk):
+        obj = Colaboracao.objects.get(pk=pk)
+        data_colaboracao1 = Colaboracao.objects.get(pk=pk).data_colaboracao
+        data_colaboracao = str(data_colaboracao1)
+        inicio_colab1 = Colaboracao.objects.get(pk=pk).hora_inicio_colab
+        inicio_colab = str(inicio_colab1)
+        fim_colab1 = Colaboracao.objects.get(pk=pk).hora_fim_colab
+        fim_colab = str(fim_colab1)
         # form = Editar_Colab_Form()
         # form = Editar_Colab_Form(instance=Utilizador.objects.get(pk=3))
+        data_fim1 = Diaaberto.objects.get(pk=1).data_fim
+        data_fim = str(data_fim1)
+        data_inicio1 = Diaaberto.objects.get(pk=1).data_inicio
+        data_inicio = str(data_inicio1)
         return render(request, self.template_name, {
             # 'form': form,
-            # 'obj': obj,
+            'obj': obj,
+            'data_fim': data_fim,
+            'data_inicio': data_inicio,
+            'data_colaboracao': data_colaboracao,
+            'inicio_colab': inicio_colab,
+            'fim_colab': fim_colab,
         })
 
-    def post(self, request):
-        # primeiro_dia = request.POST['primeiro_dia']
-        # segundo_dia = request.POST['segundo_dia']
-        # sala_de_aula = request.POST['sala_de_aula']
-        # percurso = request.POST['percurso']
-        # if primeiro_dia == "sim":
-        #     primeiro_dia = 1
-        # else:
-        #     primeiro_dia = 0
-        #
-        # if segundo_dia == "sim":
-        #     segundo_dia = 1
-        # else:
-        #     segundo_dia = 0
-        #
-        # if sala_de_aula == "sim":
-        #     sala_de_aula = 1
-        # else:
-        #     sala_de_aula = 0
-        #
-        # if percurso == "sim":
-        #     percurso = 1
-        # else:
-        #     percurso = 0
-        # '''if form_colab.is_valid():
-        #     primeiro_dia = form_colab['primeiro_dia'].value()
-        #     segundo_dia = form_colab['segundo_dia'].value()
-        #     sala_de_aula = form_colab['sala_de_aula'].value()
-        #     percurso = form_colab['percurso'].value()
-        # '''
-        # Utilizador.objects.filter(pk=3).update(primeiro_dia=primeiro_dia, segundo_dia=segundo_dia,
-        #                                        sala_de_aula=sala_de_aula, percurso=percurso)
-        #
+    def post(self, request,pk):
+        #primeiro_dia = request.POST['primeiro_dia']
+        #segundo_dia = request.POST['segundo_dia']
+        sala_de_aula = request.POST['sala_de_aula']
+        percurso = request.POST['percurso']
+        #if primeiro_dia == "sim":
+         #   primeiro_dia = 1
+        #else:
+         #   primeiro_dia = 0
+
+        #if segundo_dia == "sim":
+         #   segundo_dia = 1
+        #else:
+         #   segundo_dia = 0
+
+        if sala_de_aula == "sim":
+            sala_de_aula = 1
+        else:
+            sala_de_aula = 0
+
+        if percurso == "sim":
+            percurso = 1
+        else:
+            percurso = 0
+
+        '''if form_colab.is_valid():
+         primeiro_dia = form_colab['primeiro_dia'].value()
+            segundo_dia = form_colab['segundo_dia'].value()
+         sala_de_aula = form_colab['sala_de_aula'].value()
+            percurso = form_colab['percurso'].value()
+        '''
+        data_colaboracao = request.POST['data_colaboracao']
+        hora_inicio_colab = request.POST['hora_inicio_colab']
+        hora_fim_colab = request.POST['hora_fim_colab']
+        Colaboracao.objects.filter(pk=pk).update(data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
+                                            percurso=percurso, hora_inicio_colab=hora_inicio_colab,
+                                            hora_fim_colab=hora_fim_colab)
         return redirect('/register')
 
 
@@ -123,3 +143,32 @@ class Apagar_colab(View):
         # Utilizador.objects.filter(pk=3).update(primeiro_dia=None, segundo_dia=None,
         #                                        sala_de_aula=None, percurso=None)
         return redirect('/register')
+
+
+class Consultar_colab(View):
+    template_name = 'consultar_colaboracao.html'
+
+    def get(self, request):
+        lista_colab3 = []
+        lista_colab = Colaboracao.objects.filter(colaborador_id=1)
+        for x in lista_colab:
+            lista_colab3.append(str(x.data_colaboracao))
+            lista_colab_final =  zip(lista_colab, lista_colab3)
+        hora_str1 = Colaboracao.objects.get(pk=1).hora_inicio_colab
+        hora_str = str(hora_str1)
+        print(lista_colab)
+        return render(request, self.template_name, {
+            # 'form': form,
+            #'lista_colab': lista_colab,
+            'hora_str': hora_str,
+            #'lista_colab3': lista_colab3,
+            'lista_colab_final': lista_colab_final,
+        })
+
+    def post(self, request):
+        post= request.POST
+        id=post['del']
+        print(id)
+        Colaboracao.objects.filter(pk=id).delete()
+        return redirect('/register')
+    #
