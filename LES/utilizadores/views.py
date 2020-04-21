@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from .forms import RegisterForm
-from .models import Utilizador, Utilizadortipo, Unidadeorganica
+from .models import Utilizador, Utilizadortipo, Unidadeorganica, Departamento
 
 
 class register(View):
@@ -15,9 +15,13 @@ class register(View):
     def get(self, request):
         form = RegisterForm()
         utilizadortipo = Utilizadortipo.objects.all
+        departamento = Departamento.objects.all
+        unidadeorganica = Unidadeorganica.objects.all
         return render(request, self.template_name, {
             'form': form,
-            'utilizadortipo': utilizadortipo
+            'utilizadortipo': utilizadortipo,
+            'departamento': departamento,
+            'unidadeorganica': unidadeorganica
         })
 
     def post(self, request):
@@ -57,16 +61,17 @@ class register(View):
                 utilizar_dados_pessoais = 1
             else:
                 utilizar_dados_pessoais = 0
-            unidadeorganica_value = form_register.cleaned_data.get("unidadeorganica")
-            print(unidadeorganica_value)
-            unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica_value)
+            unidadeorganica = request.POST['unidadeorganica']
+            unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
+            departamento = request.POST['departamento']
+            departamento = Departamento.objects.get(nome=departamento)
             User.objects.create_user(username=email, password=password_digest)
             Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                      unidadeorganica=unidadeorganica)
+                                      unidadeorganica=unidadeorganica, departamento=departamento)
             """escola = Escola.objects.get(nome=nome)
             Inscricao.objects.create(escola=escola)
             inscricao = Inscricao.objects.get(escola=escola)

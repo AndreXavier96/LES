@@ -11,30 +11,32 @@
         <h2>Criar Colaboração</h2>
     </div>
     <div class="col s12 m6">
-        Quer colaborar no primeiro dia?
-        <input type="radio" id="sim1" name="primeiro_dia" value="sim">
-        <label for="sim1">SIM</label>
-        <input type="radio" id="nao1" name="primeiro_dia" value="nao">
-        <label for="nao1">NAO</label>
-        <p>
-        Quer colaborar no segundo dia?
-        <input type="radio" id="sim2" name="segundo_dia" value="sim">
-        <label for="sim2">SIM</label>
-        <input type="radio" id="nao2" name="segundo_dia" value="nao">
-        <label for="nao2">NAO</label>
-        <p>
+        <label for="datemax">Em que dia quer colaborar?</label>
+        <input type="date" id="datemax" name="data_colaboracao" min={{ data_inicio }} max={{ data_fim }}>
+        <br>
+        <br>
+        Hora a que quer iniciar a colaboração?
+        <input type="time"  name="hora_inicio_colab" min="08:00" max="18:00" >
+        <br>
+        <br>
+        Hora a que quer terminar a colaboração?
+        <input type="time"  name="hora_fim_colab" min="08:00" max="18:00" >
+        <br>
+        <br>
         Quer auxiliar na sala de aula?
         <input type="radio" id="sim3" name="sala_de_aula" value="sim">
         <label for="sim3">SIM</label>
         <input type="radio" id="nao4" name="sala_de_aula" value="nao">
         <label for="nao4">NAO</label>
-        <p>
+        <br>
+        <br>
         Quer auxiliar no percurso?
         <input type="radio" id="sim5" name="percurso" value="sim">
         <label for="sim5">SIM</label>
         <input type="radio" id="nao5" name="percurso" value="nao">
         <label for="nao5">NAO</label>
-        <p>
+        <br>
+        <br>
 
     </div>
     <input type="submit" value="Submeter">

@@ -2,7 +2,9 @@
 <head>
     <meta charset="utf-8"/>
     <title></title>
+
 </head>
+
 <body>
 {% block content %}
 <form method="POST">
@@ -11,36 +13,19 @@
         <h2>Editar Colaboração</h2>
     </div>
     <div class="col s12 m6">
-        {% ifequal 1 obj.primeiro_dia %}
-        Quer colaborar no primeiro dia?
-        <input type="radio" id="sim1" name="primeiro_dia" value="sim" checked="checked">
-        <label for="sim1">SIM</label>
-        <input type="radio" id="nao1" name="primeiro_dia" value="nao">
-        <label for="nao1">NAO</label>
-        {% endifequal %}
-        {% ifequal 0 obj.primeiro_dia %}
-        Quer colaborar no primeiro dia?
-        <input type="radio" id="sim2" name="primeiro_dia" value="sim" >
-        <label for="sim2">SIM</label>
-        <input type="radio" id="nao2" name="primeiro_dia" value="nao" checked="checked">
-        <label for="nao2">NAO</label>
-        {% endifequal %}
-        <p>
-        {% ifequal 1 obj.segundo_dia %}
-        Quer colaborar no segundo dia?
-        <input type="radio" id="sim3" name="segundo_dia" value="sim" checked="checked">
-        <label for="sim3">SIM</label>
-        <input type="radio" id="nao3" name="segundo_dia" value="nao">
-        <label for="nao3">NAO</label>
-        {% endifequal %}
-        {% ifequal 0 obj.segundo_dia %}
-        Quer colaborar no segundo dia?
-        <input type="radio" id="sim4" name="segundo_dia" value="sim" >
-        <label for="sim4">SIM</label>
-        <input type="radio" id="nao4" name="segundo_dia" value="nao" checked="checked">
-        <label for="nao4">NAO</label>
-        {% endifequal %}
-        <p>
+        <label for="datemax">Em que dia quer colaborar?</label>
+        <input type="date" id="datemax" value={{data_colaboracao}} name="data_colaboracao"
+               min={{data_inicio}} max={{data_fim}}>
+        <br>
+        <br>
+        Hora a que quer iniciar a colaboração?
+        <input type="time" value={{inicio_colab}} name="hora_inicio_colab" min="08:00" max="18:00" >
+        <br>
+        <br>
+        Hora a que quer terminar a colaboração?
+        <input type="time"  value={{fim_colab}} name="hora_fim_colab" min="08:00" max="18:00" >
+        <br>
+        <br>
         {% ifequal 1 obj.sala_de_aula %}
         Quer auxiliar na sala de aula?
         <input type="radio" id="sim5" name="sala_de_aula" value="sim" checked="checked">

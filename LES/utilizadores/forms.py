@@ -30,7 +30,7 @@ class RegisterForm(forms.Form):
    # permitir_localizacao = forms.IntegerField(label='permitir_localizacao')
     #utilizar_dados_pessoais = forms.IntegerField(label='utilizar_dados_pessoais')
     # unidadeorganica = forms.CharField(label='unidadeorganica', max_length=50)
-    unidadeorganica = forms.CharField(label='unidadeorganica', widget=forms.Select(choices=CHOICES2))
+   # unidadeorganica = forms.CharField(label='unidadeorganica', widget=forms.Select(choices=CHOICES2))
 
 
 """ utilizadortipo = forms.IntegerField(label='utilizadortipo')
