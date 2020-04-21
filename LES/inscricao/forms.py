@@ -21,19 +21,13 @@ class EmentaInscricaoForm(forms.Form):
 
 
 class ParticipanteForm(forms.Form):
-    area_estudos = forms.CharField(label='area_estudos', required=True,
-                                   widget=forms.SelectWithHidden(choices=CHOICES_AREA))
-    ano_estudos = forms.IntegerField(label='ano_estudos', required=True)
-
-
-class ParticipanteGrupoForm(forms.Form):
-    turma = forms.CharField(label='turma', required=True)
-    total_participantes = forms.IntegerField(label='total_participantes', required=True)
-    total_professores = forms.IntegerField(label='total_professores', required=True)
+    area_estudos = forms.CharField(label='Área de Estudos', required=True,
+                                   widget=forms.SelectWithHidden(choices=CHOICES_AREA, attrs={'class': 'test'}))
+    ano_estudos = forms.IntegerField(label='Ano Escolar', required=True)
 
 
 class ParticipanteIndForm(forms.Form):
-    acompanhantes = forms.IntegerField(label='acompanhantes', required=True)
+    acompanhantes = forms.IntegerField(label='Acompanhantes', required=True)
 
 
 class QuerRefeicaoForm(forms.Form):
