@@ -61,10 +61,23 @@ class register(View):
                 utilizar_dados_pessoais = 1
             else:
                 utilizar_dados_pessoais = 0
-            unidadeorganica = request.POST['unidadeorganica']
-            unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
-            departamento = request.POST['departamento']
-            departamento = Departamento.objects.get(nome=departamento)
+
+            print(utilizadortipo_value)
+            if utilizadortipo_value == "Participante Individual" or utilizadortipo_value == "Participante em Grupo":
+                unidadeorganica = None
+                departamento = None
+            else:
+                unidadeorganica = request.POST['unidadeorganica']
+                departamento = request.POST['departamento']
+                departamento = Departamento.objects.get(nome=departamento)
+                unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
+            print(unidadeorganica)
+            #departamento = request.POST['departamento']
+            print(departamento)
+            #unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
+            #departamento = request.POST['departamento']
+           # departamento = Departamento.objects.get(nome=departamento)
+
             User.objects.create_user(username=email, password=password_digest)
             Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
