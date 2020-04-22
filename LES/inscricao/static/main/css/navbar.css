@@ -1,6 +1,9 @@
 .topnav {
     overflow: hidden;
     background-color: white;
+    position: absolute; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
 }
 
 .topnav a {
@@ -22,8 +25,9 @@
 .topnav a:nth-child(2) {
     color: #2d74d8;
 }
+
 .topnav a:nth-child(2):hover {
-     border-bottom-style: none;
+    border-bottom-style: none;
 }
 
 .topnav a:hover {

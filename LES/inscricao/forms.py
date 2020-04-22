@@ -2,28 +2,10 @@ from django import forms
 
 CHOICE_BOL = (('sim', "Sim"), ('nao', "Não"))
 
-CHOICES_AREA = (('escolha', {'label': 'Escolher', 'hidden': True}), ('ciencias', "Ciências e Tecnologias"),
-                ('humanidades', "Línguas e Humanidades"),
-                ('artes', "Artes Visuais"), ('socioeconomicas', "Ciências Socioeconómicas"))
-
-
-class EscolaForm(forms.Form):
-    nome = forms.CharField(label='nome_escola', max_length=50, required=False)
-    morada = forms.CharField(label='morada', max_length=50, required=False)
-    codigo_postal = forms.CharField(label='codigo_postal', max_length=50, required=False)
-    contacto = forms.IntegerField(label='contacto', max_value=999999999, min_value=0, required=False)
-    localidade = forms.CharField(label='localidade', max_length=50, required=False)
-
 
 class EmentaInscricaoForm(forms.Form):
     numero_aluno_normal = forms.IntegerField(initial=0)
     numero_outro_normal = forms.IntegerField(initial=0)
-
-
-class ParticipanteForm(forms.Form):
-    area_estudos = forms.CharField(label='Área de Estudos', required=True,
-                                   widget=forms.SelectWithHidden(choices=CHOICES_AREA, attrs={'class': 'test'}))
-    ano_estudos = forms.IntegerField(label='Ano Escolar', required=True)
 
 
 class ParticipanteIndForm(forms.Form):

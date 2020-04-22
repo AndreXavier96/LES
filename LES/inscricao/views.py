@@ -1,9 +1,9 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.core.mail import send_mail
 
 from utilizadores.models import Utilizador
-from .forms import EscolaForm, EmentaInscricaoForm, ParticipanteForm, \
+from .forms import EmentaInscricaoForm, \
     ParticipanteIndForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
     TransporteParaCampusForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
@@ -25,12 +25,10 @@ class InscricaoView(View):
     template_name = 'inscricao.html'
 
     def get(self, request):
-        form_escola = EscolaForm()
         form_ementa_inscricao = EmentaInscricaoForm()
         values = Ementa.objects.all
         escolas = Escola.objects.all
         # -----------
-        form_participante = ParticipanteForm()
         form_part_ind = ParticipanteIndForm()
         radio_refeicao = QuerRefeicaoForm()
         # ------------------
@@ -42,11 +40,9 @@ class InscricaoView(View):
         auth_user = request.user
         utilizador = Utilizador.objects.get(pk=auth_user.id)
         # ----------------------
-        return render(request, self.template_name, {'form_escola': form_escola,
-                                                    'form_ementa_inscricao': form_ementa_inscricao,
+        return render(request, self.template_name, {'form_ementa_inscricao': form_ementa_inscricao,
                                                     'values': values,
                                                     'escolas': escolas,
-                                                    'form_participante': form_participante,
                                                     'form_part_ind': form_part_ind,
                                                     'radio_refeicao': radio_refeicao,
                                                     'atividades': atividades,
@@ -58,23 +54,20 @@ class InscricaoView(View):
                                                     })
 
     def post(self, request):
-        form_escola = EscolaForm(request.POST)
         form_ementa_inscricao = EmentaInscricaoForm(request.POST)
-        form_participante = ParticipanteForm(request.POST)
         form_part_ind = ParticipanteIndForm(request.POST)
         radio_refeicao = QuerRefeicaoForm(request.POST)
 
         # ------------escola
         escola_escolhida = request.POST['Escola']
         if escola_escolhida != "Escolher":
-            if form_escola.is_valid() and form_participante.is_valid() and \
-                    form_ementa_inscricao.is_valid() and radio_refeicao.is_valid():
+            if form_ementa_inscricao.is_valid() and radio_refeicao.is_valid():
                 if escola_escolhida == 'others':
-                    nome = form_escola['nome'].value()
-                    morada = form_escola['morada'].value()
-                    codigo_postal = form_escola['codigo_postal'].value()
-                    contacto = form_escola['contacto'].value()
-                    localidade = form_escola['localidade'].value()
+                    nome = request.POST['nome'].value()
+                    morada = request.POST['morada'].value()
+                    codigo_postal = request.POST['codigo_postal'].value()
+                    contacto = request.POST['contacto'].value()
+                    localidade = request.POST['localidade'].value()
                     Escola.objects.create(nome=nome, morada=morada, codigo_postal=codigo_postal, contacto=contacto,
                                           localidade=localidade)
                     escola = Escola.objects.get(nome=nome)
@@ -87,8 +80,8 @@ class InscricaoView(View):
                 utilizador = Utilizador.objects.get(pk=auth_user.id)
                 # session user--------------------------------------
 
-                area_estudos = form_participante['area_estudos'].value()
-                ano_estudos = form_participante['ano_estudos'].value()
+                area_estudos = request.POST['area_estudos'].value()
+                ano_estudos = request.POST['ano_estudos'].value()
                 Utilizadorparticipante.objects.create(utilizador=utilizador, escola=escola,
                                                       area_estudos=area_estudos, ano_estudos=ano_estudos,
                                                       check_in=0, inscricao=inscricao,

@@ -35,8 +35,7 @@
     </script>
     <style>
         body {
-            height: 100%;
-            background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%);
+            background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%) no-repeat fixed;
         }
     </style>
 
@@ -57,18 +56,33 @@
                 <div>
                     <h2>Dados Participante</h2>
                     <div class="participante">
-                        {{ form_participante.as_p }}
+                        <div class="onethird">
+                            <label for="id_area_estudos">Área de Estudos:</label>
+                            <select name="area_estudos" class="select-css" id="id_area_estudos">
+                                <option class="option-css" value="escolha" hidden="hidden">Escolher</option>
+                                <option value="ciencias">Ciências e Tecnologias</option>
+                                <option value="humanidades">Línguas e Humanidades</option>
+                                <option value="artes">Artes Visuais</option>
+                                <option value="socioeconomicas">Ciências Socioeconómicas</option>
+                            </select>
+                        </div>
+                        <div class="onethird">
+                            <label for="id_ano_estudos">Ano Escolar:</label>
+                            <input type="number" name="ano_estudos" required="" id="id_ano_estudos">
+                        </div>
                     </div>
                     {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
-                        <div id="form_individual">
+                        <div id="form_individual" class="onethird">
                             {{ form_part_ind.as_p }}
                         </div>
                     {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                         <div class="grupo" id="form_grupo">
-                            <div>
+                            <div class="onethird">
                                 <label for="id_turma">Turma: </label>
                                 <input type="text" name="turma" required="" id="id_turma">
                             </div>
+                            <br><br><br><br><br><br>
+                            <h2>Tamanho Grupo</h2>
                             <div class="half">
                                 <label for="id_total_participantes">Total Participantes: </label>
                                 <input type="number" name="total_participantes" required="" value="0"
@@ -86,104 +100,142 @@
                     {% endif %}
 
                 </div>
-                <button type="button" onclick="pagSeguinte('1')" formnovalidate>Próximo</button>
+                <button class="next" type="button" onclick="pagSeguinte('1')" formnovalidate>Próximo <i
+                        class="fas fa-caret-right"></i></button>
             </div>
 
             <div class="col s12 m6" id="pag_2" style="display:none;">
                 <h2>Dados da Escola</h2>
                 <label for="Escola">Escola :</label>
-                <select id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
-                    <option hidden>Escolher</option>
-                    {% for e in escolas %}
-                        <option value="{{ e.nome }}">{{ e.nome }}</option>
-                    {% endfor %}
-                    <option value="others">others</option>
-                </select>
-                <div id="form_escola" style="display:none;">
-                    {{ form_escola.as_p }}
+                <div class="half">
+                    <select class="select-css" id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
+                        <option hidden>Escolher</option>
+                        {% for e in escolas %}
+                            <option value="{{ e.nome }}">{{ e.nome }}</option>
+                        {% endfor %}
+                        <option value="others">Outra Escola...</option>
+                    </select>
+                </div>
+                <div class="grupo" id="form_escola" style="display:none;">
+                    {#                    {{ form_escola.as_p }}#}
+
+                    <div><label for="id_nome">Nome da Escola:</label> <input type="text" name="nome" maxlength="50"
+                                                                             id="id_nome" required="required"></div>
+                    <div class="half"><label for="id_morada">Morada:</label> <input type="text" name="morada"
+                                                                                    class="half"
+                                                                                    maxlength="50" id="id_morada"
+                                                                                    required="required">
+                    </div>
+                    <div class="half"><label for="id_codigo_postal">Código Postal:</label>
+                        <input type="text" name="codigo_postal"
+                               class="half" maxlength="8"
+                               id="id_codigo_postal"
+                               required="required"></div>
+                    <div class="half"><label for="id_localidade">Localidade:</label>
+                        <input type="text" name="localidade"
+                               maxlength="50" id="id_localidade"
+                               required="required"></div>
+                    <div class="half"><label for="id_contacto">Contacto:</label>
+                        <input type="number" name="contacto" min="0"
+                               max="999999999" id="id_contacto"
+                               required="required"></div>
+
                 </div>
                 <br>
-                <button type="button" onclick="pagAnterior('2')" formnovalidate>Anterior</button>
-                <button type="button" onclick="pagSeguinte('2')" formnovalidate>Próximo</button>
+                <button class="previus" type="button" onclick="pagAnterior('2')" formnovalidate><i
+                        class="fas fa-caret-left"></i> Anterior
+                </button>
+                <button class="next" type="button" onclick="pagSeguinte('2')" formnovalidate>Próximo <i
+                        class="fas fa-caret-right"></i></button>
             </div>
 
             <div class="col s12 m6" id="pag_3" style="display:none;">
                 <h2>Refeição</h2>
                 {{ radio_refeicao }}
                 <div id="quer_refeicao" style="display:none;">
-                    <h3>quantidades:</h3>
+                    <h3>Quantas Refeições Deseja?</h3>
                     {% for v in values %}
-                        <label for="preco_aluno_normal"></label>
-                        <input id="preco_aluno_normal" type="text" style="display:none;"
-                               value="{{ v.preco_aluno_normal }}">
-                        <label for="preco_outro_normal"></label>
-                        <input id="preco_outro_normal" type="text" style="display:none;"
-                               value="{{ v.preco_outro_normal }}">
-                        <p onchange="MultiplicaPreco()">Refeições
-                            aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
-                            {{ v.preco_aluno_normal }}&euro;/refeição</p>
-                        <p onchange="MultiplicaPreco()">Refeições não
-                            aluno:{{ form_ementa_inscricao.numero_outro_normal }}
-                            {{ v.preco_outro_normal }}&euro;/refeição</p>
-                        <p>
-                            <label for="preco_total">Preço total:</label>
-                            <input type="number" name="preco_total" id="preco_total"
-                                   value="0" disabled>&euro;
-                        </p>
+                        <div class="refeicao">
+                            <label for="preco_aluno_normal"></label>
+                            <input id="preco_aluno_normal" type="text" style="display:none;"
+                                   value="{{ v.preco_aluno_normal }}">
+                            <label for="preco_outro_normal"></label>
+                            <input id="preco_outro_normal" type="text" style="display:none;"
+                                   value="{{ v.preco_outro_normal }}">
+                            <p onchange="MultiplicaPreco()">Refeições
+                                aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
+                                {{ v.preco_aluno_normal }}&euro;/refeição</p>
+                            <p onchange="MultiplicaPreco()">Refeições não
+                                aluno:{{ form_ementa_inscricao.numero_outro_normal }}
+                                {{ v.preco_outro_normal }}&euro;/refeição</p>
+                            <div>
+                                <label for="preco_total">Preço total:</label>
+                                <input type="number" name="preco_total" id="preco_total"
+                                       value="0" disabled>&euro;
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
-                <button type="button" onclick="pagAnterior('3')" formnovalidate>Anterior</button>
-                <button type="button" onclick="pagSeguinte('3')" formnovalidate>Próximo</button>
+                <button class="previus" type="button" onclick="pagAnterior('3')" formnovalidate>
+                    <i class="fas fa-caret-left"></i> Anterior
+                </button>
+                <button class="next" type="button" onclick="pagSeguinte('3')" formnovalidate>Próximo
+                    <i class="fas fa-caret-right"></i></button>
             </div>
 
             <div class="col s12 m6" id="pag_4" style="display:none;">
                 <h2>Transporte</h2>
-                <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
-                <select name="tipo_transporte" id="tipo_transporte"
-                        onchange="tipoTransporte(this.value)">
-                    <option hidden>Escolher</option>
-                    <option value="proprio">Transporte próprio</option>
-                    <option value="autocarro">Autocarro Publico</option>
-                    <option value="comboio">Comboio</option>
-                </select>
-                {##}
+                <div class="half">
+                    <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
+                    <select class="select-css" name="tipo_transporte" id="tipo_transporte"
+                            onchange="tipoTransporte(this.value)">
+                        <option hidden>Escolher</option>
+                        <option value="proprio">Transporte próprio</option>
+                        <option value="autocarro">Autocarro Publico</option>
+                        <option value="comboio">Comboio</option>
+                    </select>
+                </div>
                 <div id="transporte_para_campus" style="display: none">
                     <ul id="id_QuerTransportePara">
-                        <label for="id_QuerTransportePara_0">Vai desejar transporte entre a estação e algum dos
-                            Campus?</label>
-                        <li><label for="id_QuerTransportePara_0"><input type="radio" name="QuerTransportePara"
-                                                                        value="sim"
-                                                                        onchange="paraCampus(this.value);"
-                                                                        required="required"
-                                                                        id="id_QuerTransportePara_0">
-                            Sim</label>
-
+                        <label for="id_QuerTransportePara_0">
+                            Vai desejar transporte entre a estação e algum dos Campus?
+                        </label>
+                        <li>
+                            <label for="id_QuerTransportePara_0">
+                                <input type="radio" name="QuerTransportePara" value="sim"
+                                       onchange="paraCampus(this.value);"
+                                       required="required" id="id_QuerTransportePara_0">
+                                Sim
+                            </label>
                         </li>
-                        <li><label for="id_QuerTransportePara_1"><input type="radio" name="QuerTransportePara"
-                                                                        value="nao"
-                                                                        onchange="paraCampus(this.value);"
-                                                                        id="id_QuerTransportePara_1" checked>
-                            Não</label>
-
+                        <li>
+                            <label for="id_QuerTransportePara_1">
+                                <input type="radio" name="QuerTransportePara" value="nao"
+                                       onchange="paraCampus(this.value);"
+                                       id="id_QuerTransportePara_1" checked>
+                                Não
+                            </label>
                         </li>
                     </ul>
-                    <div id="qual_campus" style="display: none">
+                    <div class="half" id="qual_campus" style="display: none">
                         <label for="qual_campus_2">Para qual Campus?</label>
-                        <select name="qual" id="qual_campus_2">
+                        <select class="select-css" name="qual" id="qual_campus_2">
                             <option hidden="">Escolher</option>
                             <option value="penha">Campus da Penha</option>
                             <option value="gambelas">Campus das Gambelas</option>
                         </select>
                     </div>
                 </div>
-                <br>
-                <label for="timepicker-one">Hora Chegada: </label>
-                <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
-                <br>
-                <label for="timepicker-two">Hora Partida: </label>
-                <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
-                <br>
-                <br>
+                <div>
+                    <div class="half">
+                        <label for="timepicker-one">Hora Chegada:</label>
+                        <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+                    </div>
+                    <div class="half">
+                        <label for="timepicker-two">Hora Partida:</label>
+                        <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
+                    </div>
+                </div>
                 <label for="id_QuerTransporteEntre_0">Vai desejar transporte entre os Campus?</label>
                 <ul id="id_QuerTransporteEntre">
                     <li><label for="id_QuerTransporteEntre_0"><input type="radio" name="QuerTransporteEntre"
@@ -201,31 +253,36 @@
 
                     </li>
                 </ul>
-                {##}
                 <div id="entre_campus" style="display: none">
-                    <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
-                    <select name="transporte_campus" id="transporte_campus"
-                            onchange="entreCampusRelogio(this.value)">
-                        <option hidden>Escolher</option>
-                        <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
-                        <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
-                    </select>
-                    <br>
-                    <div id="timepicker-three_div" style="display: none">
+                    <div class="half">
+                        <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
+                        <select class="select-css" name="transporte_campus" id="transporte_campus"
+                                onchange="entreCampusRelogio(this.value)">
+                            <option hidden>Escolher</option>
+                            <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
+                            <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
+                        </select>
+                    </div>
+                    <div class="half" id="timepicker-three_div" style="display: none">
                         <label id="timepicker-three_label" for="timepicker-three"></label>
                         <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
                     </div>
                 </div>
-                <button type="button" onclick="pagAnterior('4')" formnovalidate>Anterior</button>
-                <button type="button" onclick="pagSeguinte('4')" formnovalidate>Próximo</button>
+                <div>
+                    <button class="previus" type="button" onclick="pagAnterior('4')" formnovalidate><i
+                            class="fas fa-caret-left"></i> Anterior
+                    </button>
+                    <button class="next" type="button" onclick="pagSeguinte('4')" formnovalidate>Próximo <i
+                            class="fas fa-caret-right"></i></button>
+                </div>
             </div>
 
             <div class="col s12 m6" id="pag_5" style="display:none;">
                 <h2>Actividades</h2>
                 <h4>Sessões Disponiveis</h4>
-                <table id="table_atividades" class="table">
-                    <thead class="thead-dark text-center">
-                    <tr>
+                <table id="table_atividades" class="table table1">
+                    <thead class="text-center">
+                    <tr class="tablerow">
                         <th style="width: 35%;">Nome</th>
                         <th style="width: 15%;">Tipo</th>
                         <th style="width: 35%;">Publico alvo</th>
@@ -233,7 +290,7 @@
                     </tr>
                     </thead>
                     {% for atividade in atividades %}
-                        <thead class="text-center" data-toggle="collapse" href="#collapse_{{ atividade.id }}"
+                        <thead class="text-center rowhover" data-toggle="collapse" href="#collapse_{{ atividade.id }}"
                                aria-expanded="false"
                                aria-controls="collapse_{{ atividade.id }}">
                         <tr>
@@ -256,7 +313,7 @@
                                             <tr>
                                                 <td colspan="5">Responsavel: {{ atividade.docente.nome }}</td>
                                             </tr>
-                                            <tr>
+                                            <tr class="tablerow">
                                                 <th>Hora:</th>
                                                 <th>Duração:</th>
                                                 <th>Vagas:</th>
@@ -299,7 +356,7 @@
                 <br><br>
                 <h4>Sessoes Escolhidas</h4>
                 <table id="table_inscritos" class="table">
-                    <thead class="thead-dark text-center">
+                    <thead class="tablehead text-center">
                     <tr>
                         <th style="width: 10%;">Hórario</th>
                         <th style="width: 5%;">Duracao</th>
@@ -311,8 +368,11 @@
                     </tr>
                     </thead>
                 </table>
-                <button type="button" onclick="pagAnterior('5')" formnovalidate>Anterior</button>
-                <button type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo</button>
+                <button class="previus" type="button" onclick="pagAnterior('5')" formnovalidate><i
+                        class="fas fa-caret-left"></i> Anterior
+                </button>
+                <button class="next" type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo <i
+                        class="fas fa-caret-right"></i></button>
             </div>
             <label for="row_countt" style="display:none;"></label>
             <input type="number" id="row_countt" name="row_countt" value="" hidden>
@@ -323,10 +383,11 @@
             <input type="number" id="max_incritos_id" value="" hidden>
 
             <div class="col s12 m6" id="pag_6" style="display:none;">
-                <p>Irá ser enviado um email com todos os Dados da inscricao para {{ utilizador.email }}</p>
-                {#            <input type="submit" value="Submeter">#}
-                <button type="button" onclick="pagAnterior('6')" formnovalidate>Anterior</button>
-                <button type="submit">Submit</button>
+                <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao para {{ utilizador.email }}</p>
+                <button class="previus" type="button" onclick="pagAnterior('6')" formnovalidate><i
+                        class="fas fa-caret-left"></i> Anterior
+                </button>
+                <button class="next" type="submit">Submeter Inscrição</button>
             </div>
         </form>
         {#        </div>#}
