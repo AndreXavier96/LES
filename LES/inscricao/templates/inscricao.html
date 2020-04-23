@@ -72,8 +72,18 @@
                         </div>
                     </div>
                     {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
-                        <div id="form_individual" class="onethird">
-                            {{ form_part_ind.as_p }}
+                        <div class="onethird">
+                            <div id="form_individual" class="ind">
+                                <p>
+                                    <label for="id_acompanhantes">Acompanhantes:</label>
+                                    <input type="number" name="acompanhantes" required=""
+                                           id="id_acompanhantes"
+                                           onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                                </p>
+                            </div>
+                        </div>
+                        <div class="getaltura">
+
                         </div>
                     {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                         <div class="grupo" id="form_grupo">
@@ -383,7 +393,8 @@
             <input type="number" id="max_incritos_id" value="" hidden>
 
             <div class="col s12 m6" id="pag_6" style="display:none;">
-                <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao para {{ utilizador.email }}</p>
+                <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao
+                    para {{ utilizador.email }}</p>
                 <button class="previus" type="button" onclick="pagAnterior('6')" formnovalidate><i
                         class="fas fa-caret-left"></i> Anterior
                 </button>

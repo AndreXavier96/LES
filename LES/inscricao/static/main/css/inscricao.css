@@ -60,6 +60,21 @@
     box-sizing: border-box;
 }
 
+.ind input[type=number] {
+    width: 100%;
+    padding: 10px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.getaltura{
+    /*background: red;*/
+    height: 150px;
+    width: 100%;
+}
+
 .half {
     width: 49%;
     display: inline-block;

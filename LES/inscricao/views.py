@@ -6,8 +6,7 @@ from django.views.generic import View
 
 from LES.utils import render_to_pdf
 from utilizadores.models import Utilizador
-from .forms import EmentaInscricaoForm, \
-    ParticipanteIndForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
+from .forms import EmentaInscricaoForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
     TransporteParaCampusForm
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
     EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
@@ -32,7 +31,6 @@ class InscricaoView(View):
         values = Ementa.objects.all
         escolas = Escola.objects.all
         # -----------
-        form_part_ind = ParticipanteIndForm()
         radio_refeicao = QuerRefeicaoForm()
         # ------------------
         atividades = Atividade.objects.all
@@ -46,7 +44,6 @@ class InscricaoView(View):
         return render(request, self.template_name, {'form_ementa_inscricao': form_ementa_inscricao,
                                                     'values': values,
                                                     'escolas': escolas,
-                                                    'form_part_ind': form_part_ind,
                                                     'radio_refeicao': radio_refeicao,
                                                     'atividades': atividades,
                                                     'sessaoatividade': sessaoatividade,
@@ -58,9 +55,7 @@ class InscricaoView(View):
 
     def post(self, request):
         form_ementa_inscricao = EmentaInscricaoForm(request.POST)
-        form_part_ind = ParticipanteIndForm(request.POST)
         radio_refeicao = QuerRefeicaoForm(request.POST)
-
         # ------------escola
         escola_escolhida = request.POST['Escola']
         if escola_escolhida != "Escolher":
@@ -101,16 +96,14 @@ class InscricaoView(View):
                                                      )
                     participante2 = ParticipanteGrupo.objects.get(participante=participante)
                 elif radio_value_tipo_part == "Participante Individual":
-                    acompanhantes = form_part_ind['acompanhantes'].value()
+                    acompanhantes = request.POST['acompanhantes']
                     ParticipanteIndividual.objects.create(acompanhantes=acompanhantes,
                                                           participante=participante,
                                                           )
-                    participante2 = ParticipanteGrupo.objects.get(participante=participante)
+                    participante2 = ParticipanteIndividual.objects.get(participante=participante)
                 # ---------refeicao
-                # radio_value_refeicao = radio_refeicao.cleaned_data.get("QuerRefeicao")
                 n_aluno = form_ementa_inscricao['numero_aluno_normal'].value()
                 n_outro = form_ementa_inscricao['numero_outro_normal'].value()
-                # preco_total = request.POST['preco_total'].value()
                 ementa = Ementa.objects.first()
                 EmentaInscricao.objects.create(ementa=ementa, inscricao=inscricao,
                                                numero_aluno_normal=n_aluno,
@@ -174,7 +167,7 @@ class InscricaoView(View):
                     email.subject = 'Inscricao Dia Aberto'
                     email.body = 'Seguem em anexo um pdf com os dados relativos á sua Inscricao'
                     email.from_email = settings.EMAIL_HOST_USER
-                    email.to = ['xavi.6696@gmail.com']
+                    email.to = [utilizador.email]
                     pdf = render_to_pdf(data)
                     # preview------------------------------------
                     # if pdf:

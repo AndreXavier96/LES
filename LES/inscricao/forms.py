@@ -8,10 +8,6 @@ class EmentaInscricaoForm(forms.Form):
     numero_outro_normal = forms.IntegerField(initial=0)
 
 
-class ParticipanteIndForm(forms.Form):
-    acompanhantes = forms.IntegerField(label='Acompanhantes', required=True)
-
-
 class QuerRefeicaoForm(forms.Form):
     QuerRefeicao = forms.CharField(label="Deseja refeição?",
                                    widget=forms.RadioSelect(choices=CHOICE_BOL,
