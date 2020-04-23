@@ -184,19 +184,11 @@ function getMaxInscritos(u) {
     }
 }
 
-function maxIncritos(val, input_id, act_id, hora) {
-    // {#let atividade_id = "sessao_atividade_" + act_id#}
-    // {#if (!atividades.includes(atividade_id)) {#}
-    // {#    if (val<=max_incritos) {#}
-    // {#        atividades.push(atividade_id)#}
-    // {#        inscritos.push(max_incritos)#}
-    // {#        sessao.push(input_id)#}
-    // {#        document.getElementById(input_id).max = inscritos[atividades.indexOf(atividade_id)]#}
-    // {#    }#}
-    // {# } else if (atividades.includes(atividade_id) && !sessao.includes(input_id)){ #}
-    // {#    #}
-    // {# } #}
-    document.getElementById(input_id).max = max_incritos
+function maxIncritos(val, input_id, vagas) {
+    if (vagas<max_incritos)
+        document.getElementById(input_id).max = vagas
+    else
+        document.getElementById(input_id).max = max_incritos
 }
 
 let row_count = 0
@@ -216,13 +208,6 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
     let ses_id_plica = "'" + ses_id + "'"
     let sessao_id_plica = "'" + sessao_id + "'"
     if (row_id !== 0) {
-        // {
-        //     #alterar
-        //     o
-        //     numero
-        //     inscritos
-        //     #
-        // }
         row_count--
         let row = document.getElementById(sessao_id).cells;
         row[2].innerHTML = '<input type="number" id="inscritos_sessao_' + sessao_id +
@@ -231,11 +216,6 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
             '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">';
         row_count++
     } else if (val !== "0") {
-        // {
-        //     #adicionar
-        //     row
-        //     #
-        // }
         let row = table_inscrito.insertRow(-1)
         row.id = sessao_id
         row.name = "row_" + row_count

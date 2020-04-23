@@ -1,7 +1,10 @@
-from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.generic import View
 
+from LES.utils import render_to_pdf
 from utilizadores.models import Utilizador
 from .forms import EmentaInscricaoForm, \
     ParticipanteIndForm, QuerRefeicaoForm, TransporteEntreCampusForm, \
@@ -80,8 +83,8 @@ class InscricaoView(View):
                 utilizador = Utilizador.objects.get(pk=auth_user.id)
                 # session user--------------------------------------
 
-                area_estudos = request.POST['area_estudos'].value()
-                ano_estudos = request.POST['ano_estudos'].value()
+                area_estudos = request.POST['area_estudos']
+                ano_estudos = request.POST['ano_estudos']
                 Utilizadorparticipante.objects.create(utilizador=utilizador, escola=escola,
                                                       area_estudos=area_estudos, ano_estudos=ano_estudos,
                                                       check_in=0, inscricao=inscricao,
@@ -89,27 +92,31 @@ class InscricaoView(View):
                 participante = Utilizadorparticipante.objects.get(inscricao=inscricao)
                 radio_value_tipo_part = utilizador.utilizadortipo.tipo
                 if radio_value_tipo_part == "Participante em Grupo":
-                    turma = request.POST['turma'].value()
-                    total_participantes = request.POST['total_participantes'].value()
-                    total_professores = request.POST['total_professores'].value()
+                    turma = request.POST['turma']
+                    total_participantes = request.POST['total_participantes']
+                    total_professores = request.POST['total_professores']
                     ParticipanteGrupo.objects.create(total_participantes=total_participantes,
                                                      total_professores=total_professores,
                                                      turma=turma, participante=participante,
                                                      )
+                    participante2 = ParticipanteGrupo.objects.get(participante=participante)
                 elif radio_value_tipo_part == "Participante Individual":
                     acompanhantes = form_part_ind['acompanhantes'].value()
                     ParticipanteIndividual.objects.create(acompanhantes=acompanhantes,
                                                           participante=participante,
                                                           )
+                    participante2 = ParticipanteGrupo.objects.get(participante=participante)
                 # ---------refeicao
                 # radio_value_refeicao = radio_refeicao.cleaned_data.get("QuerRefeicao")
                 n_aluno = form_ementa_inscricao['numero_aluno_normal'].value()
                 n_outro = form_ementa_inscricao['numero_outro_normal'].value()
+                # preco_total = request.POST['preco_total'].value()
                 ementa = Ementa.objects.first()
                 EmentaInscricao.objects.create(ementa=ementa, inscricao=inscricao,
                                                numero_aluno_normal=n_aluno,
                                                numero_outro_normal=n_outro
                                                )
+                ementainscricao = EmentaInscricao.objects.get(inscricao=inscricao)
                 # -----------transporte
                 drop_value = request.POST['tipo_transporte']
                 trans_para_campus = ""
@@ -135,6 +142,7 @@ class InscricaoView(View):
                                                  hora_entre_campus=entre_campus_horario,
                                                  inscricao=inscricao
                                                  )
+                transporte = Transporteproprio.objects.get(inscricao=inscricao)
                 row_count = int(request.POST['row_countt'])
                 if row_count > 0:
                     rows_deleted_count = request.POST['row_deletedd']
@@ -153,15 +161,33 @@ class InscricaoView(View):
                                 n_inscritos)
                             sessao_actividade.n_alunos = novo_numero_alunos
                             sessao_actividade.save()
-                    send_mail(
-                        'Inscricao Dia Aberto',
-                        'Seguem em anexo um pdf com os dados relativos á sua Inscricao',
-                        'xavidolol@gmail.com',
-                        [utilizador.email],
-                    )
+                    sessao = SessaoAtividadeInscricao.objects.filter(inscricao=inscricao)
+                    data = {
+                        'participante': participante,
+                        'utilizador': utilizador,
+                        'participantetipo': participante2,
+                        'sessao': sessao,
+                        'transporte': transporte,
+                        'eminsc': ementainscricao,
+                    }
+                    email = EmailMessage()
+                    email.subject = 'Inscricao Dia Aberto'
+                    email.body = 'Seguem em anexo um pdf com os dados relativos á sua Inscricao'
+                    email.from_email = settings.EMAIL_HOST_USER
+                    email.to = ['xavi.6696@gmail.com']
+                    pdf = render_to_pdf(data)
+                    # preview------------------------------------
+                    # if pdf:
+                    #     response = HttpResponse(pdf, content_type='application/pdf')
+                    #     filename = "PrivacyRequest_%s.pdf" % "1234"
+                    #     content = "inline; filename='%s'" % filename
+                    #     response['Content-Disposition'] = content
+                    #     return response
+                    email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
+                    email.send()
                     return render(request, 'home.html', context={'MSG': "Inscricao com Sucesso"})
                 else:
                     return render(request, 'home.html', context={'MSG': "Deve de escolher pelo menos uma Sessao"})
         else:
             return render(request, 'home.html', context={'MSG': "Deve de escolher uma Escola"})
-        return redirect('/inscricao')
+        return render(request, 'home.html', context={'MSG': "erro"})

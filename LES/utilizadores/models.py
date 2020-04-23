@@ -30,13 +30,13 @@ class Utilizadortipo(models.Model):
         managed = False
         db_table = 'utilizadortipo'
 
+
 class Departamento(models.Model):
     nome = models.CharField(unique=True, max_length=255)
 
     class Meta:
         managed = False
         db_table = 'departamento'
-
 
 
 class Utilizador(models.Model):
@@ -57,6 +57,7 @@ class Utilizador(models.Model):
         managed = False
         db_table = 'utilizador'
 
+
 class Colaboracao(models.Model):
     colaborador = models.ForeignKey('Utilizador', models.DO_NOTHING)
     data_colaboracao = models.DateField()
@@ -69,6 +70,7 @@ class Colaboracao(models.Model):
     class Meta:
         managed = False
         db_table = 'colaboracao'
+
 
 class Diaaberto(models.Model):
     titulo = models.CharField(max_length=255)

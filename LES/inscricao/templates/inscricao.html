@@ -337,9 +337,9 @@
                                                                    onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
                                                                            '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',
                                                                            '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',
-                                                                           '{{ atividade.localizacao.campus }}', this.value, '{{ s.n_alunos }}',
+                                                                           '{{ atividade.localizacao.campus.nome }}', this.value, '{{ s.n_alunos }}',
                                                                            this.id
-                                                                           ); maxIncritos(this.value, this.id, '{{ atividade.id }}', '{{ s.sessao.hora_inicio }}' )">
+                                                                           ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">
                                                         </td>
                                                     </tr>
                                                 {% endif %}

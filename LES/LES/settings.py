@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-if DEBUG:
-     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # so na fase de development (recuperar pass com mail)
-
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [
@@ -41,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'Dia_Aberto.apps.Dia_AbertoConfig',
     'inscricao.apps.InscricaoConfig',
     'utilizadores.apps.UtilizadoresConfig',
     'colaboradores.apps.ColaboradoresConfig',
@@ -79,6 +75,11 @@ TEMPLATES = [
         },
     },
 ]
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_PATH, 'templates'),
+)
 
 WSGI_APPLICATION = 'LES.wsgi.application'
 
@@ -125,4 +126,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'lesgrupo7@gmail.com'
+EMAIL_HOST_PASSWORD = 'g7123456789'
