@@ -1,6 +1,12 @@
+{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
+
     <title></title>
 </head>
 <body>
@@ -16,11 +22,11 @@
         <br>
         <br>
         Hora a que quer iniciar a colaboração?
-        <input type="time"  name="hora_inicio_colab" min="08:00" max="18:00" >
+        <input type="time" name="hora_inicio_colab" min="08:00" max="18:00">
         <br>
         <br>
         Hora a que quer terminar a colaboração?
-        <input type="time"  name="hora_fim_colab" min="08:00" max="18:00" >
+        <input type="time" name="hora_fim_colab" min="08:00" max="18:00">
         <br>
         <br>
         Quer auxiliar na sala de aula?
@@ -37,6 +43,11 @@
         <label for="nao5">NAO</label>
         <br>
         <br>
+
+        <div>
+            <label for="timepicker-one">Hora Chegada:</label>
+            <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+        </div>
 
     </div>
     <input type="submit" value="Submeter">
