@@ -4,55 +4,68 @@
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
-
     <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
 
     <title></title>
 </head>
+
+<script>
+        let options = {
+            twentyFour: true,
+            now: "08:00",
+            max
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        };
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
+    </script>
 <body>
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    <div class="col s12 m6">
-        <h2>Criar Colaboração</h2>
-    </div>
-    <div class="col s12 m6">
-        <label for="datemax">Em que dia quer colaborar?</label>
-        <input type="date" id="datemax" name="data_colaboracao" min={{ data_inicio }} max={{ data_fim }}>
-        <br>
-        <br>
-        Hora a que quer iniciar a colaboração?
-        <input type="time" name="hora_inicio_colab" min="08:00" max="18:00">
-        <br>
-        <br>
-        Hora a que quer terminar a colaboração?
-        <input type="time" name="hora_fim_colab" min="08:00" max="18:00">
-        <br>
-        <br>
-        Quer auxiliar na sala de aula?
-        <input type="radio" id="sim3" name="sala_de_aula" value="sim">
-        <label for="sim3">SIM</label>
-        <input type="radio" id="nao4" name="sala_de_aula" value="nao">
-        <label for="nao4">NAO</label>
-        <br>
-        <br>
-        Quer auxiliar no percurso?
-        <input type="radio" id="sim5" name="percurso" value="sim">
-        <label for="sim5">SIM</label>
-        <input type="radio" id="nao5" name="percurso" value="nao">
-        <label for="nao5">NAO</label>
-        <br>
-        <br>
-
-        <div>
-            <label for="timepicker-one">Hora Chegada:</label>
-            <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col s12 m6">
+            <h2>Criar Colaboração</h2>
         </div>
+        <div class="col s12 m6">
+            <label for="datemax">Em que dia quer colaborar?</label>
+            <input type="date" id="datemax" name="data_colaboracao" min={{ data_inicio }} max={{ data_fim }}>
+            <br>
+            <br>
+            Hora a que quer iniciar a colaboração?
+            <input type="time" name="hora_inicio_colab" min="08:00" max="18:00">
+            <br>
+            <br>
+            Hora a que quer terminar a colaboração?
+            <input type="time" name="hora_fim_colab" min="08:00" max="18:00">
+            <br>
+            <br>
+            Quer auxiliar na sala de aula?
+            <input type="radio" id="sim3" name="sala_de_aula" value="sim">
+            <label for="sim3">SIM</label>
+            <input type="radio" id="nao4" name="sala_de_aula" value="nao">
+            <label for="nao4">NAO</label>
+            <br>
+            <br>
+            Quer auxiliar no percurso?
+            <input type="radio" id="sim5" name="percurso" value="sim">
+            <label for="sim5">SIM</label>
+            <input type="radio" id="nao5" name="percurso" value="nao">
+            <label for="nao5">NAO</label>
+            <br>
+            <br>
 
-    </div>
-    <input type="submit" value="Submeter">
-</form>
-</div>
+            <div>
+                <label for="timepicker-one">Hora Chegada:</label>
+                <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+            </div>
+
+        </div>
+        <input type="submit" value="Submeter">
+    </form>
 {% endblock %}
 
 </body>
