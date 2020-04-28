@@ -8,18 +8,22 @@
     <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
     <script src="{% static 'main/js/inscricao.js' %}"></script>
     <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/inscricao.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'main/css/inscricao.css' %}">#}
+
+    {#    paf   css #}
+    <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
 
     {# material design icon #}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">#}
+    {#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"#}
+    {#          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">#}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
+    {#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"#}
+    {#            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"#}
+    {#            crossorigin="anonymous"></script>#}
     <script>
         let options = {
             twentyFour: true,
@@ -34,8 +38,18 @@
         });
     </script>
     <style>
-        body {
-            background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%) no-repeat fixed;
+        {#body {#}
+        {#    background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%) no-repeat fixed;#}
+        {# }#}
+
+        html {
+            min-height: 100%;
+            background-size: cover;
+            background: linear-gradient(to bottom, #ffffff, #eeeeff) no-repeat fixed center center;
+        }
+
+        * {
+            outline: none;
         }
     </style>
 
@@ -43,423 +57,419 @@
 <body onload="document.inscricao_form.reset();">
 {% block content %}
     {% include "includes/navbar.html" %}
-    <div class="principal">
-        <div class="progress_div">
-            {% include "includes/progress_bar.html" %}
-            <br>
-            <br>
-        </div>
-        {#        <div class="form_div">#}
-        <form class="form_div" method="POST" name="inscricao_form" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="col s12 m6" id="pag_1">
-                <div>
-                    <h2>Dados Participante</h2>
-                    <div class="participante">
-                        <div class="onethird">
-                            <label for="id_area_estudos">Área de Estudos:</label>
-                            <select name="area_estudos" class="select-css" id="id_area_estudos">
-                                <option class="option-css" value="escolha" hidden="hidden">Escolher</option>
-                                <option value="ciencias">Ciências e Tecnologias</option>
-                                <option value="humanidades">Línguas e Humanidades</option>
-                                <option value="artes">Artes Visuais</option>
-                                <option value="socioeconomicas">Ciências Socioeconómicas</option>
-                            </select>
+
+
+
+    <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+        <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+    </div>
+    <div class="page-content">
+        <div class="card">
+            <div class="card-content">
+                <div class="progress_div">
+                    {% include "includes/progress_bar.html" %}
+                    <br>
+                    <br>
+                </div>
+                {#        <div class="form_div">#}
+                <form class="form_div" method="POST" name="inscricao_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col s12 m6" id="pag_1">
+                        <div>
+                            <h2>Dados Participante</h2>
+                            <div class="participante">
+                                <div class="onethird">
+                                    <label for="id_area_estudos">Área de Estudos:</label>
+                                    <select name="area_estudos" class="select-css" id="id_area_estudos">
+                                        <option class="option-css" value="escolha" hidden="hidden">Escolher</option>
+                                        <option value="ciencias">Ciências e Tecnologias</option>
+                                        <option value="humanidades">Línguas e Humanidades</option>
+                                        <option value="artes">Artes Visuais</option>
+                                        <option value="socioeconomicas">Ciências Socioeconómicas</option>
+                                    </select>
+                                </div>
+                                <div class="onethird">
+                                    <label for="id_ano_estudos">Ano Escolar:</label>
+                                    <input type="number" name="ano_estudos" required="" id="id_ano_estudos" min="0"
+                                           max="12">
+                                </div>
+                            </div>
+                            {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
+                                <div class="onethird">
+                                    <div id="form_individual" class="ind">
+                                        <p>
+                                            <label for="id_acompanhantes">Acompanhantes:</label>
+                                            <input type="number" name="acompanhantes" required=""
+                                                   id="id_acompanhantes"
+                                                   onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')"
+                                                   min="0">
+                                        </p>
+                                    </div>
+                                </div>
+                                {% if age < 18 %}
+                                    <div class="onethird">
+                                        <a href="{% static "main/download/autorizacao.pdf" %}" target="_blank">
+                                            <label for="template_download">Download Template</label>
+                                            <button name="template_download" class="" type="button" formnovalidate>
+                                                Download<i
+                                                    class="fas fa-file-download"></i></button>
+                                        </a>
+                                    </div>
+                                    <div class="onethird">
+                                        <label for="myfile">Ficheiro Autorização: </label>
+                                        <input type="file" id="myfile" name="myfile">
+                                    </div>
+                                {% endif %}
+                            {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
+                                <div class="grupo" id="form_grupo">
+                                    <div class="onethird">
+                                        <label for="id_turma">Turma: </label>
+                                        <input type="text" name="turma" required="" id="id_turma">
+                                    </div>
+                                    <br><br><br><br><br><br>
+                                    <h2>Tamanho Grupo</h2>
+                                    <div class="half">
+                                        <label for="id_total_participantes">Total Participantes: </label>
+                                        <input type="number" name="total_participantes" required="" value="0"
+                                               id="id_total_participantes"
+                                               onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                                    </div>
+                                    <div class="half">
+                                        <label for="id_total_professores">Total Professores: </label>
+                                        <input type="number" name="total_professores" required="" value="0"
+                                               id="id_total_professores"
+                                               onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                                    </div>
+
+                                </div>
+                            {% endif %}
+
                         </div>
-                        <div class="onethird">
-                            <label for="id_ano_estudos">Ano Escolar:</label>
-                            <input type="number" name="ano_estudos" required="" id="id_ano_estudos" min="0" max="12">
-                        </div>
+                        <button class="next" type="button" onclick="pagSeguinte('1')" formnovalidate>Próximo <i
+                                class="fas fa-caret-right"></i></button>
                     </div>
-                    {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
-                        <div class="onethird">
-                            <div id="form_individual" class="ind">
-                                <p>
-                                    <label for="id_acompanhantes">Acompanhantes:</label>
-                                    <input type="number" name="acompanhantes" required=""
-                                           id="id_acompanhantes"
-                                           onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')" min="0">
-                                </p>
-                            </div>
-                        </div>
-                        {% if age < 18 %}
-                            <div class="onethird">
-                                <a href="{% static "main/download/autorizacao.pdf" %}" target="_blank">
-                                    <button class="" type="button" formnovalidate>Download Template <i
-                                            class="fas fa-file-download"></i></button>
-                                </a>
-                            </div>
-                            <div class="onethird">
-                                <label for="myfile">Ficheiro Autorização: </label>
-                                <input type="file" id="myfile" name="myfile">
-                            </div>
-                        {% endif %}
-                        <div class="getaltura">
 
-                        </div>
-                    {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
-                        <div class="grupo" id="form_grupo">
-                            <div class="onethird">
-                                <label for="id_turma">Turma: </label>
-                                <input type="text" name="turma" required="" id="id_turma">
-                            </div>
-                            <br><br><br><br><br><br>
-                            <h2>Tamanho Grupo</h2>
-                            <div class="half">
-                                <label for="id_total_participantes">Total Participantes: </label>
-                                <input type="number" name="total_participantes" required="" value="0"
-                                       id="id_total_participantes"
-                                       onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
-                            </div>
-                            <div class="half">
-                                <label for="id_total_professores">Total Professores: </label>
-                                <input type="number" name="total_professores" required="" value="0"
-                                       id="id_total_professores"
-                                       onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
-                            </div>
-
-                        </div>
-                    {% endif %}
-
-                </div>
-                <button class="next" type="button" onclick="pagSeguinte('1')" formnovalidate>Próximo <i
-                        class="fas fa-caret-right"></i></button>
-            </div>
-
-            <div class="col s12 m6" id="pag_2" style="display:none;">
-                <h2>Dados da Escola</h2>
-                <label for="Escola">Escola :</label>
-                <div class="half">
-                    <select class="select-css" id="Escola" name="Escola" onchange='CheckEscola(this.value);' required>
-                        <option hidden>Escolher</option>
-                        {% for e in escolas %}
-                            <option value="{{ e.nome }}">{{ e.nome }}</option>
-                        {% endfor %}
-                        <option value="others">Outra Escola...</option>
-                    </select>
-                </div>
-                <div class="grupo" id="form_escola" style="display:none;">
-                    {#                    {{ form_escola.as_p }}#}
-
-                    <div><label for="id_nome">Nome da Escola:</label> <input type="text" name="nome" maxlength="50"
-                                                                             id="id_nome" required="required"></div>
-                    <div class="half"><label for="id_morada">Morada:</label> <input type="text" name="morada"
-                                                                                    class="half"
-                                                                                    maxlength="50" id="id_morada"
-                                                                                    required="required">
-                    </div>
-                    <div class="half"><label for="id_codigo_postal">Código Postal:</label>
-                        <input type="text" name="codigo_postal"
-                               class="half" maxlength="8"
-                               id="id_codigo_postal"
-                               required="required" pattern="\d{4}[ -]\d{3}" placeholder="xxxx-xxx"></div>
-                    <div class="half"><label for="id_localidade">Localidade:</label>
-                        <input type="text" name="localidade"
-                               maxlength="50" id="id_localidade"
-                               required="required"></div>
-                    <div class="half"><label for="id_contacto">Contacto:</label>
-                        <input type="number" name="contacto" min="0"
-                               max="999999999" id="id_contacto"
-                               required="required"></div>
-
-                </div>
-                <br>
-                <button class="previus" type="button" onclick="pagAnterior('2')" formnovalidate><i
-                        class="fas fa-caret-left"></i> Anterior
-                </button>
-                <button class="next" type="button" onclick="pagSeguinte('2')" formnovalidate>Próximo <i
-                        class="fas fa-caret-right"></i></button>
-            </div>
-
-            <div class="col s12 m6" id="pag_3" style="display:none;">
-                <h2>Refeição</h2>
-                {{ radio_refeicao }}
-                <div id="quer_refeicao" style="display:none;">
-                    <h3>Quantas Refeições Deseja?</h3>
-                    {% for v in values %}
-                        <div class="refeicao">
-                            <label for="preco_aluno_normal"></label>
-                            <input id="preco_aluno_normal" type="text" style="display:none;"
-                                   value="{{ v.preco_aluno_normal }}">
-                            <label for="preco_outro_normal"></label>
-                            <input id="preco_outro_normal" type="text" style="display:none;"
-                                   value="{{ v.preco_outro_normal }}">
-                            <p onchange="MultiplicaPreco()">Refeições
-                                aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
-                                {{ v.preco_aluno_normal }}&euro;/refeição</p>
-                            <p onchange="MultiplicaPreco()">Refeições não
-                                aluno:{{ form_ementa_inscricao.numero_outro_normal }}
-                                {{ v.preco_outro_normal }}&euro;/refeição</p>
-                            <div>
-                                <label for="preco_total">Preço total:</label>
-                                <input type="number" name="preco_total" id="preco_total"
-                                       value="0" disabled>&euro;
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <button class="previus" type="button" onclick="pagAnterior('3')" formnovalidate>
-                    <i class="fas fa-caret-left"></i> Anterior
-                </button>
-                <button class="next" type="button" onclick="pagSeguinte('3')" formnovalidate>Próximo
-                    <i class="fas fa-caret-right"></i></button>
-            </div>
-
-            <div class="col s12 m6" id="pag_4" style="display:none;">
-                <h2>Transporte</h2>
-                <div class="half">
-                    <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
-                    <select class="select-css" name="tipo_transporte" id="tipo_transporte"
-                            onchange="tipoTransporte(this.value)">
-                        <option hidden>Escolher</option>
-                        <option value="proprio">Transporte próprio</option>
-                        <option value="autocarro">Autocarro Publico</option>
-                        <option value="comboio">Comboio</option>
-                    </select>
-                </div>
-                <div id="transporte_para_campus" style="display: none">
-                    <ul id="id_QuerTransportePara">
-                        <label for="id_QuerTransportePara_0">
-                            Vai desejar transporte entre a estação e algum dos Campus?
-                        </label>
-                        <li>
-                            <label for="id_QuerTransportePara_0">
-                                <input type="radio" name="QuerTransportePara" value="sim"
-                                       onchange="paraCampus(this.value);"
-                                       required="required" id="id_QuerTransportePara_0">
-                                Sim
-                            </label>
-                        </li>
-                        <li>
-                            <label for="id_QuerTransportePara_1">
-                                <input type="radio" name="QuerTransportePara" value="nao"
-                                       onchange="paraCampus(this.value);"
-                                       id="id_QuerTransportePara_1" checked>
-                                Não
-                            </label>
-                        </li>
-                    </ul>
-                    <div class="half" id="qual_campus" style="display: none">
-                        <label for="qual_campus_2">Para qual Campus?</label>
-                        <select class="select-css" name="qual" id="qual_campus_2">
-                            <option hidden="">Escolher</option>
-                            <option value="penha">Campus da Penha</option>
-                            <option value="gambelas">Campus das Gambelas</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <div class="half">
-                        <label for="timepicker-one">Hora Chegada:</label>
-                        <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
-                    </div>
-                    <div class="half">
-                        <label for="timepicker-two">Hora Partida:</label>
-                        <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
-                    </div>
-                </div>
-                <label for="id_QuerTransporteEntre_0">Vai desejar transporte entre os Campus?</label>
-                <ul id="id_QuerTransporteEntre">
-                    <li><label for="id_QuerTransporteEntre_0"><input type="radio" name="QuerTransporteEntre"
-                                                                     value="sim"
-                                                                     onchange="entreCampus(this.value);" required=""
-                                                                     id="id_QuerTransporteEntre_0">
-                        Sim</label>
-
-                    </li>
-                    <li><label for="id_QuerTransporteEntre_1"><input type="radio" name="QuerTransporteEntre"
-                                                                     value="nao"
-                                                                     onchange="entreCampus(this.value);" required=""
-                                                                     id="id_QuerTransporteEntre_1" checked>
-                        Não</label>
-
-                    </li>
-                </ul>
-                <div id="entre_campus" style="display: none">
-                    <div style="width: 100%">
+                    <div class="col s12 m6" id="pag_2" style="display:none;">
+                        <h2>Dados da Escola</h2>
+                        <label for="Escola">Escola :</label>
                         <div class="half">
-                            <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
-                            <select class="select-css" name="transporte_campus" id="transporte_campus"
-                                    onchange="entreCampusRelogio(this.value)">
+                            <select class="select-css" id="Escola" name="Escola" onchange='CheckEscola(this.value);'
+                                    required>
                                 <option hidden>Escolher</option>
-                                <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
-                                <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
+                                {% for e in escolas %}
+                                    <option value="{{ e.nome }}">{{ e.nome }}</option>
+                                {% endfor %}
+                                <option value="others">Outra Escola...</option>
                             </select>
                         </div>
-                    </div>
-                    <div style="width: 100%">
-                        <div class="half" id="timepicker-three_div" style="display: none">
-                            <label id="timepicker-three_label" for="timepicker-three"></label>
-                            <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
-                        </div>
-                        <div class="half" id="timepicker-four_div" style="display: none">
-                            <label id="timepicker-four_label" for="timepicker-four"></label>
-                            <input type="text" id="timepicker-four" name="timepicker-four" class="timepicker-12-hr">
-                        </div>
-                    </div>
-                </div>
-                <div style="width: 100%">
-                    <button class="previus" type="button" onclick="pagAnterior('4')" formnovalidate><i
-                            class="fas fa-caret-left"></i> Anterior
-                    </button>
-                    <button class="next" type="button" onclick="pagSeguinte('4')" formnovalidate>Próximo <i
-                            class="fas fa-caret-right"></i></button>
-                </div>
-            </div>
+                        <div class="grupo" id="form_escola" style="display:none;">
+                            {#                    {{ form_escola.as_p }}#}
 
-            <div class="col s12 m6" id="pag_5" style="display:none;">
-                <h2>Actividades</h2>
-                <h4>Sessões Disponiveis</h4>
-                <table id="table_atividades" class="table table1">
-                    <thead class="text-center">
-                    <tr class="tablerow">
-                        <th style="width: 15%;">Nome</th>
-                        <th style="width: 15%;">Tipo</th>
-                        <th style="width: 40%;">Publico alvo</th>
-                        <th style="width: 15%">Departamento</th>
-                        <th style="width: 15%;">Campus</th>
-                    </tr>
-                    </thead>
-                    {% for atividade in atividades %}
-                        {% if atividade.validada == 'VD' %}
-                            <thead class="text-center rowhover" data-toggle="collapse"
-                                   href="#collapse_{{ atividade.id }}"
-                                   aria-expanded="false"
-                                   aria-controls="collapse_{{ atividade.id }}">
-                            <tr>
-                                <th style="width: 15%;">{{ atividade.nome }}</th>
-                                <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
-                                <th style="width: 40%;">
-                                    {% for atividade_publico_alvo in atividade.publico_alvo.all %}
-                                        <p>{{ atividade_publico_alvo.nome }}</p>
-                                    {% endfor %}
-                                </th>
-                                <th style="width: 15%">{{ atividade.departamento.nome }}</th>
-                                <th style="width: 15%;">{{ atividade.campus.nome }}</th>
+                            <div><label for="id_nome">Nome da Escola:</label> <input type="text" name="nome"
+                                                                                     maxlength="50"
+                                                                                     id="id_nome" required="required">
+                            </div>
+                            <div class="half"><label for="id_morada">Morada:</label> <input type="text" name="morada"
+                                                                                            class="half"
+                                                                                            maxlength="50"
+                                                                                            id="id_morada"
+                                                                                            required="required">
+                            </div>
+                            <div class="half"><label for="id_codigo_postal">Código Postal:</label>
+                                <input type="text" name="codigo_postal"
+                                       class="half" maxlength="8"
+                                       id="id_codigo_postal"
+                                       required="required" pattern="\d{4}[ -]\d{3}" placeholder="xxxx-xxx"></div>
+                            <div class="half"><label for="id_localidade">Localidade:</label>
+                                <input type="text" name="localidade"
+                                       maxlength="50" id="id_localidade"
+                                       required="required"></div>
+                            <div class="half"><label for="id_contacto">Contacto:</label>
+                                <input type="number" name="contacto" min="0"
+                                       max="999999999" id="id_contacto"
+                                       required="required"></div>
+
+                        </div>
+                        <br>
+                        <button class="previus" type="button" onclick="pagAnterior('2')" formnovalidate><i
+                                class="fas fa-caret-left"></i> Anterior
+                        </button>
+                        <button class="next" type="button" onclick="pagSeguinte('2')" formnovalidate>Próximo <i
+                                class="fas fa-caret-right"></i></button>
+                    </div>
+
+                    <div class="col s12 m6" id="pag_3" style="display:none;">
+                        <h2>Refeição</h2>
+                        {{ radio_refeicao }}
+                        <div id="quer_refeicao" style="display:none;">
+                            <h3>Quantas Refeições Deseja?</h3>
+                            {% for v in values %}
+                                <div class="refeicao">
+                                    <label for="preco_aluno_normal"></label>
+                                    <input id="preco_aluno_normal" type="text" style="display:none;"
+                                           value="{{ v.preco_aluno_normal }}">
+                                    <label for="preco_outro_normal"></label>
+                                    <input id="preco_outro_normal" type="text" style="display:none;"
+                                           value="{{ v.preco_outro_normal }}">
+                                    <p onchange="MultiplicaPreco()">Refeições
+                                        aluno:{{ form_ementa_inscricao.numero_aluno_normal }}
+                                        {{ v.preco_aluno_normal }}&euro;/refeição</p>
+                                    <p onchange="MultiplicaPreco()">Refeições não
+                                        aluno:{{ form_ementa_inscricao.numero_outro_normal }}
+                                        {{ v.preco_outro_normal }}&euro;/refeição</p>
+                                    <div>
+                                        <label for="preco_total">Preço total:</label>
+                                        <input type="number" name="preco_total" id="preco_total"
+                                               value="0" disabled>&euro;
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="previus" type="button" onclick="pagAnterior('3')" formnovalidate>
+                            <i class="fas fa-caret-left"></i> Anterior
+                        </button>
+                        <button class="next" type="button" onclick="pagSeguinte('3')" formnovalidate>Próximo
+                            <i class="fas fa-caret-right"></i></button>
+                    </div>
+
+                    <div class="col s12 m6" id="pag_4" style="display:none;">
+                        <h2>Transporte</h2>
+                        <div class="half">
+                            <label for="tipo_transporte">Que tipo de transporte vai utilizar :</label>
+                            <select class="select-css" name="tipo_transporte" id="tipo_transporte"
+                                    onchange="tipoTransporte(this.value)">
+                                <option hidden>Escolher</option>
+                                <option value="proprio">Transporte próprio</option>
+                                <option value="autocarro">Autocarro Publico</option>
+                                <option value="comboio">Comboio</option>
+                            </select>
+                        </div>
+                        <div id="transporte_para_campus" style="display: none">
+                            <ul id="id_QuerTransportePara">
+                                <label for="id_QuerTransportePara_0">
+                                    Vai desejar transporte entre a estação e algum dos Campus?
+                                </label>
+                                <li>
+                                    <label for="id_QuerTransportePara_0">
+                                        <input type="radio" name="QuerTransportePara" value="sim"
+                                               onchange="paraCampus(this.value);"
+                                               required="required" id="id_QuerTransportePara_0">
+                                        Sim
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="id_QuerTransportePara_1">
+                                        <input type="radio" name="QuerTransportePara" value="nao"
+                                               onchange="paraCampus(this.value);"
+                                               id="id_QuerTransportePara_1" checked>
+                                        Não
+                                    </label>
+                                </li>
+                            </ul>
+                            <div class="half" id="qual_campus" style="display: none">
+                                <label for="qual_campus_2">Para qual Campus?</label>
+                                <select class="select-css" name="qual" id="qual_campus_2">
+                                    <option hidden="">Escolher</option>
+                                    <option value="penha">Campus da Penha</option>
+                                    <option value="gambelas">Campus das Gambelas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="half">
+                                <label for="timepicker-one">Hora Chegada:</label>
+                                <input type="text" id="timepicker-one" name="timepicker-one" class="timepicker-12-hr">
+                            </div>
+                            <div class="half">
+                                <label for="timepicker-two">Hora Partida:</label>
+                                <input type="text" id="timepicker-two" name="timepicker-two" class="timepicker-12-hr">
+                            </div>
+                        </div>
+                        <label for="id_QuerTransporteEntre_0">Vai desejar transporte entre os Campus?</label>
+                        <ul id="id_QuerTransporteEntre">
+                            <li><label for="id_QuerTransporteEntre_0"><input type="radio" name="QuerTransporteEntre"
+                                                                             value="sim"
+                                                                             onchange="entreCampus(this.value);"
+                                                                             required=""
+                                                                             id="id_QuerTransporteEntre_0">
+                                Sim</label>
+
+                            </li>
+                            <li><label for="id_QuerTransporteEntre_1"><input type="radio" name="QuerTransporteEntre"
+                                                                             value="nao"
+                                                                             onchange="entreCampus(this.value);"
+                                                                             required=""
+                                                                             id="id_QuerTransporteEntre_1" checked>
+                                Não</label>
+
+                            </li>
+                        </ul>
+                        <div id="entre_campus" style="display: none">
+                            <div style="width: 100%">
+                                <div class="half">
+                                    <label for="transporte_campus">De qual para qual Campus necessita de
+                                        Transporte?</label>
+                                    <select class="select-css" name="transporte_campus" id="transporte_campus"
+                                            onchange="entreCampusRelogio(this.value)">
+                                        <option hidden>Escolher</option>
+                                        <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
+                                        <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="width: 100%">
+                                <div class="half" id="timepicker-three_div" style="display: none">
+                                    <label id="timepicker-three_label" for="timepicker-three"></label>
+                                    <input type="text" id="timepicker-three" name="timepicker-three"
+                                           class="timepicker-12-hr">
+                                </div>
+                                <div class="half" id="timepicker-four_div" style="display: none">
+                                    <label id="timepicker-four_label" for="timepicker-four"></label>
+                                    <input type="text" id="timepicker-four" name="timepicker-four"
+                                           class="timepicker-12-hr">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%">
+                            <button class="previus" type="button" onclick="pagAnterior('4')" formnovalidate><i
+                                    class="fas fa-caret-left"></i> Anterior
+                            </button>
+                            <button class="next" type="button" onclick="pagSeguinte('4')" formnovalidate>Próximo <i
+                                    class="fas fa-caret-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6" id="pag_5" style="display:none;">
+                        <h2>Actividades</h2>
+                        <h4>Sessões Disponiveis</h4>
+                        <table id="table_atividades" class="table table1">
+                            <thead class="text-center">
+                            <tr class="tablerow">
+                                <th style="width: 15%;">Nome</th>
+                                <th style="width: 15%;">Tipo</th>
+                                <th style="width: 40%;">Publico alvo</th>
+                                <th style="width: 15%">Departamento</th>
+                                <th style="width: 15%;">Campus</th>
                             </tr>
                             </thead>
-                            <tbody class="collapse" id="collapse_{{ atividade.id }}">
-                            <tr>
-                                <th scope="row" class="text-center" colspan="5">
-                                    <div style="padding: 10px">
-                                        <div>
-                                            <table id="sessao_atividade_{{ atividade.id }}" class="table">
-                                                <thead>
-                                                <tr>
-                                                    <td colspan="6">Descricao: {{ atividade.descricao }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="6">Responsavel: {{ atividade.responsavel.nome }}</td>
-                                                </tr>
-                                                <tr class="tablerow">
-                                                    <th>Hora:</th>
-                                                    <th>Duração:</th>
-                                                    <th>Vagas:</th>
-                                                    <th>Localização:</th>
-                                                    <th>Inscrever:</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for s in sessaoatividade %}
-                                                    {% if s.atividade.id == atividade.id and s.n_alunos > 0 %}
-                                                        <tr id="sessao_{{ s.id }}">
-                                                            <td>{{ s.sessao.hora }}</td>
-                                                            <td>{{ s.atividade.duracao }}</td>
-                                                            <td>{{ s.n_alunos }}</td>
-                                                            {% if atividade.edificio.nome == None %}
-                                                                <td>{{ atividade.tipo_local }}</td>
-                                                            {% else %}
-                                                                <td>{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}</td>
-                                                            {% endif %}
-                                                            <td><label for="quantity"></label>
-                                                                <label for="quantity_{{ s.id }}"></label>
-                                                                <input type="number" id="quantity_{{ s.id }}"
-                                                                       name="quantity_{{ s.id }}" value="0"
-                                                                       min="0" max="{{ s.n_alunos }}"
-                                                                       onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
-                                                                               '{{ s.sessao.hora }}', '{{ atividade.duracao }}',
-                                                                               '{{ atividade.nome }}', '{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}',
-                                                                               '{{ atividade.campus.nome }}', this.value, '{{ s.n_alunos }}',
-                                                                               this.id
-                                                                               ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">
-                                                            </td>
+                            {% for atividade in atividades %}
+                                {% if atividade.validada == 'VD' %}
+                                    <thead class="text-center rowhover" data-toggle="collapse"
+                                           href="#collapse_{{ atividade.id }}"
+                                           aria-expanded="false"
+                                           aria-controls="collapse_{{ atividade.id }}">
+                                    <tr>
+                                        <th style="width: 15%;">{{ atividade.nome }}</th>
+                                        <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
+                                        <th style="width: 40%;">
+                                            {% for atividade_publico_alvo in atividade.publico_alvo.all %}
+                                                <p>{{ atividade_publico_alvo.nome }}</p>
+                                            {% endfor %}
+                                        </th>
+                                        <th style="width: 15%">{{ atividade.departamento.nome }}</th>
+                                        <th style="width: 15%;">{{ atividade.campus.nome }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="collapse" id="collapse_{{ atividade.id }}">
+                                    <tr>
+                                        <th scope="row" class="text-center" colspan="5">
+                                            <div style="padding: 10px">
+                                                <div>
+                                                    <table id="sessao_atividade_{{ atividade.id }}" class="table">
+                                                        <thead>
+                                                        <tr>
+                                                            <td colspan="6">Descricao: {{ atividade.descricao }}</td>
                                                         </tr>
-                                                    {% endif %}
-                                                {% endfor %}
-
-
-                                                {#                                            {% for s in sessaoatividade %}#}
-                                                {#                                                {% if s.atividade.id == atividade.id %}#}
-                                                {#                                                    <tr id="sessao_{{ s.id }}">#}
-                                                {#                                                        <td>{{ s.sessao.hora_inicio }}</td>#}
-                                                {#                                                        <td>{{ atividade.duracao }}</td>#}
-                                                {#                                                        <td>{{ s.n_alunos }}</td>#}
-                                                {#                                                        <td>{{ atividade.edificio }} {{ atividade.andar }}.{{ atividade.sala }} {{ atividade.campus }}</td>#}
-                                                {#                                                        <td><label for="quantity"></label>#}
-                                                {#                                                            <label for="quantity_{{ s.id }}"></label>#}
-                                                {#                                                            <input type="number" id="quantity_{{ s.id }}"#}
-                                                {#                                                                   name="quantity_{{ s.id }}" value="0"#}
-                                                {#                                                                   min="0" max="{{ s.n_alunos }}"#}
-                                                {#                                                                   onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',#}
-                                                {#                                                                           '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',#}
-                                                {#                                                                           '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',#}
-                                                {#                                                                           '{{ atividade.localizacao.campus.nome }}', this.value, '{{ s.n_alunos }}',#}
-                                                {#                                                                           this.id#}
-                                                {#                                                                           ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">#}
-                                                {#                                                        </td>#}
-                                                {#                                                    </tr>#}
-                                                {#                                                {% endif %}#}
-                                                {#                                            {% endfor %}#}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </th>
+                                                        <tr>
+                                                            <td colspan="6">
+                                                                Responsavel: {{ atividade.responsavel.nome }}</td>
+                                                        </tr>
+                                                        <tr class="tablerow">
+                                                            <th>Hora:</th>
+                                                            <th>Duração:</th>
+                                                            <th>Vagas:</th>
+                                                            <th>Localização:</th>
+                                                            <th>Inscrever:</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for s in sessaoatividade %}
+                                                            {% if s.atividade.id == atividade.id and s.n_alunos > 0 %}
+                                                                <tr id="sessao_{{ s.id }}">
+                                                                    <td>{{ s.sessao.hora }}</td>
+                                                                    <td>{{ s.atividade.duracao }}</td>
+                                                                    <td>{{ s.n_alunos }}</td>
+                                                                    {% if atividade.edificio.nome == None %}
+                                                                        <td>{{ atividade.tipo_local }}</td>
+                                                                    {% else %}
+                                                                        <td>{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}</td>
+                                                                    {% endif %}
+                                                                    <td><label for="quantity"></label>
+                                                                        <label for="quantity_{{ s.id }}"></label>
+                                                                        <input type="number" id="quantity_{{ s.id }}"
+                                                                               name="quantity_{{ s.id }}" value="0"
+                                                                               min="0" max="{{ s.n_alunos }}"
+                                                                               onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
+                                                                                       '{{ s.sessao.hora }}', '{{ atividade.duracao }}',
+                                                                                       '{{ atividade.nome }}', '{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}',
+                                                                                       '{{ atividade.campus.nome }}', this.value, '{{ s.n_alunos }}',
+                                                                                       this.id
+                                                                                       ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                        <br><br>
+                        <h4>Sessoes Escolhidas</h4>
+                        <table id="table_inscritos" class="table">
+                            <thead class="tablehead text-center">
+                            <tr>
+                                <th style="width: 5%;">Hórario</th>
+                                <th style="width: 5%;">Duracao</th>
+                                <th style="width: 10%;">Inscritos</th>
+                                <th style="width: 30%;">Atividade</th>
+                                <th style="width: 25%;">Localização</th>
+                                <th style="width: 20%;">Campus</th>
+                                <th style="width: 5%;">Ações</th>
                             </tr>
-                            </tbody>
-                        {% endif %}
-                    {% endfor %}
-                </table>
-                <br><br>
-                <h4>Sessoes Escolhidas</h4>
-                <table id="table_inscritos" class="table">
-                    <thead class="tablehead text-center">
-                    <tr>
-                        <th style="width: 5%;">Hórario</th>
-                        <th style="width: 5%;">Duracao</th>
-                        <th style="width: 10%;">Inscritos</th>
-                        <th style="width: 30%;">Atividade</th>
-                        <th style="width: 25%;">Localização</th>
-                        <th style="width: 20%;">Campus</th>
-                        <th style="width: 5%;">Ações</th>
-                    </tr>
-                    </thead>
-                </table>
-                <button class="previus" type="button" onclick="pagAnterior('5')" formnovalidate><i
-                        class="fas fa-caret-left"></i> Anterior
-                </button>
-                <button class="next" type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo <i
-                        class="fas fa-caret-right"></i></button>
+                            </thead>
+                        </table>
+                        <button class="previus" type="button" onclick="pagAnterior('5')" formnovalidate><i
+                                class="fas fa-caret-left"></i> Anterior
+                        </button>
+                        <button class="next" type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo <i
+                                class="fas fa-caret-right"></i></button>
+                    </div>
+                    {#----------------------------------------hiden inputs para js e debug-----------------------------------#}
+                    <label for="row_countt" style="display:none;"></label>
+                    <input type="number" id="row_countt" name="row_countt" value="" hidden>
+                    <table id="rows_deleted_table" hidden></table>
+                    <label for="row_deletedd" hidden></label>
+                    <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
+                    <label for="max_incritos_id"></label>
+                    <input type="number" id="max_incritos_id" value="" hidden>
+                    {#---------------------------------------------------------------------------------------------#}
+                    <div class="col s12 m6" id="pag_6" style="display:none;">
+                        <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao
+                            para {{ utilizador.email }}</p>
+                        <button class="previus" type="button" onclick="pagAnterior('6')" formnovalidate><i
+                                class="fas fa-caret-left"></i> Anterior
+                        </button>
+                        <button class="next" type="submit">Submeter Inscrição</button>
+                    </div>
+                </form>
             </div>
-{#----------------------------------------hiden inputs para js e debug-----------------------------------#}
-            <label for="row_countt" style="display:none;"></label>
-            <input type="number" id="row_countt" name="row_countt" value="" hidden>
-            <table id="rows_deleted_table" hidden></table>
-            <label for="row_deletedd" hidden></label>
-            <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
-            <label for="max_incritos_id"></label>
-            <input type="number" id="max_incritos_id" value="" hidden>
-{#---------------------------------------------------------------------------------------------#}
-            <div class="col s12 m6" id="pag_6" style="display:none;">
-                <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao
-                    para {{ utilizador.email }}</p>
-                <button class="previus" type="button" onclick="pagAnterior('6')" formnovalidate><i
-                        class="fas fa-caret-left"></i> Anterior
-                </button>
-                <button class="next" type="submit">Submeter Inscrição</button>
-            </div>
-        </form>
-        {#        </div>#}
+        </div>
     </div>
 {% endblock %}
 </body>

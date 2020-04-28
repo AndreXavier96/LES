@@ -1,6 +1,29 @@
 from django.db import models
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
+
+class Faculdade(models.Model):
+    # Campos
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        db_table = 'Faculdade'
+
+    def __str__(self):
+        return self.nome
+
+
+class Departamento(models.Model):
+    # Campos
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100, unique=True)
+    faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'Departamento'
+
+    def __str__(self):
+        return self.nome
 
 
 class Campus(models.Model):
@@ -31,16 +54,8 @@ class Utilizadortipo(models.Model):
         db_table = 'utilizadortipo'
 
 
-class Departamento(models.Model):
-    nome = models.CharField(unique=True, max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'departamento'
-
-
 class Utilizador(models.Model):
-    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
+    utilizadortipo = models.ForeignKey(Utilizadortipo, models.DO_NOTHING)
     email = models.CharField(unique=True, max_length=255)
     nome = models.CharField(max_length=255)
     data_nascimento = models.DateField()
