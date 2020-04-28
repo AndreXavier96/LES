@@ -73,3 +73,21 @@
 .progressbar li.active:after {
     background-color: #23d160;
 }
+
+
+.caminho a{
+    color: #2d74d8;
+    width: min-content;
+}
+
+.caminho a:hover{
+    color: black;
+    text-decoration: none;
+}
+
+.caminho a:last-child{
+    color: black;
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}

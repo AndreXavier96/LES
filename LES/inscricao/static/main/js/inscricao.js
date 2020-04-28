@@ -56,12 +56,17 @@ function entreCampus(val) {
 
 function entreCampusRelogio(val) {
     let DivRelogio3 = document.getElementById('timepicker-three_div')
+    let DivRelogio4 = document.getElementById('timepicker-four_div')
     if (val === 'penha_para_gambelas' || val === 'gambelas_para_penha') {
         DivRelogio3.style.display = 'block'
-        if (val === 'penha_para_gambelas')
-            document.getElementById('timepicker-three_label').textContent = "Horario saida da Penha"
-        else if (val === 'gambelas_para_penha')
-            document.getElementById('timepicker-three_label').textContent = "Horario saida das Gambelas"
+        DivRelogio4.style.display = 'block'
+        if (val === 'penha_para_gambelas') {
+            document.getElementById('timepicker-three_label').textContent = "Horario ida da Penha para Gambelas"
+            document.getElementById('timepicker-four_label').textContent = "Horario volta das Gambelas para a Penha"
+        } else if (val === 'gambelas_para_penha') {
+            document.getElementById('timepicker-three_label').textContent = "Horario ida das Gambelas para a Penha"
+            document.getElementById('timepicker-four_label').textContent = "Horario volta da Penha para Gambelas"
+        }
     } else
         DivRelogio3.style.display = 'none'
 }
@@ -89,6 +94,12 @@ function MultiplicaPreco() {
 
 function pagSeguinte(pag_atual) {
     if (pag_atual === '1') {
+        document.getElementById('fa1').setAttribute("onclick", "irParaPagina('1');")
+        document.getElementById('p1').setAttribute("onclick", "irParaPagina('1');")
+        document.getElementById('fa2').setAttribute("name", "active")
+        document.getElementById('p2').setAttribute("name", "active")
+        document.getElementById('fa1').removeAttribute("name")
+        document.getElementById('p1').removeAttribute("name")
         document.getElementById('pag_1').style.display = 'none'
         document.getElementById('pag_2').style.display = 'block'
         document.getElementById('bar2').classList.add("active")
@@ -96,6 +107,12 @@ function pagSeguinte(pag_atual) {
         document.getElementById('fa1').classList.add("fausada")
         document.getElementById('fa2').classList.add("faactive")
     } else if (pag_atual === '2') {
+        document.getElementById('fa2').setAttribute("onclick", "irParaPagina('2');")
+        document.getElementById('p2').setAttribute("onclick", "irParaPagina('2');")
+        document.getElementById('fa3').setAttribute("name", "active")
+        document.getElementById('p3').setAttribute("name", "active")
+        document.getElementById('fa2').removeAttribute("name")
+        document.getElementById('p2').removeAttribute("name")
         document.getElementById('pag_2').style.display = 'none'
         document.getElementById('pag_3').style.display = 'block'
         document.getElementById('bar3').classList.add("active")
@@ -103,6 +120,12 @@ function pagSeguinte(pag_atual) {
         document.getElementById('fa2').classList.add("fausada")
         document.getElementById('fa3').classList.add("faactive")
     } else if (pag_atual === '3') {
+        document.getElementById('fa3').setAttribute("onclick", "irParaPagina('3');")
+        document.getElementById('p3').setAttribute("onclick", "irParaPagina('3');")
+        document.getElementById('fa4').setAttribute("name", "active")
+        document.getElementById('p4').setAttribute("name", "active")
+        document.getElementById('fa3').removeAttribute("name")
+        document.getElementById('p3').removeAttribute("name")
         document.getElementById('pag_3').style.display = 'none'
         document.getElementById('pag_4').style.display = 'block'
         document.getElementById('bar4').classList.add("active")
@@ -110,6 +133,12 @@ function pagSeguinte(pag_atual) {
         document.getElementById('fa3').classList.add("fausada")
         document.getElementById('fa4').classList.add("faactive")
     } else if (pag_atual === '4') {
+        document.getElementById('fa4').setAttribute("onclick", "irParaPagina('4');")
+        document.getElementById('p4').setAttribute("onclick", "irParaPagina('4');")
+        document.getElementById('fa5').setAttribute("name", "active")
+        document.getElementById('p5').setAttribute("name", "active")
+        document.getElementById('fa4').removeAttribute("name")
+        document.getElementById('p4').removeAttribute("name")
         document.getElementById('pag_4').style.display = 'none'
         document.getElementById('pag_5').style.display = 'block'
         document.getElementById('bar5').classList.add("active")
@@ -117,6 +146,12 @@ function pagSeguinte(pag_atual) {
         document.getElementById('fa4').classList.add("fausada")
         document.getElementById('fa5').classList.add("faactive")
     } else if (pag_atual === '5') {
+        document.getElementById('fa5').setAttribute("onclick", "irParaPagina('5');")
+        document.getElementById('p5').setAttribute("onclick", "irParaPagina('5');")
+        document.getElementById('fa6').setAttribute("name", "active")
+        document.getElementById('p6').setAttribute("name", "active")
+        document.getElementById('fa5').removeAttribute("name")
+        document.getElementById('p5').removeAttribute("name")
         document.getElementById('pag_5').style.display = 'none'
         document.getElementById('pag_6').style.display = 'block'
         document.getElementById('bar6').classList.add("active")
@@ -128,6 +163,12 @@ function pagSeguinte(pag_atual) {
 
 function pagAnterior(pag_atual) {
     if (pag_atual === '2') {
+        document.getElementById('fa1').removeAttribute("onclick")
+        document.getElementById('p1').removeAttribute("onclick")
+        document.getElementById('fa1').setAttribute("name", "active")
+        document.getElementById('p1').setAttribute("name", "active")
+        document.getElementById('fa2').removeAttribute("name")
+        document.getElementById('p2').removeAttribute("name")
         document.getElementById('pag_2').style.display = 'none'
         document.getElementById('pag_1').style.display = 'block'
         document.getElementById('bar2').classList.remove("active")
@@ -135,6 +176,12 @@ function pagAnterior(pag_atual) {
         document.getElementById('fa1').classList.remove("fausada")
         document.getElementById('fa1').classList.add("faactive")
     } else if (pag_atual === '3') {
+        document.getElementById('fa2').removeAttribute("onclick")
+        document.getElementById('p2').removeAttribute("onclick")
+        document.getElementById('fa2').setAttribute("name", "active")
+        document.getElementById('p2').setAttribute("name", "active")
+        document.getElementById('fa3').removeAttribute("name")
+        document.getElementById('p3').removeAttribute("name")
         document.getElementById('pag_3').style.display = 'none'
         document.getElementById('pag_2').style.display = 'block'
         document.getElementById('bar3').classList.remove("active")
@@ -142,6 +189,12 @@ function pagAnterior(pag_atual) {
         document.getElementById('fa2').classList.remove("fausada")
         document.getElementById('fa2').classList.add("faactive")
     } else if (pag_atual === '4') {
+        document.getElementById('fa3').removeAttribute("onclick")
+        document.getElementById('p3').removeAttribute("onclick")
+        document.getElementById('fa3').setAttribute("name", "active")
+        document.getElementById('p3').setAttribute("name", "active")
+        document.getElementById('fa4').removeAttribute("name")
+        document.getElementById('p4').removeAttribute("name")
         document.getElementById('pag_4').style.display = 'none'
         document.getElementById('pag_3').style.display = 'block'
         document.getElementById('bar4').classList.remove("active")
@@ -149,6 +202,12 @@ function pagAnterior(pag_atual) {
         document.getElementById('fa3').classList.remove("fausada")
         document.getElementById('fa3').classList.add("faactive")
     } else if (pag_atual === '5') {
+        document.getElementById('fa4').removeAttribute("onclick")
+        document.getElementById('p4').removeAttribute("onclick")
+        document.getElementById('fa4').setAttribute("name", "active")
+        document.getElementById('p4').setAttribute("name", "active")
+        document.getElementById('fa5').removeAttribute("name")
+        document.getElementById('p5').removeAttribute("name")
         document.getElementById('pag_5').style.display = 'none'
         document.getElementById('pag_4').style.display = 'block'
         document.getElementById('bar5').classList.remove("active")
@@ -156,12 +215,46 @@ function pagAnterior(pag_atual) {
         document.getElementById('fa4').classList.remove("fausada")
         document.getElementById('fa4').classList.add("faactive")
     } else if (pag_atual === '6') {
+        document.getElementById('fa5').removeAttribute("onclick")
+        document.getElementById('p5').removeAttribute("onclick")
+        document.getElementById('fa5').setAttribute("name", "active")
+        document.getElementById('p5').setAttribute("name", "active")
+        document.getElementById('fa6').removeAttribute("name")
+        document.getElementById('p6').removeAttribute("name")
         document.getElementById('pag_6').style.display = 'none'
         document.getElementById('pag_5').style.display = 'block'
         document.getElementById('bar6').classList.remove("active")
         document.getElementById('fa6').classList.remove("faactive")
         document.getElementById('fa5').classList.remove("fausada")
         document.getElementById('fa5').classList.add("faactive")
+    }
+}
+
+function irParaPagina(escolhida) {
+    let atual = (document.getElementsByName('active'))
+    let fa = atual[0].id.toString()
+    let p = atual[1].id.toString()
+    let id = fa.substr(2)
+    let id2 = parseInt(id)
+    document.getElementById(fa).removeAttribute('name')
+    document.getElementById(p).removeAttribute('name')
+    document.getElementById('fa' + escolhida).setAttribute('name', 'active')
+    document.getElementById('p' + escolhida).setAttribute('name', 'active')
+
+    console.log("id: " + (parseInt(id)).toString())
+    console.log("escolhida: " + escolhida)
+
+    document.getElementById('pag_' + id).style.display = 'none'
+    document.getElementById('pag_' + escolhida).style.display = 'block'
+    document.getElementById('fa' + id).classList.remove("faactive")
+    document.getElementById('fa' + escolhida).classList.add("faactive")
+
+    for (let i = parseInt(escolhida); i <= id2; i++) {
+        let f = i + 1
+        document.getElementById('fa' + i).removeAttribute("onclick")
+        document.getElementById('p' + i).removeAttribute("onclick")
+        document.getElementById('fa' + i).classList.remove("fausada")
+        document.getElementById('bar' + i).classList.remove("active")
     }
 }
 
@@ -176,7 +269,7 @@ let sessao = [];
 
 function getMaxInscritos(u) {
     if (u === "Participante em Grupo") {
-        max_incritos = parseInt(document.getElementById('id_total_participantes').value) + parseInt(document.getElementById('id_total_professores').value)
+        max_incritos = parseInt(document.getElementById('id_total_participantes').value)
         document.getElementById('max_incritos_id').value = max_incritos
     } else if (u === 'Participante Individual') {
         max_incritos = 1 + parseInt(document.getElementById('id_acompanhantes').value)
@@ -185,7 +278,7 @@ function getMaxInscritos(u) {
 }
 
 function maxIncritos(val, input_id, vagas) {
-    if (vagas<max_incritos)
+    if (vagas < max_incritos)
         document.getElementById(input_id).max = vagas
     else
         document.getElementById(input_id).max = max_incritos

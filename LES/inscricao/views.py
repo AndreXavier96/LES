@@ -1,4 +1,7 @@
+from datetime import date
+
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -41,6 +44,10 @@ class InscricaoView(View):
         auth_user = request.user
         utilizador = Utilizador.objects.get(pk=auth_user.id)
         # ----------------------
+        today = date.today()
+        age = today.year - utilizador.data_nascimento.year - ((today.month, today.day) < (
+            utilizador.data_nascimento.month, utilizador.data_nascimento.day
+        ))
         return render(request, self.template_name, {'form_ementa_inscricao': form_ementa_inscricao,
                                                     'values': values,
                                                     'escolas': escolas,
@@ -50,7 +57,8 @@ class InscricaoView(View):
                                                     'transporte_para_campus': transporte_para_campus,
                                                     'transporte_entre_campus': transporte_entre_campus,
                                                     'auth_user': auth_user,
-                                                    'utilizador': utilizador
+                                                    'utilizador': utilizador,
+                                                    'age': age,
                                                     })
 
     def post(self, request):
@@ -61,11 +69,11 @@ class InscricaoView(View):
         if escola_escolhida != "Escolher":
             if form_ementa_inscricao.is_valid() and radio_refeicao.is_valid():
                 if escola_escolhida == 'others':
-                    nome = request.POST['nome'].value()
-                    morada = request.POST['morada'].value()
-                    codigo_postal = request.POST['codigo_postal'].value()
-                    contacto = request.POST['contacto'].value()
-                    localidade = request.POST['localidade'].value()
+                    nome = request.POST['nome']
+                    morada = request.POST['morada']
+                    codigo_postal = request.POST['codigo_postal']
+                    contacto = request.POST['contacto']
+                    localidade = request.POST['localidade']
                     Escola.objects.create(nome=nome, morada=morada, codigo_postal=codigo_postal, contacto=contacto,
                                           localidade=localidade)
                     escola = Escola.objects.get(nome=nome)
@@ -97,7 +105,16 @@ class InscricaoView(View):
                     participante2 = ParticipanteGrupo.objects.get(participante=participante)
                 elif radio_value_tipo_part == "Participante Individual":
                     acompanhantes = request.POST['acompanhantes']
-                    ParticipanteIndividual.objects.create(acompanhantes=acompanhantes,
+                    uploaded_file = request.FILES['myfile']
+                    print("uploaded_file")
+                    print(uploaded_file)
+                    fs = FileSystemStorage()
+                    fs_saved = '/home/xavi6696/PycharmProjects/LES/LES/inscricao/static/autorizacao/inscricao' + \
+                               str(inscricao.id)
+                    fs.save(fs_saved, uploaded_file)
+                    ParticipanteIndividual.objects.create(autorizacao=0,
+                                                          ficheiro_autorizacao=fs_saved,
+                                                          acompanhantes=acompanhantes,
                                                           participante=participante,
                                                           )
                     participante2 = ParticipanteIndividual.objects.get(participante=participante)
@@ -112,27 +129,29 @@ class InscricaoView(View):
                 ementainscricao = EmentaInscricao.objects.get(inscricao=inscricao)
                 # -----------transporte
                 drop_value = request.POST['tipo_transporte']
-                trans_para_campus = ""
-                trans_entre_campus = ""
+                trans_para_campus = "não"
                 if drop_value == "autocarro" or drop_value == "comboio":
+                    print("auto/comboio sim")
                     trans_para_campus_value = request.POST['QuerTransportePara']
+                    print(trans_para_campus_value)
                     if trans_para_campus_value == "sim":
                         trans_para_campus = request.POST['qual']
-                    else:
-                        trans_para_campus = "nao"
-                    trans_entre_campus_value = request.POST['QuerTransporteEntre']
-                    if trans_entre_campus_value == 'sim':
-                        trans_entre_campus = request.POST['transporte_campus']
-                    else:
-                        trans_entre_campus = "nao"
+                        print(trans_para_campus)
+                trans_entre_campus_value = request.POST['QuerTransporteEntre']
+                if trans_entre_campus_value == 'sim':
+                    trans_entre_campus = request.POST['transporte_campus']
+                else:
+                    trans_entre_campus = "nao"
                 chegada = remove_all_space(request.POST['timepicker-one'])
                 partida = remove_all_space(request.POST['timepicker-two'])
-                entre_campus_horario = remove_all_space(request.POST['timepicker-three'])
+                entre_campus_ida = remove_all_space(request.POST['timepicker-three'])
+                entre_campus_volta = remove_all_space(request.POST['timepicker-four'])
                 Transporteproprio.objects.create(hora_chegada=chegada, hora_partida=partida,
                                                  tipo_transporte=drop_value,
                                                  transporte_para_campus=trans_para_campus,
                                                  transporte_entre_campus=trans_entre_campus,
-                                                 hora_entre_campus=entre_campus_horario,
+                                                 ida_entre_campus=entre_campus_ida,
+                                                 volta_entre_campus=entre_campus_volta,
                                                  inscricao=inscricao
                                                  )
                 transporte = Transporteproprio.objects.get(inscricao=inscricao)
@@ -146,19 +165,19 @@ class InscricaoView(View):
                         if str(x) not in list_deleted:
                             sessao_actividade_id = request.POST['sessao_atividade_' + str(x)]
                             n_inscritos = request.POST['inscritos_sessao_' + str(x)]
-                            sessao_actividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
-                            SessaoAtividadeInscricao.objects.create(sessao_atividade=sessao_actividade,
+                            sessaoactividade = SessaoAtividade.objects.get(pk=sessao_actividade_id)
+                            SessaoAtividadeInscricao.objects.create(sessaoAtividade=sessaoactividade,
                                                                     inscricao=inscricao, numero_alunos=n_inscritos
                                                                     )
                             novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(
                                 n_inscritos)
-                            sessao_actividade.n_alunos = novo_numero_alunos
-                            sessao_actividade.save()
+                            sessaoactividade.n_alunos = novo_numero_alunos
+                            sessaoactividade.save()
                     sessao = SessaoAtividadeInscricao.objects.filter(inscricao=inscricao)
                     data = {
                         'participante': participante,
                         'utilizador': utilizador,
-                        'participantetipo': participante2,
+                        'participantetipo': participante2,  # sem erro, if corre sempre
                         'sessao': sessao,
                         'transporte': transporte,
                         'eminsc': ementainscricao,
@@ -169,13 +188,14 @@ class InscricaoView(View):
                     email.from_email = settings.EMAIL_HOST_USER
                     email.to = [utilizador.email]
                     pdf = render_to_pdf(data)
-                    # preview------------------------------------
-                    # if pdf:
-                    #     response = HttpResponse(pdf, content_type='application/pdf')
-                    #     filename = "PrivacyRequest_%s.pdf" % "1234"
-                    #     content = "inline; filename='%s'" % filename
-                    #     response['Content-Disposition'] = content
-                    #     return response
+                    # preview------------------comentar para enviar email----------
+                    if pdf:
+                        response = HttpResponse(pdf, content_type='application/pdf')
+                        filename = "PrivacyRequest_%s.pdf" % "1234"
+                        content = "inline; filename='%s'" % filename
+                        response['Content-Disposition'] = content
+                        return response
+                    # ----------------------------------------------------------------
                     email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
                     email.send()
                     return render(request, 'home.html', context={'MSG': "Inscricao com Sucesso"})

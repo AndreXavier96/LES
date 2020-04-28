@@ -141,8 +141,10 @@
                     <p>Requer Refeição: Não</p>
                 {% else %}
                     <p>Requer Refeição: Sim</p>
-                    <p>Refeiçoes para Aluno: {{ eminsc.numero_aluno_normal }} /cada {{ eminsc.ementa.preco_aluno_normal }}&euro;</p>
-                    <p>Refeiçoes para Outro: {{ eminsc.numero_outro_normal }} /cada {{ eminsc.ementa.preco_outro_normal }}&euro;</p>
+                    <p>Refeiçoes para Aluno: {{ eminsc.numero_aluno_normal }} /cada
+                        {{ eminsc.ementa.preco_aluno_normal }}&euro;</p>
+                    <p>Refeiçoes para Outro: {{ eminsc.numero_outro_normal }} /cada
+                        {{ eminsc.ementa.preco_outro_normal }}&euro;</p>
                     <p>Preço Total:{{ preco_total }}&euro;</p>
                 {% endif %}
             </div>
@@ -156,16 +158,22 @@
                         <th>Duracao</th>
                         <th>Numero inscritos</th>
                         <th>Local</th>
+                        <th>Campus</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for s in sessao %}
                         <tr>
-                            <th>{{ s.sessao_atividade.atividade.nome }}</th>
-                            <th>{{ s.sessao_atividade.sessao.hora_inicio }}</th>
-                            <th>{{ s.sessao_atividade.atividade.duracao }}</th>
+                            <th>{{ s.sessaoAtividade.atividade.nome }}</th>
+                            <th>{{ s.sessaoAtividade.sessao.hora }}</th>
+                            <th>{{ s.sessaoAtividade.atividade.duracao }}</th>
                             <th>{{ s.numero_alunos }}</th>
-                            <th>{{ s.sessao_atividade.atividade.localizacao.edificio }} {{ s.sessao_atividade.atividade.localizacao.andar }}.{{ s.sessao_atividade.atividade.localizacao.sala }} {{ s.sessao_atividade.atividade.localizacao.campus.nome }}</th>
+                            {% if atividade.edificio.nome == None %}
+                                <td>{{ s.sessaoAtividade.atividade.tipo_local }}</td>
+                            {% else %}
+                                <td>{{ s.sessaoAtividade.atividade.edificio.nome }} {{ s.sessaoAtividade.atividade.sala.identificacao }}</td>
+                            {% endif %}
+                            <th>{{ s.sessaoAtividade.atividade.campus.nome }}</th>
                         </tr>
                     {% endfor %}
                     </tbody>

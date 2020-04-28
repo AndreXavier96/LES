@@ -50,7 +50,7 @@
             <br>
         </div>
         {#        <div class="form_div">#}
-        <form class="form_div" method="POST" name="inscricao_form">
+        <form class="form_div" method="POST" name="inscricao_form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="col s12 m6" id="pag_1">
                 <div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="onethird">
                             <label for="id_ano_estudos">Ano Escolar:</label>
-                            <input type="number" name="ano_estudos" required="" id="id_ano_estudos">
+                            <input type="number" name="ano_estudos" required="" id="id_ano_estudos" min="0" max="12">
                         </div>
                     </div>
                     {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
@@ -78,10 +78,22 @@
                                     <label for="id_acompanhantes">Acompanhantes:</label>
                                     <input type="number" name="acompanhantes" required=""
                                            id="id_acompanhantes"
-                                           onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')">
+                                           onchange="getMaxInscritos('{{ utilizador.utilizadortipo.tipo }}')" min="0">
                                 </p>
                             </div>
                         </div>
+                        {% if age < 18 %}
+                            <div class="onethird">
+                                <a href="{% static "main/download/autorizacao.pdf" %}" target="_blank">
+                                    <button class="" type="button" formnovalidate>Download Template <i
+                                            class="fas fa-file-download"></i></button>
+                                </a>
+                            </div>
+                            <div class="onethird">
+                                <label for="myfile">Ficheiro Autorização: </label>
+                                <input type="file" id="myfile" name="myfile">
+                            </div>
+                        {% endif %}
                         <div class="getaltura">
 
                         </div>
@@ -140,7 +152,7 @@
                         <input type="text" name="codigo_postal"
                                class="half" maxlength="8"
                                id="id_codigo_postal"
-                               required="required"></div>
+                               required="required" pattern="\d{4}[ -]\d{3}" placeholder="xxxx-xxx"></div>
                     <div class="half"><label for="id_localidade">Localidade:</label>
                         <input type="text" name="localidade"
                                maxlength="50" id="id_localidade"
@@ -264,21 +276,29 @@
                     </li>
                 </ul>
                 <div id="entre_campus" style="display: none">
-                    <div class="half">
-                        <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
-                        <select class="select-css" name="transporte_campus" id="transporte_campus"
-                                onchange="entreCampusRelogio(this.value)">
-                            <option hidden>Escolher</option>
-                            <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
-                            <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
-                        </select>
+                    <div style="width: 100%">
+                        <div class="half">
+                            <label for="transporte_campus">De qual para qual Campus necessita de Transporte?</label>
+                            <select class="select-css" name="transporte_campus" id="transporte_campus"
+                                    onchange="entreCampusRelogio(this.value)">
+                                <option hidden>Escolher</option>
+                                <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
+                                <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="half" id="timepicker-three_div" style="display: none">
-                        <label id="timepicker-three_label" for="timepicker-three"></label>
-                        <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
+                    <div style="width: 100%">
+                        <div class="half" id="timepicker-three_div" style="display: none">
+                            <label id="timepicker-three_label" for="timepicker-three"></label>
+                            <input type="text" id="timepicker-three" name="timepicker-three" class="timepicker-12-hr">
+                        </div>
+                        <div class="half" id="timepicker-four_div" style="display: none">
+                            <label id="timepicker-four_label" for="timepicker-four"></label>
+                            <input type="text" id="timepicker-four" name="timepicker-four" class="timepicker-12-hr">
+                        </div>
                     </div>
                 </div>
-                <div>
+                <div style="width: 100%">
                     <button class="previus" type="button" onclick="pagAnterior('4')" formnovalidate><i
                             class="fas fa-caret-left"></i> Anterior
                     </button>
@@ -293,74 +313,111 @@
                 <table id="table_atividades" class="table table1">
                     <thead class="text-center">
                     <tr class="tablerow">
-                        <th style="width: 35%;">Nome</th>
+                        <th style="width: 15%;">Nome</th>
                         <th style="width: 15%;">Tipo</th>
-                        <th style="width: 35%;">Publico alvo</th>
+                        <th style="width: 40%;">Publico alvo</th>
+                        <th style="width: 15%">Departamento</th>
                         <th style="width: 15%;">Campus</th>
                     </tr>
                     </thead>
                     {% for atividade in atividades %}
-                        <thead class="text-center rowhover" data-toggle="collapse" href="#collapse_{{ atividade.id }}"
-                               aria-expanded="false"
-                               aria-controls="collapse_{{ atividade.id }}">
-                        <tr>
-                            <th style="width: 35%;">{{ atividade.nome }}</th>
-                            <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
-                            <th style="width: 35%;">{{ atividade.publico_alvo }}</th>
-                            <th style="width: 15%;">{{ atividade.localizacao.campus.nome }}</th>
-                        </tr>
-                        </thead>
-                        <tbody class="collapse" id="collapse_{{ atividade.id }}">
-                        <tr>
-                            <th scope="row" class="text-center" colspan="4">
-                                <div style="padding: 10px">
-                                    <div>
-                                        <table id="sessao_atividade_{{ atividade.id }}" class="table">
-                                            <thead>
-                                            <tr>
-                                                <td colspan="5">Descricao: {{ atividade.descricao }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5">Responsavel: {{ atividade.docente.nome }}</td>
-                                            </tr>
-                                            <tr class="tablerow">
-                                                <th>Hora:</th>
-                                                <th>Duração:</th>
-                                                <th>Vagas:</th>
-                                                <th>Localização:</th>
-                                                <th>Inscrever:</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for s in sessaoatividade %}
-                                                {% if s.atividade.id == atividade.id %}
-                                                    <tr id="sessao_{{ s.id }}">
-                                                        <td>{{ s.sessao.hora_inicio }}</td>
-                                                        <td>{{ atividade.duracao }}</td>
-                                                        <td>{{ s.n_alunos }}</td>
-                                                        <td>{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}</td>
-                                                        <td><label for="quantity"></label>
-                                                            <label for="quantity_{{ s.id }}"></label>
-                                                            <input type="number" id="quantity_{{ s.id }}"
-                                                                   name="quantity_{{ s.id }}" value="0"
-                                                                   min="0" max="{{ s.n_alunos }}"
-                                                                   onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
-                                                                           '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',
-                                                                           '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',
-                                                                           '{{ atividade.localizacao.campus.nome }}', this.value, '{{ s.n_alunos }}',
-                                                                           this.id
-                                                                           ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">
-                                                        </td>
-                                                    </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
+                        {% if atividade.validada == 'VD' %}
+                            <thead class="text-center rowhover" data-toggle="collapse"
+                                   href="#collapse_{{ atividade.id }}"
+                                   aria-expanded="false"
+                                   aria-controls="collapse_{{ atividade.id }}">
+                            <tr>
+                                <th style="width: 15%;">{{ atividade.nome }}</th>
+                                <th style="width: 15%;">{{ atividade.tipo_atividade }}</th>
+                                <th style="width: 40%;">
+                                    {% for atividade_publico_alvo in atividade.publico_alvo.all %}
+                                        <p>{{ atividade_publico_alvo.nome }}</p>
+                                    {% endfor %}
+                                </th>
+                                <th style="width: 15%">{{ atividade.departamento.nome }}</th>
+                                <th style="width: 15%;">{{ atividade.campus.nome }}</th>
+                            </tr>
+                            </thead>
+                            <tbody class="collapse" id="collapse_{{ atividade.id }}">
+                            <tr>
+                                <th scope="row" class="text-center" colspan="5">
+                                    <div style="padding: 10px">
+                                        <div>
+                                            <table id="sessao_atividade_{{ atividade.id }}" class="table">
+                                                <thead>
+                                                <tr>
+                                                    <td colspan="6">Descricao: {{ atividade.descricao }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="6">Responsavel: {{ atividade.responsavel.nome }}</td>
+                                                </tr>
+                                                <tr class="tablerow">
+                                                    <th>Hora:</th>
+                                                    <th>Duração:</th>
+                                                    <th>Vagas:</th>
+                                                    <th>Localização:</th>
+                                                    <th>Inscrever:</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for s in sessaoatividade %}
+                                                    {% if s.atividade.id == atividade.id and s.n_alunos > 0 %}
+                                                        <tr id="sessao_{{ s.id }}">
+                                                            <td>{{ s.sessao.hora }}</td>
+                                                            <td>{{ s.atividade.duracao }}</td>
+                                                            <td>{{ s.n_alunos }}</td>
+                                                            {% if atividade.edificio.nome == None %}
+                                                                <td>{{ atividade.tipo_local }}</td>
+                                                            {% else %}
+                                                                <td>{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}</td>
+                                                            {% endif %}
+                                                            <td><label for="quantity"></label>
+                                                                <label for="quantity_{{ s.id }}"></label>
+                                                                <input type="number" id="quantity_{{ s.id }}"
+                                                                       name="quantity_{{ s.id }}" value="0"
+                                                                       min="0" max="{{ s.n_alunos }}"
+                                                                       onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',
+                                                                               '{{ s.sessao.hora }}', '{{ atividade.duracao }}',
+                                                                               '{{ atividade.nome }}', '{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}',
+                                                                               '{{ atividade.campus.nome }}', this.value, '{{ s.n_alunos }}',
+                                                                               this.id
+                                                                               ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+
+
+                                                {#                                            {% for s in sessaoatividade %}#}
+                                                {#                                                {% if s.atividade.id == atividade.id %}#}
+                                                {#                                                    <tr id="sessao_{{ s.id }}">#}
+                                                {#                                                        <td>{{ s.sessao.hora_inicio }}</td>#}
+                                                {#                                                        <td>{{ atividade.duracao }}</td>#}
+                                                {#                                                        <td>{{ s.n_alunos }}</td>#}
+                                                {#                                                        <td>{{ atividade.edificio }} {{ atividade.andar }}.{{ atividade.sala }} {{ atividade.campus }}</td>#}
+                                                {#                                                        <td><label for="quantity"></label>#}
+                                                {#                                                            <label for="quantity_{{ s.id }}"></label>#}
+                                                {#                                                            <input type="number" id="quantity_{{ s.id }}"#}
+                                                {#                                                                   name="quantity_{{ s.id }}" value="0"#}
+                                                {#                                                                   min="0" max="{{ s.n_alunos }}"#}
+                                                {#                                                                   onchange="EscolherSessao( '{{ atividade.nome }}', '{{ s.id }}',#}
+                                                {#                                                                           '{{ s.sessao.hora_inicio }}', '{{ atividade.duracao }}',#}
+                                                {#                                                                           '{{ atividade.nome }}', '{{ atividade.localizacao.edificio }} {{ atividade.localizacao.andar }}.{{ atividade.localizacao.sala }}',#}
+                                                {#                                                                           '{{ atividade.localizacao.campus.nome }}', this.value, '{{ s.n_alunos }}',#}
+                                                {#                                                                           this.id#}
+                                                {#                                                                           ); maxIncritos(this.value, this.id, '{{ s.n_alunos }}')">#}
+                                                {#                                                        </td>#}
+                                                {#                                                    </tr>#}
+                                                {#                                                {% endif %}#}
+                                                {#                                            {% endfor %}#}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            </th>
-                        </tr>
-                        </tbody>
+                                </th>
+                            </tr>
+                            </tbody>
+                        {% endif %}
                     {% endfor %}
                 </table>
                 <br><br>
@@ -368,12 +425,12 @@
                 <table id="table_inscritos" class="table">
                     <thead class="tablehead text-center">
                     <tr>
-                        <th style="width: 10%;">Hórario</th>
+                        <th style="width: 5%;">Hórario</th>
                         <th style="width: 5%;">Duracao</th>
-                        <th style="width: 15%;">Inscritos</th>
-                        <th style="width: 35%;">Atividade</th>
-                        <th style="width: 15%;">Localização</th>
-                        <th style="width: 15%;">Campus</th>
+                        <th style="width: 10%;">Inscritos</th>
+                        <th style="width: 30%;">Atividade</th>
+                        <th style="width: 25%;">Localização</th>
+                        <th style="width: 20%;">Campus</th>
                         <th style="width: 5%;">Ações</th>
                     </tr>
                     </thead>
@@ -384,14 +441,15 @@
                 <button class="next" type="button" onclick="pagSeguinte('5')" formnovalidate>Próximo <i
                         class="fas fa-caret-right"></i></button>
             </div>
+{#----------------------------------------hiden inputs para js e debug-----------------------------------#}
             <label for="row_countt" style="display:none;"></label>
             <input type="number" id="row_countt" name="row_countt" value="" hidden>
             <table id="rows_deleted_table" hidden></table>
             <label for="row_deletedd" hidden></label>
             <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
-
+            <label for="max_incritos_id"></label>
             <input type="number" id="max_incritos_id" value="" hidden>
-
+{#---------------------------------------------------------------------------------------------#}
             <div class="col s12 m6" id="pag_6" style="display:none;">
                 <p class="finalP">Irá ser enviado um email com todos os Dados da inscricao
                     para {{ utilizador.email }}</p>
