@@ -308,10 +308,10 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
         row[2].innerHTML = '<div class="field has-numberinput has-numberinput-compact">\n' +
             '<div class="b-numberinput field has-addons" style="width: 7rem;">\n' +
             '<p class="control">\n' +
-            '<button type="button" class="button is-primary" onclick="incremental(\'minus\', \'quantity_'+sessao_id+'\'); EscolherSessao( \''+ atividade_id +'\', \''+ sessao_id+'\',\n' +
-            '                                                                                                                                                               \''+ini+'\', \''+dur+'\',\n' +
-            '                                                                                                                                                               \''+nome+'\', \''+loc+'\',\n' +
-            '                                                                                                                                                               \''+cam+'\', \''+vag+'\',\''+ses_id+'\')">' +
+            '<button type="button" class="button is-primary" onclick="incremental(\'minus\', \'quantity_' + sessao_id + '\'); EscolherSessao( \'' + atividade_id + '\', \'' + sessao_id + '\',\n' +
+            '                                                                                                                                                               \'' + ini + '\', \'' + dur + '\',\n' +
+            '                                                                                                                                                               \'' + nome + '\', \'' + loc + '\',\n' +
+            '                                                                                                                                                               \'' + cam + '\', \'' + vag + '\',\'' + ses_id + '\')">' +
             '<span class="icon">\n' +
             '<i class="mdi mdi-minus mdi-24px"></i>\n' +
             '</span>\n' +
@@ -324,10 +324,10 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
             '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">' +
             '</div>\n' +
             '<p class="control">\n' +
-            '<button type="button" class="button is-primary" onclick="incremental(\'add\', \'quantity_'+sessao_id+'\'); EscolherSessao( \''+ atividade_id +'\', \''+ sessao_id+'\',\n' +
-            '                                                                                                                                                               \''+ini+'\', \''+dur+'\',\n' +
-            '                                                                                                                                                               \''+nome+'\', \''+loc+'\',\n' +
-            '                                                                                                                                                               \''+cam+'\', \''+vag+'\',\''+ses_id+'\')">' +
+            '<button type="button" class="button is-primary" onclick="incremental(\'add\', \'quantity_' + sessao_id + '\'); EscolherSessao( \'' + atividade_id + '\', \'' + sessao_id + '\',\n' +
+            '                                                                                                                                                               \'' + ini + '\', \'' + dur + '\',\n' +
+            '                                                                                                                                                               \'' + nome + '\', \'' + loc + '\',\n' +
+            '                                                                                                                                                               \'' + cam + '\', \'' + vag + '\',\'' + ses_id + '\')">' +
             '<span class="icon">\n' +
             '<i class="mdi mdi-plus mdi-24px"></i>\n' +
             '</span>\n' +
@@ -352,10 +352,10 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
         inscritos.innerHTML = '<div class="field has-numberinput has-numberinput-compact">\n' +
             '<div class="b-numberinput field has-addons" style="width: 7rem;">\n' +
             '<p class="control">\n' +
-            '<button type="button" class="button is-primary" onclick="incremental(\'minus\', \'quantity_'+sessao_id+'\'); EscolherSessao( \''+ atividade_id +'\', \''+ sessao_id+'\',\n' +
-            '                                                                                                                                                               \''+ini+'\', \''+dur+'\',\n' +
-            '                                                                                                                                                               \''+nome+'\', \''+loc+'\',\n' +
-            '                                                                                                                                                               \''+cam+'\', \''+vag+'\',\''+ses_id+'\')">' +
+            '<button type="button" class="button is-primary" onclick="incremental(\'minus\', \'quantity_' + sessao_id + '\'); EscolherSessao( \'' + atividade_id + '\', \'' + sessao_id + '\',\n' +
+            '                                                                                                                                                               \'' + ini + '\', \'' + dur + '\',\n' +
+            '                                                                                                                                                               \'' + nome + '\', \'' + loc + '\',\n' +
+            '                                                                                                                                                               \'' + cam + '\', \'' + vag + '\',\'' + ses_id + '\')">' +
             '<span class="icon">\n' +
             '<i class="mdi mdi-minus mdi-24px"></i>\n' +
             '</span>\n' +
@@ -368,10 +368,10 @@ function EscolherSessao(atividade_id, sessao_id, ini, dur,
             '" onchange="AlterarInscritos(' + ses_id_plica + ', this.value, ' + sessao_id_plica + ')">' +
             '</div>\n' +
             '<p class="control">\n' +
-            '<button type="button" class="button is-primary" onclick="incremental(\'add\', \'quantity_'+sessao_id+'\'); EscolherSessao( \''+ atividade_id +'\', \''+ sessao_id+'\',\n' +
-            '                                                                                                                                                               \''+ini+'\', \''+dur+'\',\n' +
-            '                                                                                                                                                               \''+nome+'\', \''+loc+'\',\n' +
-            '                                                                                                                                                               \''+cam+'\', \''+vag+'\',\''+ses_id+'\')">' +
+            '<button type="button" class="button is-primary" onclick="incremental(\'add\', \'quantity_' + sessao_id + '\'); EscolherSessao( \'' + atividade_id + '\', \'' + sessao_id + '\',\n' +
+            '                                                                                                                                                               \'' + ini + '\', \'' + dur + '\',\n' +
+            '                                                                                                                                                               \'' + nome + '\', \'' + loc + '\',\n' +
+            '                                                                                                                                                               \'' + cam + '\', \'' + vag + '\',\'' + ses_id + '\')">' +
             '<span class="icon">\n' +
             '<i class="mdi mdi-plus mdi-24px"></i>\n' +
             '</span>\n' +
@@ -439,24 +439,28 @@ let expanded_ses = ""
 let expanded_icon = ""
 
 function expandAtividade(id) {
-    let act = document.getElementById('atividade_' + id)
-    let ses = document.getElementById('sessoes_atividade_' + id)
+    // let ses = document.getElementById('sessoes_atividade_' + id)
     let icon = document.getElementById('icon_' + id)
-    if (ses.style.display === 'none') {
-        ses.style.display = ''
-        icon.classList.add('is-expanded')
-        if (expanded_ses !== "" && expanded_icon !== "") {
-            document.getElementById(expanded_ses).style.display = "none"
-            document.getElementById(expanded_icon).classList.remove('is-expanded')
-        }
-        expanded_ses = ses.id.toString()
-        expanded_icon = icon.id.toString()
-
-    } else if (ses.style.display === '') {
-        ses.style.display = 'none'
+    // if (ses.style.display === 'none') {
+        // ses.style.display = ''
+        // icon.classList.add('is-expanded')
+        // if (expanded_ses !== "" && expanded_icon !== "") {
+        //     document.getElementById(expanded_ses).style.display = "none"
+        //     document.getElementById(expanded_icon).classList.remove('is-expanded')
+        // }
+        // expanded_ses = ses.id.toString()
+        // expanded_icon = icon.id.toString()
+    //
+    // } else if (ses.style.display === '') {
+    //     ses.style.display = 'none'
+    //     icon.classList.remove('is-expanded')
+    //     expanded_ses = ""
+    //     expanded_icon = ""
+    // }
+    if (icon.classList.contains('is-expanded')){
         icon.classList.remove('is-expanded')
-        expanded_ses = ""
-        expanded_icon = ""
+    }else {
+        icon.classList.add('is-expanded')
     }
 }
 

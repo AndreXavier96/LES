@@ -3,7 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <title></title>
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    {#    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>#}
+    <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
+            integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'dist/js/jquery.tablesorter.js' %}"></script>
+    <script src="{% static 'main/js/table.js' %}"></script>
     {#    static load#}
     <script src="{% static 'dist/js/wickedpicker.min.js' %}"></script>
     <script src="{% static 'main/js/inscricao.js' %}"></script>
@@ -37,6 +41,40 @@
         };
         $(document).ready(function () {
             $('.timepicker-12-hr').wickedpicker(options);
+        });
+
+
+        $(function () {
+            $("#table_atividades").tablesorter();
+        });
+        $(function () {
+
+            // hide child rows
+            $('.tablesorter-childRow td').hide();
+
+            $(".tablesorter")
+                .tablesorter({
+                    theme: 'blue',
+                    // this is the default setting
+                    cssChildRow: "tablesorter-childRow"
+                })
+
+
+            // Toggle child row content (td), not hiding the row since we are using rowspan
+            // Using delegate because the pager plugin rebuilds the table after each page change
+            // "delegate" works in jQuery 1.4.2+; use "live" back to v1.3; for older jQuery - SOL
+            $('.tablesorter').delegate('.toggle', 'click', function () {
+
+                // use "nextUntil" to toggle multiple child rows
+                // toggle table cells instead of the row
+                $(this).closest('tr').nextUntil('tr:not(.tablesorter-childRow)').find('td').toggle();
+                // in v2.5.12, the parent row now has the class tablesorter-hasChildRow
+                // so you can use this code as well
+                // $(this).closest('tr').nextUntil('tr.tablesorter-hasChildRow').find('td').toggle();
+
+                return false;
+            });
+
         });
 
     </script>
@@ -86,7 +124,7 @@
                                     {% csrf_token %}
                                     <section class="step-content">
                                         <div class="step-item" id="pag1" style="">
-                                            <div style="padding: 1rem 2vw 0px;">
+                                            <div style="padding: 1rem 2vw 0;">
                                                 <hr>
                                                 <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                                     Dados Participante</h2>
@@ -96,6 +134,7 @@
                                                             <label class="label">Área de Estudos</label>
                                                             <div class="control is-expanded">
                                                         <span class="select is-fullwidth">
+                                                            <label for="id_area_estudos"></label>
                                                             <select name="area_estudos" id="id_area_estudos">
                                                                 <option value="escolha"
                                                                         hidden="hidden">Escolher</option>
@@ -180,23 +219,96 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
+                                                            {#------------------------------------------------------------------------------------------------------#}
+                                                            {#                                                            <div class="file has-name">#}
+                                                            {#                                                                <label class="file-label">#}
+                                                            {#                                                                    <input class="file-input" type="file" name="resume"#}
+                                                            {#                                                                           id="file_upload" onchange="showFileName()">#}
+                                                            {#                                                                    <span class="file-cta">#}
+                                                            {#                                                                              <span class="file-icon">#}
+                                                            {#                                                                                <i class="fas fa-upload"></i>#}
+                                                            {#                                                                              </span>#}
+                                                            {#                                                                              <span class="file-label">#}
+                                                            {#                                                                                Choose a file…#}
+                                                            {#                                                                              </span>#}
+                                                            {#                                                                            </span>#}
+                                                            {#                                                                    <span class="file-name" id="filename_upload"></span>#}
+                                                            {#                                                                </label>#}
+                                                            {#                                                            </div>#}
+                                                            {#------------------------------------------------------------------------------------------------------#}
+
                                                         </div>
                                                         <div class="column"></div>
                                                     </div>
                                                 {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
-
-
-
-
-
+                                                    <h2 class="title has-text-grey is-uppercase"
+                                                        style="font-size: 0.9rem;">
+                                                        Tamanho Grupo </h2>
+                                                    <div class="field  has-numberinput has-numberinput-compact">
+                                                        <label for="preco_aluno_normal">Total
+                                                            Participantes</label>
+                                                        <div class="b-numberinput field has-addons">
+                                                            <p class="control">
+                                                                <button type="button" class="button is-primary"
+                                                                        onclick="incremental('minus','id_total_participantes'); MultiplicaPreco()">
+                                                                        <span class="icon">
+                                                                            <i class="mdi mdi-minus mdi-24px"></i>
+                                                                        </span>
+                                                                </button>
+                                                            </p>
+                                                            <div class="control is-clearfix">
+                                                                <label for="id_total_participantes"></label>
+                                                                <input type="number" autocomplete="on" step="1"
+                                                                       class="input" name="total_participantes"
+                                                                       value="0" min="0" required=""
+                                                                       id="id_total_participantes">
+                                                            </div>
+                                                            <p class="control">
+                                                                <button type="button" class="button is-primary"
+                                                                        onclick="incremental('add','id_total_participantes'); MultiplicaPreco()">
+                                                                        <span class="icon">
+                                                                            <i class="mdi mdi-plus mdi-24px"></i>
+                                                                        </span>
+                                                                </button>
+                                                            </p>
+                                                        </div>
+                                                        <div class="field has-numberinput has-numberinput-compact">
+                                                            <label for="preco_aluno_normal">Total Professores</label>
+                                                            <div class="b-numberinput field has-addons">
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"
+                                                                            onclick="incremental('minus','id_total_professores'); MultiplicaPreco()">
+                                                                        <span class="icon">
+                                                                            <i class="mdi mdi-minus mdi-24px"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </p>
+                                                                <div class="control is-clearfix">
+                                                                    <label for="id_total_professores"></label>
+                                                                    <input type="number" autocomplete="on" step="1"
+                                                                           class="input" name="total_professores"
+                                                                           value="0" min="0" required=""
+                                                                           id="id_total_professores">
+                                                                </div>
+                                                                <p class="control">
+                                                                    <button type="button" class="button is-primary"
+                                                                            onclick="incremental('add','id_total_professores'); MultiplicaPreco()">
+                                                                        <span class="icon">
+                                                                            <i class="mdi mdi-plus mdi-24px"></i>
+                                                                        </span>
+                                                                    </button>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 {% endif %}
-
                                             </div>
                                         </div>
                                         <div class="step-item" id="pag2" style="display: none">
-                                            <div style="padding: 1rem 2vw 0px;">
+                                            <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase"
+                                                    style="font-size: 0.9rem;">
                                                     Escola Participante </h2>
                                                 <div class="columns">
                                                     <div class="column">
@@ -204,6 +316,7 @@
                                                             <label>Escola</label>
                                                             <div class="control is-expanded">
                                                                 <span class="select">
+                                                                    <label for="Escola"></label>
                                                                     <select id="Escola" name="Escola"
                                                                             onchange='CheckEscola(this.value);'
                                                                             required>
@@ -254,7 +367,8 @@
                                                                     <input class="input" type="text"
                                                                            name="codigo_postal" maxlength="8"
                                                                            id="id_codigo_postal"
-                                                                           required="required" pattern="\d{4}[ -]\d{3}"
+                                                                           required="required"
+                                                                           pattern="\d{4}[ -]\d{3}"
                                                                            placeholder="xxxx-xxx">
                                                                 </div>
                                                             </div>
@@ -263,7 +377,8 @@
                                                             <div class="field">
                                                                 <label for="id_localidade">Localidade</label>
                                                                 <div class="control is-clearfix">
-                                                                    <input class="input" type="text" name="localidade"
+                                                                    <input class="input" type="text"
+                                                                           name="localidade"
                                                                            maxlength="50" id="id_localidade"
                                                                            required="required">
                                                                 </div>
@@ -273,7 +388,8 @@
                                                             <div class="field">
                                                                 <label for="id_contacto">Contacto</label>
                                                                 <div class="control is-clearfix">
-                                                                    <input class="input" type="number" name="contacto"
+                                                                    <input class="input" type="number"
+                                                                           name="contacto"
                                                                            min="0"
                                                                            max="999999999" id="id_contacto"
                                                                            required="required">
@@ -285,22 +401,25 @@
                                             </div>
                                         </div>
                                         <div class="step-item" id="pag3" style="display: none">
-                                            <div style="padding: 1rem 2vw 0px;">
+                                            <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase"
+                                                    style="font-size: 0.9rem;">
                                                     Refeição </h2>
                                                 <p style="display: inline-block; padding-right: 2rem;"> Vai desejar
                                                     Almoçar nas nossas Cantinas? </p>
                                                 <label class="b-radio radio"><input type="radio" name="QuerRefeicao"
                                                                                     value="sim"
                                                                                     onchange="CheckRefeicao(this.value);"
-                                                                                    required="" id="id_QuerRefeicao_0">
+                                                                                    required=""
+                                                                                    id="id_QuerRefeicao_0">
                                                     <span class="check"></span> <span
                                                             class="control-label"> Sim </span></label>
                                                 <label class="b-radio radio"><input type="radio" name="QuerRefeicao"
                                                                                     value="nao"
                                                                                     onchange="CheckRefeicao(this.value);"
-                                                                                    required="" id="id_QuerRefeicao_1">
+                                                                                    required=""
+                                                                                    id="id_QuerRefeicao_1">
                                                     <span class="check"></span> <span
                                                             class="control-label"> Não </span></label>
 
@@ -312,10 +431,12 @@
                                                     {% for v in values %}
                                                         {# ----------hiden---------------------------#}
                                                         <label for="preco_aluno_normal"></label>
-                                                        <input id="preco_aluno_normal" type="text" style="display:none;"
+                                                        <input id="preco_aluno_normal" type="text"
+                                                               style="display:none;"
                                                                value="{{ v.preco_aluno_normal }}">
                                                         <label for="preco_outro_normal"></label>
-                                                        <input id="preco_outro_normal" type="text" style="display:none;"
+                                                        <input id="preco_outro_normal" type="text"
+                                                               style="display:none;"
                                                                value="{{ v.preco_outro_normal }}">
                                                         {# -------------------------------------------#}
                                                         <div data-v-f5fe8f88=""
@@ -333,6 +454,7 @@
                                                                     </button>
                                                                 </p>
                                                                 <div class="control is-clearfix">
+                                                                    <label for="id_numero_aluno_normal"></label>
                                                                     <input type="number" autocomplete="on" step="1"
                                                                            class="input" name="numero_aluno_normal"
                                                                            value="0" min="0" required=""
@@ -363,10 +485,11 @@
                                                                     </button>
                                                                 </p>
                                                                 <div class="control is-clearfix">
-                                                                    <input type="number" autocomplete="on" step="1"
-                                                                           class="input" name="numero_outro_normal"
-                                                                           value="0" min="0" required=""
-                                                                           id="id_numero_outro_normal">
+                                                                    <label for="id_numero_outro_normal"></label><input
+                                                                        type="number" autocomplete="on" step="1"
+                                                                        class="input" name="numero_outro_normal"
+                                                                        value="0" min="0" required=""
+                                                                        id="id_numero_outro_normal">
                                                                 </div>
                                                                 <p class="control">
                                                                     <button type="button" class="button is-primary"
@@ -383,9 +506,10 @@
                                                                 <div class="field widht">
                                                                     <label class="label">Preço total</label>
                                                                     <div class="control is-clearfix">
-                                                                        <input type="number" name="preco_total"
-                                                                               id="preco_total"
-                                                                               value="0" disabled>&euro;
+                                                                        <label for="preco_total"></label><input
+                                                                            type="number" name="preco_total"
+                                                                            id="preco_total"
+                                                                            value="0" disabled>&euro;
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -397,9 +521,10 @@
                                             </div>
                                         </div>
                                         <div class="step-item" id="pag4" style="display: none">
-                                            <div style="padding: 1rem 2vw 0px;">
+                                            <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase"
+                                                    style="font-size: 0.9rem;">
                                                     Transportes Para o Dia Aberto </h2>
                                                 <div class="columns">
                                                     <div class="column">
@@ -407,6 +532,7 @@
                                                             <label>Que tipo de transporte vai utilizar</label>
                                                             <div class="control is-expanded">
                                                                 <span class="select">
+                                                                    <label for="tipo_transporte"></label>
                                                                     <select name="tipo_transporte" id="tipo_transporte"
                                                                             onchange="tipoTransporte(this.value)"
                                                                             required>
@@ -420,7 +546,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="columns" id="transporte_para_campus" style="display: none">
+                                                <div class="columns" id="transporte_para_campus"
+                                                     style="display: none">
                                                     <p style="display: inline-block; padding-left: 0.7rem"> Vai
                                                         desejar transporte entre a estação e algum dos
                                                         Campus? </p>
@@ -477,7 +604,8 @@
                                                     <div class="column"></div>
                                                 </div>
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase"
+                                                    style="font-size: 0.9rem;">
                                                     Transporte Universitário Entre Campus </h2>
                                                 <div class="columns">
                                                     <div class="column">
@@ -493,7 +621,8 @@
                                                         <label class="b-radio radio" for="id_QuerTransporteEntre_1">
                                                             <input type="radio" name="QuerTransporteEntre"
                                                                    value="nao" onchange="entreCampus(this.value);"
-                                                                   required="" id="id_QuerTransporteEntre_1" checked>
+                                                                   required="" id="id_QuerTransporteEntre_1"
+                                                                   checked>
                                                             <span class="check"></span>
                                                             <span class="control-label"> Não </span>
                                                         </label>
@@ -533,7 +662,8 @@
                                                         <div class="column" id="timepicker-four_div"
                                                              style="display: none">
                                                             <div class="field">
-                                                                <label id="timepicker-four_label" for="timepicker-four">Hora
+                                                                <label id="timepicker-four_label"
+                                                                       for="timepicker-four">Hora
                                                                     Partida</label>
                                                                 <div class="control">
                                                                     <input type="text" id="timepicker-four"
@@ -548,7 +678,7 @@
                                             </div>
                                         </div>
                                         <div class="step-item" id="pag5" style="display: none">
-                                            <div data-v-dac68d9e="" style="padding: 1rem 2vw 0px;">
+                                            <div data-v-dac68d9e="" style="padding: 1rem 2vw 0;">
                                                 <hr data-v-dac68d9e="">
                                                 <h2 data-v-dac68d9e="" class="title has-text-grey is-uppercase"
                                                     style="font-size: 0.9rem;"> Sessões Disponíveis </h2>
@@ -560,7 +690,7 @@
                                                                 <div class="menu" style="margin-bottom: 1rem;"><p
                                                                         class="menu-label">Filtros Atividade</p>
                                                                     <ul class="menu-list">
-                                                                        <div class="field"><!---->
+                                                                        <div class="field">
                                                                             <div class="autocomplete control">
                                                                                 <div class="control has-icons-left is-clearfix">
                                                                                     <input type="text"
@@ -573,7 +703,8 @@
                                                                                 <div class="dropdown-menu"
                                                                                      style="display: none;">
                                                                                     <div class="dropdown-content"
-                                                                                         style="display: none;"><!---->
+                                                                                         style="display: none;">
+                                                                                        <!---->
                                                                                         <a class="dropdown-item"><span>
                         Introdução a Python
                     </span></a><a class="dropdown-item"><span>
@@ -1130,7 +1261,8 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </section>
-                                                                                                        </div> <!---->
+                                                                                                        </div>
+                                                                                                        <!---->
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -1651,7 +1783,8 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </section>
-                                                                                                        </div> <!---->
+                                                                                                        </div>
+                                                                                                        <!---->
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -1680,7 +1813,8 @@
                                                                                                        class="input">
                                                                                                 <span class="icon is-left"><i
                                                                                                         class="mdi mdi-clock mdi-24px"></i></span>
-                                                                                                <!----> <!----></div>
+                                                                                                <!----> <!---->
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div aria-hidden="true"
                                                                                              class="background"
@@ -1777,7 +1911,8 @@
                                                                                                        class="input">
                                                                                                 <span class="icon is-left"><i
                                                                                                         class="mdi mdi-clock mdi-24px"></i></span>
-                                                                                                <!----> <!----></div>
+                                                                                                <!----> <!---->
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div aria-hidden="true"
                                                                                              class="background"
@@ -1863,7 +1998,8 @@
                                                                                 </div> <!----></div>
                                                                         </div>
                                                                         <div class="field has-numberinput has-numberinput-compact">
-                                                                            <label class="label">Mínimo de vagas</label>
+                                                                            <label class="label">Mínimo de
+                                                                                vagas</label>
                                                                             <div class="b-numberinput field has-addons">
                                                                                 <p class="control">
                                                                                     <button type="button"
@@ -1873,9 +2009,12 @@
                                                                                                 class="mdi mdi-minus mdi-24px"></i></span>
                                                                                     </button>
                                                                                 </p>
-                                                                                <div class="control is-clearfix"><input
-                                                                                        type="number" autocomplete="on"
-                                                                                        step="1" min="0" class="input">
+                                                                                <div class="control is-clearfix">
+                                                                                    <input
+                                                                                            type="number"
+                                                                                            autocomplete="on"
+                                                                                            step="1" min="0"
+                                                                                            class="input">
                                                                                     <!----> <!----> <!----></div>
                                                                                 <p class="control">
                                                                                     <button type="button"
@@ -1888,7 +2027,8 @@
                                                                         <li class="is-not-menu"><a class=""><!---->
                                                                             <span class="icon is-pulled-right"><i
                                                                                     class="mdi mdi-plus mdi-24px"></i></span><small>Mais
-                                                                                Filtros de Sessão</small></a> <!---->
+                                                                                Filtros de Sessão</small></a>
+                                                                            <!---->
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -1899,44 +2039,52 @@
                                                             <div data-v-1b91368a="">
                                                                 <div class="b-table">
                                                                     <div class="table-wrapper">
-                                                                        <table class="table is-striped has-mobile-cards is-hoverable">
+                                                                        <table class="table is-striped has-mobile-cards is-hoverable"
+                                                                               id="table_atividades">
                                                                             <thead>
                                                                             <tr>
-                                                                                <th width="40px"></th> <!---->
-                                                                                <th class="is-sortable">
+                                                                                <th width="40px"></th>
+                                                                                <th class="is-sortable"
+                                                                                    onclick="sortTable(0)">
                                                                                     <div class="th-wrap">Nome <span
                                                                                             class="icon is-small"
                                                                                             style="display: none;"><i
                                                                                             class="mdi mdi-menu-up"></i></span>
                                                                                     </div>
                                                                                 </th>
-                                                                                <th class="is-sortable">
+                                                                                <th class="is-sortable"
+                                                                                    onclick="sortTable(1)">
                                                                                     <div class="th-wrap">Tipo <span
                                                                                             class="icon is-small"
                                                                                             style="display: none;"><i
                                                                                             class="mdi mdi-menu-up"></i></span>
                                                                                     </div>
                                                                                 </th>
-                                                                                <th class="is-sortable">
-                                                                                    <div class="th-wrap">Publico Alvo
+                                                                                <th class="is-sortable"
+                                                                                    onclick="sortTable(2)">
+                                                                                    <div class="th-wrap">Publico
+                                                                                        Alvo
                                                                                         <span
                                                                                                 class="icon is-small"
                                                                                                 style="display: none;"><i
                                                                                                 class="mdi mdi-menu-up"></i></span>
                                                                                     </div>
                                                                                 </th>
-                                                                                <th class="is-sortable">
+                                                                                <th class="is-sortable"
+                                                                                    onclick="sortTable(3)">
                                                                                     <div class="th-wrap">Dep. <span
                                                                                             class="icon is-small"
                                                                                             style="display: none;"><i
                                                                                             class="mdi mdi-menu-up"></i></span>
                                                                                     </div>
                                                                                 </th>
-                                                                                <th class="is-sortable">
-                                                                                    <div class="th-wrap">Campus <span
-                                                                                            class="icon is-small"
-                                                                                            style="display: none;"><i
-                                                                                            class="mdi mdi-menu-up"></i></span>
+                                                                                <th class="is-sortable"
+                                                                                    onclick="sortTable(4)">
+                                                                                    <div class="th-wrap">Campus
+                                                                                        <span
+                                                                                                class="icon is-small"
+                                                                                                style="display: none;"><i
+                                                                                                class="mdi mdi-menu-up"></i></span>
                                                                                     </div>
                                                                                 </th>
                                                                             </tr>
@@ -1944,41 +2092,46 @@
                                                                             <tbody>
                                                                             {% for atividade in atividades %}
                                                                                 {% if atividade.validada == 'VD' %}
-                                                                                    {#                                                                         ----------------atividade---------------#}
+                                                                                    {# -----------atividade---------------#}
                                                                                     <tr id="atividade_{{ atividade.id }}"
                                                                                         draggable="false"
-                                                                                        class="pointer"
-                                                                                        onclick="expandAtividade('{{ atividade.id }}')">
-                                                                                        <td class="chevron-cell"><a
-                                                                                                role="button">
+                                                                                        class="pointer toggle"
+                                                                                        onclick="expandAtividade('{{ atividade.id }}')"
+                                                                                    >
+                                                                                        <td class="chevron-cell principal"
+                                                                                            rowspan="">
+                                                                                            <a class=""
+                                                                                               role="button">
                                                                                             <span class="icon"
                                                                                                   id="icon_{{ atividade.id }}"><i
                                                                                                     class="mdi mdi-chevron-right mdi-24px"></i></span></a>
                                                                                         </td>
-                                                                                        <td data-label="Nome" class="">
+                                                                                        <td data-label="Nome"
+                                                                                            class="principal">
                                                                                             {{ atividade.nome }}
                                                                                         </td>
-                                                                                        <td data-label="Tipo" class="">
+                                                                                        <td data-label="Tipo"
+                                                                                            class="principal">
                                                                                             {{ atividade.tipo_atividade }}
                                                                                         </td>
                                                                                         <td data-label="Publico"
-                                                                                            class="">
+                                                                                            class="principal">
                                                                                             {% for atividade_publico_alvo in atividade.publico_alvo.all %}
                                                                                                 <p>{{ atividade_publico_alvo.nome }}</p>
                                                                                             {% endfor %}
                                                                                         </td>
-                                                                                        <td data-label="Dep." class="">
+                                                                                        <td data-label="Dep."
+                                                                                            class="principal">
                                                                                             {{ atividade.departamento.nome }}
                                                                                         </td>
                                                                                         <td data-label="Campus"
-                                                                                            class="">
+                                                                                            class="principal">
                                                                                             {{ atividade.campus.nome }}
                                                                                         </td>
                                                                                     </tr>
-                                                                                    {#                                                                        ------------------sessoes----------- #}
-                                                                                    <tr class="detail"
-                                                                                        id="sessoes_atividade_{{ atividade.id }}"
-                                                                                        style="display: none">
+                                                                                    {#  ------------------sessoes----------- #}
+                                                                                    <tr class="detail tablesorter-childRow"
+                                                                                        id="sessoes_atividade_{{ atividade.id }}">
                                                                                         <td colspan="6">
                                                                                             <div class="detail-container">
                                                                                                 <div class="content">
@@ -1989,7 +2142,7 @@
                                                                                                         </p>
                                                                                                         <div class="b-table">
                                                                                                             <div class="table-wrapper">
-                                                                                                                <table class="table has-mobile-cards is-hoverable"
+                                                                                                                <table class="table has-mobile-cards is-hoverable tablesorter"
                                                                                                                        id="table_atividades">
                                                                                                                     <thead>
                                                                                                                     <tr>
@@ -2065,7 +2218,7 @@
                                                                                                                                     class="">
                                                                                                                                     <div class="field has-numberinput has-numberinput-compact">
                                                                                                                                         <div class="b-numberinput field no-margin-bottom has-addons"
-                                                                                                                                             style="width: 7rem; margin-bottom: 0px;">
+                                                                                                                                             style="width: 7rem; margin-bottom: 0;">
                                                                                                                                             <p class="control">
                                                                                                                                                 <button type="button"
                                                                                                                                                         class="button is-primary"
@@ -2124,6 +2277,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>
+
                                                                                 {% endif %}
                                                                             {% endfor %}
                                                                             </tbody>
@@ -2179,43 +2333,50 @@
                                                                     <div class="th-wrap">Horário <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap">Duração <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap">Inscritos <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap">Atividade <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap">Espaço <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap">Campus <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                                 <th class="">
                                                                     <div class="th-wrap is-centered">Ações <span
                                                                             class="icon is-small"
                                                                             style="display: none;"><i
-                                                                            class="mdi mdi-arrow-up"></i></span></div>
+                                                                            class="mdi mdi-arrow-up"></i></span>
+                                                                    </div>
                                                                 </th>
                                                             </tr>
                                                             </thead>
@@ -2223,7 +2384,8 @@
                                                             </tbody>
                                                             <tbody id="sem_inscritos">
                                                             <tr class="is-empty" id="empty_inscritos">
-                                                                <td colspan="6"><p class="has-text-grey">Ainda não há
+                                                                <td colspan="6"><p class="has-text-grey">Ainda não
+                                                                    há
                                                                     sessões escolhidas</p></td>
                                                             </tr>
                                                             </tbody>
@@ -2236,11 +2398,13 @@
                                             </div>
                                         </div>
                                         <div class="step-item" id="pag6" style="display: none">
-                                            <div style="padding: 1rem 2vw 0px;">
+                                            <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase"
+                                                    style="font-size: 0.9rem;">
                                                     Submissão </h2>
-                                                <p>Um email de confirmação será enviado para {{ utilizador.email }}</p>
+                                                <p>Um email de confirmação será enviado
+                                                    para {{ utilizador.email }}</p>
                                             </div>
                                         </div>
                                     </section>
@@ -2278,6 +2442,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {#    ----------------------------------------hidden forms------------------------------------------------------------#}
                                     <label for="row_countt" style="display:none;"></label>
                                     <input type="number" id="row_countt" name="row_countt" value="" hidden>
                                     <table id="rows_deleted_table" hidden></table>
