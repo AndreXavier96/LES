@@ -1,10 +1,42 @@
+{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="{% static 'dist/wickedpicker.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/wickedpicker.min.css' %}">
     <title></title>
 
 </head>
+<script>
+        let options = {
+            twentyFour: true,
+            now: "{{inicio_colab}}",
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        };
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
 
+</script>
+<script>
+        let options = {
+            twentyFour: true,
+            now: "{{inicio_colab}}",
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        };
+
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
+
+</script>
 <body>
 {% block content %}
 <form method="POST">
@@ -19,11 +51,11 @@
         <br>
         <br>
         Hora a que quer iniciar a colaboração?
-        <input type="time" value={{inicio_colab}} name="hora_inicio_colab" min="08:00" max="18:00" >
+        <input type="text" id="timepicker-two" name="hora_inicio_colab" class="timepicker-12-hr">
         <br>
         <br>
         Hora a que quer terminar a colaboração?
-        <input type="time"  value={{fim_colab}} name="hora_fim_colab" min="08:00" max="18:00" >
+        <input type="text" id="timepicker-one" name="hora_fim_colab" class="timepicker-12-hr">
         <br>
         <br>
         {% ifequal 1 obj.sala_de_aula %}
@@ -40,7 +72,8 @@
         <input type="radio" id="nao6" name="sala_de_aula" value="nao" checked="checked">
         <label for="nao6">NAO</label>
         {% endifequal %}
-        <p>
+        <br>
+        <br>
         {% ifequal 1 obj.percurso %}
         Quer auxiliar no percurso?
         <input type="radio" id="sim7" name="percurso" value="sim" checked="checked">
@@ -55,11 +88,12 @@
         <input type="radio" id="nao8" name="percurso" value="nao" checked="checked">
         <label for="nao8">NAO</label>
         {% endifequal %}
-        <p>
+        <br>
+        <br>
     </div>
     <input type="submit" value="Editar Colaboração">
 </form>
-</div>
+
 {% endblock %}
 
 </body>

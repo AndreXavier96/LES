@@ -23,7 +23,7 @@ class RegisterForm(forms.Form):
     password_digest = forms.CharField( widget=forms.PasswordInput)
     password_conf = forms.CharField( widget=forms.PasswordInput)###########
     nome = forms.CharField(label='nome', max_length=50)
-    data_nascimento = forms.DateField(label='data_nascimento')
+    #data_nascimento = forms.DateField(label='data_nascimento')
     numero_telemovel = forms.IntegerField(label='numero_telemovel')
     cartao_cidadao = forms.IntegerField(label='cartao_cidadao')
     deficiencias = forms.CharField(label='deficiencias', max_length=50, required = False)

@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from .forms import RegisterForm
-from .models import Utilizador, Utilizadortipo, Unidadeorganica, Departamento
+from .models import Utilizador, Utilizadortipo, Unidadeorganica, Departamento, UnidadeorganicaDepartamento
 
 
 class register(View):
@@ -17,11 +17,13 @@ class register(View):
         utilizadortipo = Utilizadortipo.objects.all
         departamento = Departamento.objects.all
         unidadeorganica = Unidadeorganica.objects.all
+        unidadeorganica_dep = UnidadeorganicaDepartamento.objects.all
         return render(request, self.template_name, {
             'form': form,
             'utilizadortipo': utilizadortipo,
             'departamento': departamento,
-            'unidadeorganica': unidadeorganica
+            'unidadeorganica': unidadeorganica,
+            'unidadeorganica_dep': unidadeorganica_dep
         })
 
     def post(self, request):
@@ -45,7 +47,7 @@ class register(View):
                 messages.error(request, "as passwords não coincidem")
                 return redirect('/utilizadores/register/')
             nome = form_register['nome'].value()
-            data_nascimento = form_register['data_nascimento'].value()
+            data_nascimento = request.POST['data_nascimento']
             numero_telemovel = form_register['numero_telemovel'].value()
             cartao_cidadao = form_register['cartao_cidadao'].value()
             deficiencias = form_register['deficiencias'].value()
@@ -67,10 +69,17 @@ class register(View):
                 unidadeorganica = None
                 departamento = None
             else:
-                unidadeorganica = request.POST['unidadeorganica']
-                departamento = request.POST['departamento']
-                departamento = Departamento.objects.get(nome=departamento)
-                unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
+                unidadeorganica1 = request.POST['unidadeorganica']
+                print(unidadeorganica1)
+                unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica1)
+                if unidadeorganica1 == "Escola Superior de Gestão, Hotelaria e Turismo" or unidadeorganica1 == "Faculdade de Economia" or unidadeorganica1 == "Departamento de Ciências Biomédicas e Medicina":
+                    departamento = None
+                    print("noneeeee")
+                else:
+                    departamento = request.POST['departamento']
+                    print(departamento)
+                    departamento = Departamento.objects.get(nome=departamento)
+
             print(unidadeorganica)
             #departamento = request.POST['departamento']
             print(departamento)

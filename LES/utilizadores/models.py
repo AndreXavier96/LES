@@ -17,10 +17,10 @@ class Departamento(models.Model):
     # Campos
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, unique=True)
-    faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE)
+    #faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'Departamento'
+        db_table = 'departamento'
 
     def __str__(self):
         return self.nome
@@ -100,3 +100,12 @@ class Diaaberto(models.Model):
     class Meta:
         managed = False
         db_table = 'diaaberto'
+
+class UnidadeorganicaDepartamento(models.Model):
+    unidade_organica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, db_column='unidade_organica')
+    departamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento')
+
+    class Meta:
+        managed = False
+        db_table = 'unidadeorganica_departamento'
+

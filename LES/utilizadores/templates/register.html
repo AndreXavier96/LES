@@ -4,6 +4,8 @@
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <title></title>
 </head>
+
+
 <script type="text/javascript">
     function user_type(val) {
         let element = document.getElementById('asda');
@@ -14,85 +16,268 @@
         }
     }
 
+    function dep_type(val) {
+
+        if (val === "Escola Superior de Gestão, Hotelaria e Turismo" || val === "Faculdade de Economia" ||
+            val === "Departamento de Ciências Biomédicas e Medicina"){
+            let esec = document.getElementById('esec');
+            esec.setAttribute("hidden", "True");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.setAttribute("hidden", "True");
+            let fchs = document.getElementById('fchs');
+            fchs.setAttribute("hidden", "True");
+            let fct = document.getElementById('fct');
+            fct.setAttribute("hidden", "True");
+        } else if( val === "Escola Superior de Educação e Comunicação"  ){
+            let esec = document.getElementById('esec');
+            esec.removeAttribute("hidden");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.setAttribute("hidden", "True");
+            let fchs = document.getElementById('fchs');
+            fchs.setAttribute("hidden", "True");
+            let fct = document.getElementById('fct');
+            fct.setAttribute("hidden", "True");
+        } else if( val === "Escola Superior de Saúde"  ){
+            let esec = document.getElementById('esec');
+            esec.setAttribute("hidden", "True");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.setAttribute("hidden", "True");
+            let fchs = document.getElementById('fchs');
+            fchs.setAttribute("hidden", "True");
+            let fct = document.getElementById('fct');
+            fct.setAttribute("hidden", "True");
+        } else if( val === "Escola Superior de Engenharia"  ){
+            let esec = document.getElementById('esec');
+            esec.setAttribute("hidden", "True");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.removeAttribute("hidden");
+            let fchs = document.getElementById('fchs');
+            fchs.setAttribute("hidden", "True");
+            let fct = document.getElementById('fct');
+            fct.setAttribute("hidden", "True");
+        } else if( val === "Faculdade de Ciências Humanas e Sociais"  ){
+            let esec = document.getElementById('esec');
+            esec.setAttribute("hidden", "True");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.setAttribute("hidden", "True");
+            let fchs = document.getElementById('fchs');
+            fchs.removeAttribute("hidden");
+            let fct = document.getElementById('fct');
+            fct.setAttribute("hidden", "True");
+        } else if( val === "Faculdade de Ciências e Tecnologia"  ){
+            let esec = document.getElementById('esec');
+            esec.setAttribute("hidden", "True");
+            let ess = document.getElementById('ess');
+            ess.setAttribute("hidden", "True");
+            let ese = document.getElementById('ese');
+            ese.setAttribute("hidden", "True");
+            let fchs = document.getElementById('fchs');
+            fchs.setAttribute("hidden", "True");
+            let fct = document.getElementById('fct');
+            fct.removeAttribute("hidden");
+        }
+    }
+
+
 </script>
 <body>
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        <div class="col s12 m6">
-            <h2>Criar Utilizador</h2>
-        </div>
-        <h3 style="color:red;">
-            {% if messages %}
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="col s12 m6">
+        <h2>Criar Utilizador</h2>
+    </div>
+    <h3 style="color:red;">
+        {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        {% endif %}
+    </h3>
+    <div class="col s12 m6">
+        Insira o seu nome:
+        <br>
+        {{ form.nome }}
+        <br>
+        <br>
+        Insira o seu email:
+        <br>
+        {{ form.email }}
+        <br>
+        <br>
+        Insira a sua password:
+        <br>
+        {{ form.password_digest }}
+        <br>
+        <br>
+        Confirme a password:
+        <br>
+        {{ form.password_conf }}
+        <br>
+        <br>
+        <!--            <p>Data de nascimento: {{ form.data_nascimento }}</p>-->
+
+        <label for="date">Data de nascimento</label>
+        <br>
+        <input type="date" id="date" name="data_nascimento">
+        <br>
+        <br>
+        Número de telemovel:
+        <br>
+        {{ form.numero_telemovel }}
+        <br>
+        <br>
+        Cartão de Cidadão:
+        <br>
+        {{ form.cartao_cidadao }}
+        <br>
+        <br>
+        Tem algumas deficiências?
+        <br>
+        <input type="radio" id="sim3" name="deficiencias" value="sim">
+        <label for="sim3">SIM</label>
+        <input type="radio" id="nao3" name="deficiencias" value="nao">
+        <label for="nao3">NAO</label>
+        <br>
+        <br>
+        Se sim, indique quais:
+        <br>
+        {{ form.deficiencias }}
+        <br>
+        <br>
+        Permite o acesso à sua localização?
+        <br>
+        <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
+        <label for="sim1">SIM</label>
+        <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
+        <label for="nao1">NAO</label>
+        <br>
+        <br>
+        Permite a utilização dos seus dados pessoais?
+        <br>
+        <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
+        <label for="sim2">SIM</label>
+        <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
+        <label for="nao2">NAO</label>
+        {# -----------------------------------------------------------------------#}
+        <br>
+        <br>
+        <label for="utilizadortipo">Tipo de Utilizador:</label>
+        <br>
+        <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
+
+            <option hidden>Escolher</option>
+            {% for u in utilizadortipo %}
+            {% if u.tipo != 'Administrador' %}
+            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
             {% endif %}
-        </h3>
-        <div class="col s12 m6">
-            <p>Nome: {{ form.nome }}</p>
-            <p>Email: {{ form.email }}</p>
-            <p>Password: {{ form.password_digest }}</p>
-            <p>Confirme a sua Password: {{ form.password_conf }}</p>
-            <p>Data de nascimento: {{ form.data_nascimento }}</p>
-            <p>Número de telemovel: {{ form.numero_telemovel }}</p>
-            <p>Cartão de Cidadão: {{ form.cartao_cidadao }}</p>
-            Tem algumas deficiências?
-            <input type="radio" id="sim3" name="deficiencias" value="sim">
-            <label for="sim3">SIM</label>
-            <input type="radio" id="nao3" name="deficiencias" value="nao">
-            <label for="nao3">NAO</label>
-            &nbsp;&nbsp;Se sim, indique quais: {{ form.deficiencias }}
-            <br>
-            <br>
-                Permite o acesso à sua localização?
-                <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
-                <label for="sim1">SIM</label>
-                <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
-                <label for="nao1">NAO</label>
-            <br>
-            <br>
-                Permite a utilização dos seus dados pessoais?
-                <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
-                <label for="sim2">SIM</label>
-                <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
-                <label for="nao2">NAO</label>
-                {#            -----------------------------------------------------------------------#}
-                <br>
-                <br>
-                <label for="utilizadortipo">Tipo de Utilizador:</label>
-                <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
-                    <option hidden>Escolher</option>
-                    {% for u in  utilizadortipo %}
-                        {% if u.tipo != 'Administrador' %}
-                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <div id="asda" style="display:none;">
-                    <br>
+            {% endfor %}
+        </select>
 
-                   <label for="unidadeorganica">Indique a sua unidade orgânica:</label>
-                    <select name="unidadeorganica" id="unidadeorganica" >
-                    <option hidden>Escolher</option>
-                    {% for uni in  unidadeorganica %}
-                    <option value="{{ uni.nome }}">{{ uni.nome }}</option>
-                    {% endfor %}
-                    </select>
-                    <br>
-                    <br>
-                    <label for="departamento">Tipo de Utilizador:</label>
-                    <select name="departamento" id="departamento" >
-                    <option hidden>Escolher</option>
-                    {% for d in  departamento %}
-                    <option value="{{ d.nome }}">{{ d.nome }}</option>
-                    {% endfor %}
-                    </select>
-
-                </div>
+        <div id="asda" style="display:none;">
+            <br>
+            <label for="unidadeorganica">Indique a sua unidade orgânica:</label>
+            <br>
+            <select name="unidadeorganica" id="unidadeorganica"  onchange="dep_type(this.value)" >
+                <option hidden>Escolher</option>
+                {% for uni in unidadeorganica %}
+                <option value="{{ uni.nome }}">{{ uni.nome }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <br>
         </div>
-        <input type="submit" value="Submeter">
-    </form>
+
+        <div id="esec" hidden>
+            <label for="departamento">Departamento:</label>
+            <br>
+            <select name="departamento" id="departamento">
+                <option hidden>Escolher</option>
+                {% for d in unidadeorganica_dep %}
+                {% if d.unidade_organica.nome == 'Escola Superior de Educação e Comunicação' %}
+                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="ess" hidden>
+            <label for="departamento">Departamento:</label>
+            <br>
+            <select name="departamento" id="departamento1">
+                <option hidden>Escolher</option>
+                {% for d in unidadeorganica_dep %}
+                {% if d.unidade_organica.nome == 'Escola Superior de Saúde' %}
+                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="ese" hidden>
+            <label for="departamento">Departamento:</label>
+            <br>
+            <select name="departamento" id="departamento2">
+                <option hidden>Escolher</option>
+                {% for d in unidadeorganica_dep %}
+                {% if d.unidade_organica.nome == 'Escola Superior de Engenharia' %}
+                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="fchs" hidden>
+            <label for="departamento">Departamento:</label>
+            <br>
+            <select name="departamento" id="departamento3">
+                <option hidden>Escolher</option>
+                {% for d in unidadeorganica_dep %}
+                {% if d.unidade_organica.nome == 'Faculdade de Ciências Humanas e Sociais' %}
+                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="fct" hidden>
+            <label for="departamento">Departamento:</label>
+            <br>
+            <select name="departamento" id="departamento4">
+                <option hidden>Escolher</option>
+                {% for d in unidadeorganica_dep %}
+                {% if d.unidade_organica.nome == 'Faculdade de Ciências e Tecnologia' %}
+                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+<!--        <div id="dep" style="display:none;">-->
+<!--            <label for="departamento">Departamento:</label>-->
+<!--            <br>-->
+<!--            <select name="departamento" id="departamento">-->
+<!--                <option hidden>Escolher</option>-->
+<!--                {% for d in departamento %}-->
+<!--                <option value="{{ d.nome }}">{{ d.nome }}</option>-->
+<!--                {% endfor %}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        </div>-->
+    </div>
+    <br>
+    <input type="submit" value="Submeter">
+</form>
 {% endblock %}
 
 </body>
