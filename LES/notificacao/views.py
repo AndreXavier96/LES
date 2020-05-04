@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils.datetime_safe import datetime
 from django.views.generic import View
 from .forms import NotificacaoForm
-from .models import Notificacao, Utilizador
+from .models import Notificacao, Utilizador, Utilizadortipo
 
 
 class notificacao(View):
@@ -35,7 +35,22 @@ class notificacao(View):
             #utilizador_env = Utilizador.objects.get(nome=utilizador_env_value)
             utilizador_rec= form_notificacao['utilizador_rec'].value()
             utilizador_rec1 = Utilizador.objects.get(email=utilizador_rec)
-            Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
+            teste = form_notificacao['teste'].value()
+            if len(teste)!=0:
+                print("1,2")
+                print(teste)
+                id_u= Utilizadortipo.objects.get(tipo=teste)
+                print(id_u)
+                teste1=Utilizador.objects.all().filter(utilizadortipo=id_u)
+                print(teste1)
+                for x in teste1:
+                    print(x)
+                    Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
+                                           prioridade=prioridade, utilizador_env=utilizador_env,
+                                           utilizador_rec=x)
+            #teste1= Utilizador.objects.get(utilizadortipo=id_u)
+            else:
+                Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
                                        prioridade=prioridade, utilizador_env=utilizador_env,
                                        utilizador_rec=utilizador_rec1)
         return redirect('/notificacao')

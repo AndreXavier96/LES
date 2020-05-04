@@ -7,4 +7,5 @@ class NotificacaoForm(forms.Form):
     assunto = forms.CharField(label='assunto',max_length=200, widget=forms.TextInput({}))
     #utilizador_env = forms.IntegerField(label='utilizador_env' )
     utilizador_rec =forms.CharField(max_length=200, widget=forms.TextInput({}))
+    teste = forms.CharField(max_length=200, widget=forms.TextInput({}), required=False)
 

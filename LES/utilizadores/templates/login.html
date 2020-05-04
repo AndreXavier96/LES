@@ -16,7 +16,7 @@
     <style>
     body {
     height: 100%;
-    background: white;
+    background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%);
     }
 
     .principal{
@@ -24,7 +24,7 @@
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 250px;
     padding: 10px;
     }
 
@@ -80,8 +80,12 @@
             <div>
              <h2>Login</h2>
             </div>
-            <p>Insira o seu email: {{ form.username}}</p>
-            <p>Insira a sua password: {{ form.password}}</p>
+            <p>Insira o seu email: </p>
+            {{ form.username}}
+            <p>Insira a sua password: </p>
+            {{ form.password}}
+            <br>
+            <br>
             <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
         <p></p>
             Don't have an account? <a href="{% url 'add' %}" target="blank"><strong>register here</strong></a>!
