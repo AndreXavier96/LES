@@ -10,7 +10,7 @@ from django.views.generic import View
 from LES.utils import render_to_pdf
 from utilizadores.models import Utilizador
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
-    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
+    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao, Percursos
 
 
 def remove_all_space(string):
@@ -94,7 +94,7 @@ class InscricaoView(View):
                 print("uploaded_file")
                 print(uploaded_file)
                 fs = FileSystemStorage()
-                fs_saved = '/home/xavi6696/PycharmProjects/LES/LES/inscricao/static/autorizacao/inscricao' + \
+                fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + \
                            str(inscricao.id)
                 fs.save(fs_saved, uploaded_file)
                 ParticipanteIndividual.objects.create(autorizacao=0,
@@ -112,31 +112,77 @@ class InscricaoView(View):
                                            numero_outro_normal=n_outro
                                            )
             ementainscricao = EmentaInscricao.objects.get(inscricao=inscricao)
-            # -----------transporte
+            # -----------transporte------------------------------------
             drop_value = request.POST['tipo_transporte']
             trans_para_campus = "nao"
             if drop_value == "autocarro" or drop_value == "comboio":
                 trans_para_campus_value = request.POST['QuerTransportePara']
                 if trans_para_campus_value == "sim":
-                    trans_para_campus = request.POST['qual']
+                    trans_para_campus = "sim"
+            else:
+                trans_para_campus = "nao"
             trans_entre_campus_value = request.POST['QuerTransporteEntre']
-            if trans_entre_campus_value == 'sim':
-                trans_entre_campus = request.POST['transporte_campus']
+            if trans_entre_campus_value == 'ida':
+                trans_entre_campus = "só ida"
+            elif trans_entre_campus_value == 'idavolta':
+                trans_entre_campus = "ida e volta"
             else:
                 trans_entre_campus = "nao"
+            Transporteproprio.objects.create(tipo_transporte=drop_value,
+                                             transporte_para_campus=trans_para_campus,
+                                             transporte_entre_campus=trans_entre_campus,
+                                             inscricao=inscricao
+                                             )
+            transporte = Transporteproprio.objects.get(inscricao=inscricao)
             chegada = remove_all_space(request.POST['timepicker-one'])
             partida = remove_all_space(request.POST['timepicker-two'])
             entre_campus_ida = remove_all_space(request.POST['timepicker-three'])
             entre_campus_volta = remove_all_space(request.POST['timepicker-four'])
-            Transporteproprio.objects.create(hora_chegada=chegada, hora_partida=partida,
-                                             tipo_transporte=drop_value,
-                                             transporte_para_campus=trans_para_campus,
-                                             transporte_entre_campus=trans_entre_campus,
-                                             ida_entre_campus=entre_campus_ida,
-                                             volta_entre_campus=entre_campus_volta,
-                                             inscricao=inscricao
+            if drop_value == "autocarro" or drop_value == "comboio":
+                trans_para_campus_value = request.POST['QuerTransportePara']
+                if trans_para_campus_value == "sim":
+                    destino = request.POST['qual']
+                    if drop_value == "autocarro":
+                        origem = "estacao autocarros"
+                    else:
+                        origem = "estacao comboios"
+                    Percursos.objects.create(origem=origem,
+                                             destino=destino,
+                                             hora=chegada,
+                                             transporteproprio=transporte
                                              )
-            transporte = Transporteproprio.objects.get(inscricao=inscricao)
+                    if trans_entre_campus_value == 'ida':
+                        if destino == 'penha':
+                            destino = 'gambelas'
+                        elif destino == 'gambelas':
+                            destino = 'penha'
+                    Percursos.objects.create(origem=destino,
+                                             destino=origem,
+                                             hora=partida,
+                                             transporteproprio=transporte
+                                             )
+            origementre = ""
+            destinoentre = ""
+            if trans_entre_campus_value == 'ida' or trans_entre_campus_value=='idavolta':
+                trans_entre_campus = request.POST['transporte_campus']
+                if trans_entre_campus == "penha_para_gambelas":
+                    origementre = "penha"
+                    destinoentre = "gambelas"
+                elif trans_entre_campus == "gambelas_para_penha":
+                    origementre = "gambelas"
+                    destinoentre = "penha"
+                Percursos.objects.create(origem=origementre,
+                                         destino=destinoentre,
+                                         hora=entre_campus_ida,
+                                         transporteproprio=transporte
+                                         )
+                if trans_entre_campus_value=='idavolta':
+                    Percursos.objects.create(origem=destinoentre,
+                                             destino=origementre,
+                                             hora=entre_campus_ida,
+                                             transporteproprio=transporte
+                                             )
+            # ----------------------sessao------------------
             row_count = int(request.POST['row_countt'])
             if row_count > 0:
                 rows_deleted_count = request.POST['row_deletedd']

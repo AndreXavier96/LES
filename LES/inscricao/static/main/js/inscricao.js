@@ -47,10 +47,20 @@ function paraCampus(val) {
 
 function entreCampus(val) {
     let relogio3 = document.getElementById('entre_campus')
+    let DivRelogio3 = document.getElementById('timepicker-three_div')
+    let DivRelogio4 = document.getElementById('timepicker-four_div')
     if (val === 'nao') {
         relogio3.style.display = 'none'
-    } else {
+        DivRelogio3.style.display = 'none'
+        DivRelogio4.style.display = 'none'
+    } else if (val === 'ida') {
         relogio3.style.display = 'block'
+        DivRelogio3.style.display = 'block'
+        DivRelogio4.style.display = 'none'
+    } else if (val === 'idavolta') {
+        relogio3.style.display = 'block'
+        DivRelogio3.style.display = 'block'
+        DivRelogio4.style.display = 'block'
     }
 }
 
@@ -58,8 +68,6 @@ function entreCampusRelogio(val) {
     let DivRelogio3 = document.getElementById('timepicker-three_div')
     let DivRelogio4 = document.getElementById('timepicker-four_div')
     if (val === 'penha_para_gambelas' || val === 'gambelas_para_penha') {
-        DivRelogio3.style.display = 'block'
-        DivRelogio4.style.display = 'block'
         if (val === 'penha_para_gambelas') {
             document.getElementById('timepicker-three_label').textContent = "Horario ida da Penha para Gambelas"
             document.getElementById('timepicker-four_label').textContent = "Horario volta das Gambelas para a Penha"
@@ -439,27 +447,10 @@ let expanded_ses = ""
 let expanded_icon = ""
 
 function expandAtividade(id) {
-    // let ses = document.getElementById('sessoes_atividade_' + id)
     let icon = document.getElementById('icon_' + id)
-    // if (ses.style.display === 'none') {
-        // ses.style.display = ''
-        // icon.classList.add('is-expanded')
-        // if (expanded_ses !== "" && expanded_icon !== "") {
-        //     document.getElementById(expanded_ses).style.display = "none"
-        //     document.getElementById(expanded_icon).classList.remove('is-expanded')
-        // }
-        // expanded_ses = ses.id.toString()
-        // expanded_icon = icon.id.toString()
-    //
-    // } else if (ses.style.display === '') {
-    //     ses.style.display = 'none'
-    //     icon.classList.remove('is-expanded')
-    //     expanded_ses = ""
-    //     expanded_icon = ""
-    // }
-    if (icon.classList.contains('is-expanded')){
+    if (icon.classList.contains('is-expanded')) {
         icon.classList.remove('is-expanded')
-    }else {
+    } else {
         icon.classList.add('is-expanded')
     }
 }

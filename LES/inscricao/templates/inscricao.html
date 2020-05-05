@@ -1,8 +1,9 @@
 ﻿{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
     <meta charset="utf-8"/>
-    <title></title>
+    <title>Dia Aberto - Inscrição</title>
     {#    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>#}
     <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
             integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs=" crossorigin="anonymous"></script>
@@ -506,10 +507,9 @@
                                                                 <div class="field widht">
                                                                     <label class="label">Preço total</label>
                                                                     <div class="control is-clearfix">
-                                                                        <label for="preco_total"></label><input
-                                                                            type="number" name="preco_total"
-                                                                            id="preco_total"
-                                                                            value="0" disabled>&euro;
+                                                                        <label for="preco_total"></label>
+                                                                        <input class="input" type="number" name="preco_total"
+                                                                            id="preco_total" value="0" disabled style="width: 20%">&euro;
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -613,15 +613,22 @@
                                                             desejar transporte entre os Campus? </p>
                                                         <label class="b-radio radio" for="id_QuerTransporteEntre_0">
                                                             <input type="radio" name="QuerTransporteEntre"
-                                                                   value="sim" onchange="entreCampus(this.value);"
+                                                                   value="ida" onchange="entreCampus(this.value);"
                                                                    required="" id="id_QuerTransporteEntre_0">
                                                             <span class="check"></span>
-                                                            <span class="control-label"> Sim </span>
+                                                            <span class="control-label"> Ida </span>
                                                         </label>
                                                         <label class="b-radio radio" for="id_QuerTransporteEntre_1">
                                                             <input type="radio" name="QuerTransporteEntre"
+                                                                   value="idavolta" onchange="entreCampus(this.value);"
+                                                                   required="" id="id_QuerTransporteEntre_1">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Ida e volta </span>
+                                                        </label>
+                                                        <label class="b-radio radio" for="id_QuerTransporteEntre_2">
+                                                            <input type="radio" name="QuerTransporteEntre"
                                                                    value="nao" onchange="entreCampus(this.value);"
-                                                                   required="" id="id_QuerTransporteEntre_1"
+                                                                   required="" id="id_QuerTransporteEntre_2"
                                                                    checked>
                                                             <span class="check"></span>
                                                             <span class="control-label"> Não </span>
@@ -646,12 +653,14 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="column" id="timepicker-three_div"
-                                                             style="display: none">
-                                                            <div class="field">
+                                                    </div>
+                                                    <div class="columns">
+                                                        <div class="column">
+                                                            <div class="field" id="timepicker-three_div"
+                                                                 style="display: none">
                                                                 <label id="timepicker-three_label"
                                                                        for="timepicker-three">Hora
-                                                                    Partida</label>
+                                                                    Ida</label>
                                                                 <div class="control">
                                                                     <input type="text" id="timepicker-three"
                                                                            name="timepicker-three"
@@ -659,12 +668,12 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="column" id="timepicker-four_div"
-                                                             style="display: none">
-                                                            <div class="field">
+                                                        <div class="column">
+                                                            <div class="field" id="timepicker-four_div"
+                                                                 style="display: none">
                                                                 <label id="timepicker-four_label"
                                                                        for="timepicker-four">Hora
-                                                                    Partida</label>
+                                                                    Volta</label>
                                                                 <div class="control">
                                                                     <input type="text" id="timepicker-four"
                                                                            name="timepicker-four"
