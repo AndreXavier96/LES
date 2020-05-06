@@ -94,8 +94,7 @@ class InscricaoView(View):
                 print("uploaded_file")
                 print(uploaded_file)
                 fs = FileSystemStorage()
-                fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + \
-                           str(inscricao.id)
+                fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + str(inscricao.id)
                 fs.save(fs_saved, uploaded_file)
                 ParticipanteIndividual.objects.create(autorizacao=0,
                                                       ficheiro_autorizacao=fs_saved,
@@ -163,7 +162,7 @@ class InscricaoView(View):
                                              )
             origementre = ""
             destinoentre = ""
-            if trans_entre_campus_value == 'ida' or trans_entre_campus_value=='idavolta':
+            if trans_entre_campus_value == 'ida' or trans_entre_campus_value == 'idavolta':
                 trans_entre_campus = request.POST['transporte_campus']
                 if trans_entre_campus == "penha_para_gambelas":
                     origementre = "penha"
@@ -176,7 +175,7 @@ class InscricaoView(View):
                                          hora=entre_campus_ida,
                                          transporteproprio=transporte
                                          )
-                if trans_entre_campus_value=='idavolta':
+                if trans_entre_campus_value == 'idavolta':
                     Percursos.objects.create(origem=destinoentre,
                                              destino=origementre,
                                              hora=entre_campus_ida,
@@ -226,8 +225,13 @@ class InscricaoView(View):
                 # ----------------------------------------------------------------
                 email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
                 email.send()
-                return render(request, 'home.html', context={'MSG': "Inscricao com Sucesso"})
+                return render(request, 'inscricao_sucess.html', context={'email': utilizador.email})
             else:
                 return render(request, 'home.html', context={'MSG': "Deve de escolher pelo menos uma Sessao"})
         else:
             return render(request, 'home.html', context={'MSG': "Deve de escolher uma Escola"})
+
+
+class success(View):
+    def get(self, request):
+        return render(request, 'home.html', context={'MSG': "Sucesso"})

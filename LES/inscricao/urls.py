@@ -18,13 +18,14 @@ Including another URLconf
 
 from django.urls import path
 from . import views
-from .views import InscricaoView, HomeView
+from .views import InscricaoView, HomeView, success
 
 app_name = "inscricao"
 
 urlpatterns = [
     path('', InscricaoView.as_view(), name='inscricao'),
     path('home/', HomeView.as_view(), name="home"),
+    path('success/', success.as_view(), name="success"),
 ]
 
 

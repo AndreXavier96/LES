@@ -275,22 +275,6 @@ let atividades = [];
 let inscritos = [];
 let sessao = [];
 
-// function getMaxInscritos(u) {
-//     if (u === "Participante em Grupo") {
-//         max_incritos = parseInt(document.getElementById('id_total_participantes').value)
-//         document.getElementById('max_incritos_id').value = max_incritos
-//     } else if (u === 'Participante Individual') {
-//         max_incritos = 1 + parseInt(document.getElementById('id_acompanhantes').value)
-//         document.getElementById('max_incritos_id').value = max_incritos
-//     }
-// }
-
-// function maxIncritos(val, input_id, vagas) {
-//     if (vagas < max_incritos)
-//         document.getElementById(input_id).max = vagas
-//     else
-//         document.getElementById(input_id).max = max_incritos
-// }
 
 let row_count = 0
 let row_deleted_incremental = 0
@@ -466,7 +450,7 @@ function pagination(id) {
         document.getElementById('bar' + pag).classList.add('is-previous')
         document.getElementById('bar' + next).classList.add('is-active')
         pag = next
-    } else if (id === "back") {
+    } else if (id === "back1") {
         let back = (parseInt(pag) - 1).toString()
         document.getElementById('pag' + pag).style.display = 'none'
         document.getElementById('pag' + back).style.display = ''
@@ -474,20 +458,24 @@ function pagination(id) {
         document.getElementById('bar' + back).classList.remove('is-previous')
         document.getElementById('bar' + back).classList.add('is-active')
         pag = back
+    } else if (id === 'confirmacao') {
+        document.getElementById('popup_confirmacao').style.display = ''
+    } else if (id === 'popup_cancel') {
+        document.getElementById('popup_confirmacao').style.display = 'none'
     }
     if (pag !== "1") {
         document.getElementById('cancel').style.display = 'none'
-        document.getElementById('back').style.display = ''
+        document.getElementById('back1').style.display = ''
     } else if (pag === "1") {
         document.getElementById('cancel').style.display = ''
-        document.getElementById('back').style.display = 'none'
+        document.getElementById('back1').style.display = 'none'
     }
-    if (pag === "6") {
+    if (pag === "5") {
         document.getElementById('next').style.display = 'none'
-        document.getElementById('submit').style.display = ''
-    } else if (pag !== "6") {
+        document.getElementById('confirmacao').style.display = ''
+    } else if (pag !== "5") {
         document.getElementById('next').style.display = ''
-        document.getElementById('submit').style.display = 'none'
+        document.getElementById('confirmacao').style.display = 'none'
     }
 }
 
