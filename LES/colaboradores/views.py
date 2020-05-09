@@ -60,7 +60,7 @@ class Criar_colab(View):
                                    percurso=percurso, hora_inicio_colab=hora_inicio_colab,
                                    hora_fim_colab=hora_fim_colab)
 
-        return redirect('/register')
+        return redirect('/colaboradores/consultar_colab/')
 
 
 class Editar_colab(View):
@@ -149,7 +149,7 @@ class Apagar_colab(View):
     def post(self, request):
         # Utilizador.objects.filter(pk=3).update(primeiro_dia=None, segundo_dia=None,
         #                                        sala_de_aula=None, percurso=None)
-        return redirect('/register')
+        return redirect('/colaboradores/consultar_colab/')
 
 
 class Consultar_colab(View):
@@ -178,5 +178,5 @@ class Consultar_colab(View):
         id=post['del']
         print(id)
         Colaboracao.objects.filter(pk=id).delete()
-        return redirect('/register')
+        return redirect('/colaboradores/consultar_colab/')
     #

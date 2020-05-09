@@ -37,20 +37,25 @@ class register(View):
             # print(form_register.errors)
             utilizadortipo_value = request.POST['utilizadortipo']
             utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
-            # print(utilizadortipo)
-            # print(utilizadortipo_value)
-            email = form_register['email'].value()
+            #email = form_register['email'].value()
+            email =request.POST['email']
             print(email)
-            password_digest = form_register['password_digest'].value()
-            password_conf = form_register['password_conf'].value()
+            #password_digest = form_register['password_digest'].value()
+            password_digest = request.POST['password_digest']
+            #password_conf = form_register['password_conf'].value()
+            password_conf = request.POST['password_conf']
             if password_digest != password_conf:
                 messages.error(request, "as passwords não coincidem")
                 return redirect('/utilizadores/register/')
-            nome = form_register['nome'].value()
+            #nome = form_register['nome'].value()
+            nome = request.POST['nome']
             data_nascimento = request.POST['data_nascimento']
-            numero_telemovel = form_register['numero_telemovel'].value()
-            cartao_cidadao = form_register['cartao_cidadao'].value()
-            deficiencias = form_register['deficiencias'].value()
+            #numero_telemovel = form_register['numero_telemovel'].value()
+            numero_telemovel = request.POST['numero_telemovel']
+            #cartao_cidadao = form_register['cartao_cidadao'].value()
+            cartao_cidadao = request.POST['cartao_cidadao']
+            #deficiencias = form_register['deficiencias'].value()
+            deficiencias = request.POST['deficiencias']
             # permitir_localizacao = form_register['permitir_localizacao'].value()
             permitir_localizacao = request.POST['permitir_localizacao']
             if permitir_localizacao == "sim":
@@ -76,9 +81,26 @@ class register(View):
                     departamento = None
                     print("noneeeee")
                 else:
-                    departamento = request.POST['departamento']
-                    print(departamento)
-                    departamento = Departamento.objects.get(nome=departamento)
+                    if unidadeorganica1 == "Escola Superior de Educação e Comunicação":
+                        departamento = request.POST['departamento_esc']
+                        print(departamento)
+                        departamento = Departamento.objects.get(nome=departamento)
+                    if unidadeorganica1 == "Escola Superior de Saúde":
+                        departamento = request.POST['departamento_ess']
+                        print(departamento)
+                        departamento = Departamento.objects.get(nome=departamento)
+                    if unidadeorganica1 == "Escola Superior de Engenharia":
+                        departamento = request.POST['departamento_ese']
+                        print(departamento)
+                        departamento = Departamento.objects.get(nome=departamento)
+                    if unidadeorganica1 == "Faculdade de Ciências Humanas e Sociais":
+                        departamento = request.POST['departamento_fchs']
+                        print(departamento)
+                        departamento = Departamento.objects.get(nome=departamento)
+                    if unidadeorganica1 == "Faculdade de Ciências e Tecnologia":
+                        departamento = request.POST['departamento_fct']
+                        print(departamento)
+                        departamento = Departamento.objects.get(nome=departamento)
 
             print(unidadeorganica)
             #departamento = request.POST['departamento']

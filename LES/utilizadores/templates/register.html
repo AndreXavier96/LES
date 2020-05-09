@@ -1,7 +1,12 @@
-﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+﻿{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
+
     <title></title>
 </head>
 
@@ -22,71 +27,114 @@
             val === "Departamento de Ciências Biomédicas e Medicina"){
             let esec = document.getElementById('esec');
             esec.setAttribute("hidden", "True");
+
             let ess = document.getElementById('ess');
             ess.setAttribute("hidden", "True");
+
             let ese = document.getElementById('ese');
             ese.setAttribute("hidden", "True");
+
             let fchs = document.getElementById('fchs');
             fchs.setAttribute("hidden", "True");
+
             let fct = document.getElementById('fct');
             fct.setAttribute("hidden", "True");
         } else if( val === "Escola Superior de Educação e Comunicação"  ){
             let esec = document.getElementById('esec');
             esec.removeAttribute("hidden");
+
             let ess = document.getElementById('ess');
             ess.setAttribute("hidden", "True");
+
             let ese = document.getElementById('ese');
             ese.setAttribute("hidden", "True");
+
             let fchs = document.getElementById('fchs');
             fchs.setAttribute("hidden", "True");
+
             let fct = document.getElementById('fct');
             fct.setAttribute("hidden", "True");
+
         } else if( val === "Escola Superior de Saúde"  ){
             let esec = document.getElementById('esec');
             esec.setAttribute("hidden", "True");
+
             let ess = document.getElementById('ess');
-            ess.setAttribute("hidden", "True");
+            ess.removeAttribute("hidden");
+
             let ese = document.getElementById('ese');
             ese.setAttribute("hidden", "True");
+
             let fchs = document.getElementById('fchs');
             fchs.setAttribute("hidden", "True");
+
             let fct = document.getElementById('fct');
             fct.setAttribute("hidden", "True");
+
         } else if( val === "Escola Superior de Engenharia"  ){
             let esec = document.getElementById('esec');
             esec.setAttribute("hidden", "True");
+
             let ess = document.getElementById('ess');
             ess.setAttribute("hidden", "True");
+
             let ese = document.getElementById('ese');
             ese.removeAttribute("hidden");
+
             let fchs = document.getElementById('fchs');
             fchs.setAttribute("hidden", "True");
+
             let fct = document.getElementById('fct');
             fct.setAttribute("hidden", "True");
         } else if( val === "Faculdade de Ciências Humanas e Sociais"  ){
             let esec = document.getElementById('esec');
             esec.setAttribute("hidden", "True");
+
             let ess = document.getElementById('ess');
             ess.setAttribute("hidden", "True");
+
             let ese = document.getElementById('ese');
             ese.setAttribute("hidden", "True");
+
             let fchs = document.getElementById('fchs');
             fchs.removeAttribute("hidden");
+
             let fct = document.getElementById('fct');
             fct.setAttribute("hidden", "True");
         } else if( val === "Faculdade de Ciências e Tecnologia"  ){
             let esec = document.getElementById('esec');
             esec.setAttribute("hidden", "True");
+
             let ess = document.getElementById('ess');
             ess.setAttribute("hidden", "True");
+
             let ese = document.getElementById('ese');
             ese.setAttribute("hidden", "True");
+
             let fchs = document.getElementById('fchs');
             fchs.setAttribute("hidden", "True");
+
             let fct = document.getElementById('fct');
             fct.removeAttribute("hidden");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </script>
@@ -94,189 +142,332 @@
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <div class="col s12 m6">
-        <h2>Criar Utilizador</h2>
+    <div data-v-8716d23a="" id="app">
+        {% include "includes/navbar.html" %}
+        <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+            <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+        </div>
+        <div data-v-8716d23a="" id="page-content">
+            <div data-v-8716d23a="" class="card">
+                <div data-v-8716d23a="" class="card-content">
+                    <div data-v-8716d23a="" id="top">
+                        <div style="padding: 3rem 2vw 1rem;">
+                            <div class="b-steps">
+                                <div style="text-align:center">
+                                    <span style="font-size: 16pt;font-weight:bold">Criar Utilizador</span>
+                                </div>
+                                <!--                                <nav class="steps is-success">-->
+                                <!--                                    <ul class="step-items">-->
+                                <!--                                        <li class="step-item is-success is-active"><a class="step-link">-->
+                                <!--                                            <div class="step-marker"><span class="icon"><i-->
+                                <!--                                                    class="mdi mdi-train-car mdi-24px"></i></span></div>-->
+                                <!--                                            <div class="step-details"><span-->
+                                <!--                                                    class="step-title">Adicionar Transporte</span></div>-->
+                                <!--                                        </a></li>-->
+                                <!--                                    </ul>-->
+                                <!--                                </nav>-->
+                                <section class="step-content">
+                                    <div class="step-item" style="">
+                                        <div style="padding: 1rem 2vw 0px;">
+                                            <hr>
+                                            <div class="column is-offset-3 is-6">
+                                                <div class="field"><label class="label">Nome:</label>
+                                                    <div class="control is-clearfix"><input type="text"
+                                                                                            autocomplete="on"
+                                                                                            class="input"
+                                                                                            name="nome">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Email:</label>
+                                                    <div class="control is-clearfix"><input type="text"
+                                                                                            autocomplete="on"
+                                                                                            class="input" name="email">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Password:</label>
+                                                    <div class="control is-clearfix"><input type="password"
+                                                                                            class="input"
+                                                                                            name="password_digest">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Confirme a sua password:</label>
+                                                    <div class="control is-clearfix"><input type="password"
+                                                                                            class="input"
+                                                                                            name="password_conf">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Data de nascimento:</label>
+                                                    <div class="control is-clearfix"><input type="date"
+                                                                                            autocomplete="on" id="date"
+                                                                                            class="input"
+                                                                                            name="data_nascimento">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Numero de telemóvel:</label>
+                                                    <div class="control is-clearfix"><input type="number"
+                                                                                            autocomplete="on"
+                                                                                            class="input"
+                                                                                            name="numero_telemovel">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Cartão de Cidadão:</label>
+                                                    <div class="control is-clearfix"><input type="number"
+                                                                                            autocomplete="on"
+                                                                                            class="input"
+                                                                                            name="cartao_cidadao">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Tem alguma deficiência?:</label>
+                                                    <div class="control is-clearfix"><input type="radio" id="sim3"
+                                                                                            name="deficiencias"
+                                                                                            value="sim">
+                                                        <label for="sim3">SIM</label>
+                                                        <input type="radio" id="nao3" name="deficiencias" value="nao">
+                                                        <label for="nao3">NAO</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Se sim, indique quais:</label>
+                                                    <div class="control is-clearfix"><input type="text"
+                                                                                            autocomplete="on"
+                                                                                            class="input"
+                                                                                            name="deficiencias">
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Permite o acesso à sua
+                                                    localização?</label>
+                                                    <div class="control is-clearfix"><input type="radio" id="sim1"
+                                                                                            name="permitir_localizacao"
+                                                                                            value="sim">
+                                                        <label for="sim1">SIM</label>
+                                                        <input type="radio" id="nao1" name="permitir_localizacao"
+                                                               value="nao">
+                                                        <label for="nao1">NAO</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Permite a utilização dos seus
+                                                    dados pessoais?</label>
+                                                    <div class="control is-clearfix"><input type="radio" id="sim2"
+                                                                                            name="utilizar_dados_pessoais"
+                                                                                            value="sim">
+                                                        <label for="sim2">SIM</label>
+                                                        <input type="radio" id="nao2" name="utilizar_dados_pessoais"
+                                                               value="nao">
+                                                        <label for="nao2">NAO</label>
+                                                    </div>
+                                                </div>
+                                                <div class="field"><label class="label">Tipo de Utilizador:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="utilizadortipo" id="utilizadortipo"
+                                                                    onchange="user_type(this.value)">
+                                                                <option hidden>Escolher</option>
+                                                                    {% for u in utilizadortipo %}
+                                                                    {% if u.tipo != 'Administrador' %}
+                                                                        <option value="{{ u.tipo }}">{{ u.tipo }}</option>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="asda" style="display:none;"><label class="label" for="unidadeorganica">Indique a sua unidade orgânica:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="unidadeorganica" id="unidadeorganica"
+                                                                    onchange="dep_type(this.value)">
+                                                                <option hidden>Escolher</option>
+                                                                {% for uni in unidadeorganica %}
+                                                                <option value="{{ uni.nome }}">{{ uni.nome }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="esec" hidden><label class="label" for="departamento">Departamento:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="departamento_esec" id="departamento">
+                                                                <option hidden>Escolher</option>
+                                                                {% for d in unidadeorganica_dep %}
+                                                                {% if d.unidade_organica.nome == 'Escola Superior de Educação e Comunicação' %}
+                                                                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}
+                                                                </option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="ess" hidden><label class="label" for="departamento">Departamento:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="departamento_ess" id="departamento1">
+                                                                <option hidden>Escolher</option>
+                                                                {% for d in unidadeorganica_dep %}
+                                                                {% if d.unidade_organica.nome == 'Escola Superior de Saúde' %}
+                                                                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}
+                                                                </option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="ese" hidden><label class="label" for="departamento">Departamento:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="departamento_ese" id="departamento2">
+                                                                <option hidden>Escolher</option>
+                                                                {% for d in unidadeorganica_dep %}
+                                                                {% if d.unidade_organica.nome == 'Escola Superior de Engenharia' %}
+                                                                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}
+                                                                </option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="fchs" hidden><label class="label" for="departamento">Departamento:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="departamento_fchs" id="departamento3">
+                                                                <option hidden>Escolher</option>
+                                                                {% for d in unidadeorganica_dep %}
+                                                                {% if d.unidade_organica.nome == 'Faculdade de Ciências Humanas e Sociais' %}
+                                                                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}
+                                                                </option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field" id="fct" hidden><label class="label" for="departamento">Departamento:</label>
+                                                    <div class="control is-expanded">
+                                                        <span class="select is-fullwidth is-empty">
+                                                            <select name="departamento_fct" id="departamento4">
+                                                                <option hidden>Escolher</option>
+                                                                {% for d in unidadeorganica_dep %}
+                                                                {% if d.unidade_organica.nome == 'Faculdade de Ciências e Tecnologia' %}
+                                                                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}
+                                                                </option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+
+                                        </div>
+                                    </div>
+                                </section>
+                                <div class="column is-8 is-offset-2">
+                                    <div class="level">
+                                        <div class="level-left"><a href="/utilizadores/register"
+                                                                   class="button is-outlined"
+                                                                   type="button"><!----> <span> Cancelar </span> <!---->
+                                        </a></div>
+                                        <div class="level-right">
+                                            <button type="submit" class="button is-large is-success is-outlined"><!---->
+                                                <span> Registar Utilizador </span> <!----></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h3 style="color:red;">
-        {% if messages %}
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-        {% endif %}
-    </h3>
-    <div class="col s12 m6">
-        Insira o seu nome:
-        <br>
-        {{ form.nome }}
-        <br>
-        <br>
-        Insira o seu email:
-        <br>
-        {{ form.email }}
-        <br>
-        <br>
-        Insira a sua password:
-        <br>
-        {{ form.password_digest }}
-        <br>
-        <br>
-        Confirme a password:
-        <br>
-        {{ form.password_conf }}
-        <br>
-        <br>
-        <!--            <p>Data de nascimento: {{ form.data_nascimento }}</p>-->
 
-        <label for="date">Data de nascimento</label>
-        <br>
-        <input type="date" id="date" name="data_nascimento">
-        <br>
-        <br>
-        Número de telemovel:
-        <br>
-        {{ form.numero_telemovel }}
-        <br>
-        <br>
-        Cartão de Cidadão:
-        <br>
-        {{ form.cartao_cidadao }}
-        <br>
-        <br>
-        Tem algumas deficiências?
-        <br>
-        <input type="radio" id="sim3" name="deficiencias" value="sim">
-        <label for="sim3">SIM</label>
-        <input type="radio" id="nao3" name="deficiencias" value="nao">
-        <label for="nao3">NAO</label>
-        <br>
-        <br>
-        Se sim, indique quais:
-        <br>
-        {{ form.deficiencias }}
-        <br>
-        <br>
-        Permite o acesso à sua localização?
-        <br>
-        <input type="radio" id="sim1" name="permitir_localizacao" value="sim">
-        <label for="sim1">SIM</label>
-        <input type="radio" id="nao1" name="permitir_localizacao" value="nao">
-        <label for="nao1">NAO</label>
-        <br>
-        <br>
-        Permite a utilização dos seus dados pessoais?
-        <br>
-        <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">
-        <label for="sim2">SIM</label>
-        <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">
-        <label for="nao2">NAO</label>
-        {# -----------------------------------------------------------------------#}
-        <br>
-        <br>
-        <label for="utilizadortipo">Tipo de Utilizador:</label>
-        <br>
-        <select name="utilizadortipo" id="utilizadortipo" onchange="user_type(this.value)">
 
-            <option hidden>Escolher</option>
-            {% for u in utilizadortipo %}
-            {% if u.tipo != 'Administrador' %}
-            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-            {% endif %}
-            {% endfor %}
-        </select>
+    <!--    <div class="col s12 m6">-->
+    <!--        <h2>Criar Utilizador</h2>-->
+    <!--    </div>-->
+    <!--    <h3 style="color:red;">-->
+    <!--        {% if messages %}-->
+    <!--        {% for message in messages %}-->
+    <!--        {{ message }}-->
+    <!--        {% endfor %}-->
+    <!--        {% endif %}-->
+    <!--    </h3>-->
+    <!--    <div class="col s12 m6">-->
+    <!--        Insira o seu nome:-->
+    <!--        <br>-->
+    <!--        {{ form.nome }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Insira o seu email:-->
+    <!--        <br>-->
+    <!--        {{ form.email }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Insira a sua password:-->
+    <!--        <br>-->
+    <!--        {{ form.password_digest }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Confirme a password:-->
+    <!--        <br>-->
+    <!--        {{ form.password_conf }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        &lt;!&ndash;            <p>Data de nascimento: {{ form.data_nascimento }}</p>&ndash;&gt;-->
 
-        <div id="asda" style="display:none;">
-            <br>
-            <label for="unidadeorganica">Indique a sua unidade orgânica:</label>
-            <br>
-            <select name="unidadeorganica" id="unidadeorganica"  onchange="dep_type(this.value)" >
-                <option hidden>Escolher</option>
-                {% for uni in unidadeorganica %}
-                <option value="{{ uni.nome }}">{{ uni.nome }}</option>
-                {% endfor %}
-            </select>
-            <br>
-            <br>
-        </div>
+    <!--        <label for="date">Data de nascimento</label>-->
+    <!--        <br>-->
+    <!--        <input type="date" id="date" name="data_nascimento">-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Número de telemovel:-->
+    <!--        <br>-->
+    <!--        {{ form.numero_telemovel }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Cartão de Cidadão:-->
+    <!--        <br>-->
+    <!--        {{ form.cartao_cidadao }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Tem algumas deficiências?-->
+    <!--        <br>-->
+    <!--        <input type="radio" id="sim3" name="deficiencias" value="sim">-->
+    <!--        <label for="sim3">SIM</label>-->
+    <!--        <input type="radio" id="nao3" name="deficiencias" value="nao">-->
+    <!--        <label for="nao3">NAO</label>-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Se sim, indique quais:-->
+    <!--        <br>-->
+    <!--        {{ form.deficiencias }}-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Permite o acesso à sua localização?-->
+    <!--        <br>-->
+    <!--        <input type="radio" id="sim1" name="permitir_localizacao" value="sim">-->
+    <!--        <label for="sim1">SIM</label>-->
+    <!--        <input type="radio" id="nao1" name="permitir_localizacao" value="nao">-->
+    <!--        <label for="nao1">NAO</label>-->
+    <!--        <br>-->
+    <!--        <br>-->
+    <!--        Permite a utilização dos seus dados pessoais?-->
+    <!--        <br>-->
+    <!--        <input type="radio" id="sim2" name="utilizar_dados_pessoais" value="sim">-->
+    <!--        <label for="sim2">SIM</label>-->
+    <!--        <input type="radio" id="nao2" name="utilizar_dados_pessoais" value="nao">-->
+    <!--        <label for="nao2">NAO</label>-->
+    {# -----------------------------------------------------------------------#}
 
-        <div id="esec" hidden>
-            <label for="departamento">Departamento:</label>
-            <br>
-            <select name="departamento" id="departamento">
-                <option hidden>Escolher</option>
-                {% for d in unidadeorganica_dep %}
-                {% if d.unidade_organica.nome == 'Escola Superior de Educação e Comunicação' %}
-                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-
-        <div id="ess" hidden>
-            <label for="departamento">Departamento:</label>
-            <br>
-            <select name="departamento" id="departamento1">
-                <option hidden>Escolher</option>
-                {% for d in unidadeorganica_dep %}
-                {% if d.unidade_organica.nome == 'Escola Superior de Saúde' %}
-                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-
-        <div id="ese" hidden>
-            <label for="departamento">Departamento:</label>
-            <br>
-            <select name="departamento" id="departamento2">
-                <option hidden>Escolher</option>
-                {% for d in unidadeorganica_dep %}
-                {% if d.unidade_organica.nome == 'Escola Superior de Engenharia' %}
-                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-
-        <div id="fchs" hidden>
-            <label for="departamento">Departamento:</label>
-            <br>
-            <select name="departamento" id="departamento3">
-                <option hidden>Escolher</option>
-                {% for d in unidadeorganica_dep %}
-                {% if d.unidade_organica.nome == 'Faculdade de Ciências Humanas e Sociais' %}
-                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-
-        <div id="fct" hidden>
-            <label for="departamento">Departamento:</label>
-            <br>
-            <select name="departamento" id="departamento4">
-                <option hidden>Escolher</option>
-                {% for d in unidadeorganica_dep %}
-                {% if d.unidade_organica.nome == 'Faculdade de Ciências e Tecnologia' %}
-                <option value="{{ d.departamento.nome }}">{{ d.departamento.nome }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </div>
-
-<!--        <div id="dep" style="display:none;">-->
-<!--            <label for="departamento">Departamento:</label>-->
-<!--            <br>-->
-<!--            <select name="departamento" id="departamento">-->
-<!--                <option hidden>Escolher</option>-->
-<!--                {% for d in departamento %}-->
-<!--                <option value="{{ d.nome }}">{{ d.nome }}</option>-->
-<!--                {% endfor %}-->
-<!--            </select>-->
-<!--        </div>-->
-<!--        </div>-->
-    </div>
-    <br>
-    <input type="submit" value="Submeter">
 </form>
 {% endblock %}
 
