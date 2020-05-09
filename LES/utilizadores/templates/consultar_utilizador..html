@@ -1,0 +1,136 @@
+
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
+    <title>Dia Aberto-Consultar Utilizadores</title>
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+    {#    paf   css #}
+    <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
+
+
+
+
+
+<style type="text/css">
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+  .form-signin .checkbox {
+    font-weight: 400;
+  }
+  .form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .h3{
+    text-align: center;
+  }
+
+
+</style>
+<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold"><div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div></div>
+
+</head>
+<body>
+
+
+
+
+<div data-v-8716d23a="" id="page-content">
+    <div data-v-8716d23a="" class="card">
+        <div data-v-8716d23a="" class="card-content">
+            <div data-v-8716d23a="">
+                <nav aria-label="breadcrumbs" class="breadcrumb"><ul>
+                    <li><a href="/" class="router-link-active">Início</a></li>
+                    <li class="is-active"><a href="/utilizadores" class="router-link-exact-active router-link-active">Consultar Utilizadores</a></li>
+                </ul></nav>
+                <div class="section">
+                    <div class="column">
+                        <div class="column is-12"><h1 class="title has-text-centered"> Consultar Utilizadores</h1>
+
+
+<script type="text/javascript">
+    function user_type(val) {
+        let element = document.getElementById('asda');
+        if (val === "Docente" || val === "Colaborador" || val === "Coordenador" ){
+            element.style.display = 'block';
+        } else if (val === "Participante Individual" || val === "Participante em Grupo") {
+            element.style.display = 'none';
+        }
+    }
+
+</script>
+
+
+
+
+{% for instance in object_list %}
+  <p><strong>Tipo de Utilizador-</strong> {{ instance.utilizadortipo }}</p>
+  <p><strong>Nome-</strong> {{ instance.nome }}</p>
+  <p><strong>Email-</strong> {{ instance.email }}</p>
+  <p><strong>Data nascimento-</strong> {{ instance.data_nascimento }}</p>
+  <p><strong>Numero telemovel-</strong> {{ instance.numero_telemovel }}</p>
+  <p><strong>Cartao cidadao-</strong> {{ instance.cartao_cidadao }}</p>
+
+        {% if instance.deficiencias == None %}
+            <p><strong>Deficiencias:</strong> Não</p>
+            {% else %}
+            <p><strong>Deficiencias:</strong> {{ instance.deficiencias }}</p>
+        {% endif %}
+        {% if instance.permitir_localizacao == 0 %}
+            <p><strong>Permitir localizacao:</strong> Não</p>
+            {% else %}
+            <p><strong>Permitir localizacao:</strong> Sim</p>
+        {% endif %}
+        {% if instance.utilizar_dados_pessoais == 0 %}
+            <p><strong>Utilizar dados pessoais:</strong> Não</p>
+            {% else %}
+            <p><strong>Utilizar dados pessoais:</strong> Sim</p>
+        {% endif %}
+
+        {% if instance.unidadeorganica  == None %}
+            <option hidden></option>
+            {% else %}
+            <p><strong>Unidade Organica:</strong> {{instance.unidadeorganica}}</p>
+        {% endif %}
+
+        {% if instance.departamento  == None %}
+            <option hidden></option>
+            {% else %}
+            <p><strong>Departamento:</strong> {{instance.departamento}}</p>
+        {% endif %}
+
+
+
+
+
+<input class="btn btn-lg btn-primary btn-block button is-success" type="button" onclick="location.href='editar_utilizadores/{{instance.id}}';"
+               value="Editar">
+<input class="btn btn-lg btn-primary btn-block button is-danger" type="button" onclick="location.href='apagar_utilizadores/{{instance.id}}';"
+               value="Apagar">
+
+
+{% endfor %}
+
+
+
+{% endblock %}
