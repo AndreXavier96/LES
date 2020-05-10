@@ -1,6 +1,30 @@
 from django.db import models
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+
+
+class Faculdade(models.Model):
+    # Campos
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        db_table = 'faculdade'
+
+    def __str__(self):
+        return self.nome
+
+
+
+class Departamento(models.Model):
+    # Campos
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=100, unique=True)
+    #faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'departamento'
+
+    def __str__(self):
+        return self.nome
 
 
 class Campus(models.Model):
@@ -17,6 +41,8 @@ class Unidadeorganica(models.Model):
     nome = models.CharField(max_length=255)
     campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus')
 
+    def __str__(self):
+        return self.nome
     class Meta:
         managed = False
         db_table = 'unidadeorganica'
@@ -26,21 +52,16 @@ class Utilizadortipo(models.Model):
     id = models.IntegerField(primary_key=True)
     tipo = models.CharField(max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return self.tipo
+
     class Meta:
         managed = False
         db_table = 'utilizadortipo'
 
 
-class Departamento(models.Model):
-    nome = models.CharField(unique=True, max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'departamento'
-
-
 class Utilizador(models.Model):
-    utilizadortipo = models.ForeignKey('Utilizadortipo', models.DO_NOTHING)
+    utilizadortipo = models.ForeignKey(Utilizadortipo, models.DO_NOTHING)
     email = models.CharField(unique=True, max_length=255)
     nome = models.CharField(max_length=255)
     data_nascimento = models.DateField()
@@ -52,6 +73,10 @@ class Utilizador(models.Model):
     validado = models.IntegerField(blank=True, null=True)
     unidadeorganica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, blank=True, null=True)
     departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=True, null=True)
+
+
+
+
 
     class Meta:
         managed = False
@@ -85,3 +110,12 @@ class Diaaberto(models.Model):
     class Meta:
         managed = False
         db_table = 'diaaberto'
+
+class UnidadeorganicaDepartamento(models.Model):
+    unidade_organica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, db_column='unidade_organica')
+    departamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento')
+
+    class Meta:
+        managed = False
+        db_table = 'unidadeorganica_departamento'
+

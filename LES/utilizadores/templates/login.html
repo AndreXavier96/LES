@@ -3,100 +3,21 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-    <style>
-    body {
-    height: 100%;
-    background: linear-gradient(to bottom, #2d74d8 50%, #f4f4ff 50%);
-    }
-
-    .principal{
-    background: white;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 250px;
-    padding: 10px;
-    }
-
-    .alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-top: 150px;
-    margin-bottom: 15px;
-    }
-
-/* The close button */
-    .closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    }
-
-/* When moving the mouse over the close button */
-    .closebtn:hover {
-    color: black;
-    }
-
-    .form_div{
-    margin-top:20px;
-    border-top: 2px solid;
-    border-top-color: #f5f5f5;
-    background: white;
-    width: 80%;
-    margin-right: auto;
-    margin-left: auto;
-    padding-top: 20px;
-    }
-
-    .form_div h2{
-    color: grey;
-    font-size: x-large;
-    font-weight: bold;
-    }
-    </style>
+    <title></title>
 </head>
 <body>
-<div class="principal">
-    {% block content %}
+<h1>Login</h1>
+
+{% block content %}
 <div class="container">
-        <form class="form_div" method="POST">
+        <form method="POST">
         {% csrf_token %}
-            <div>
-             <h2>Login</h2>
-            </div>
-            <p>Insira o seu email: </p>
-            {{ form.username}}
-            <p>Insira a sua password: </p>
-            {{ form.password}}
-            <br>
-            <br>
+
+            <p>Insira o seu email: {{ form.username}}</p>
+            <p>Insira a sua password: {{ form.password}}</p>
             <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
-        <p></p>
-            Don't have an account? <a href="{% url 'add' %}" target="blank"><strong>register here</strong></a>!
-        <p></p>
-        <a href="/utilizadores/password_reset" target="blank"><strong>Forget your password?</strong></a>!
 
         </form>
-
-</div>
-{% endblock %}
-
     {% if messages %}
     {% for message in messages %}
     <div class="alert">
@@ -105,5 +26,12 @@
     </div>
     {% endfor %}
     {% endif %}
-</div>
+
+        Don't have an account? <a href="{% url 'add' %}" target="blank"><strong>register here</strong></a>!
+        <p></p>
+        <a href="/utilizadores/password_reset" target="blank"><strong>Forget your password?</strong></a>!
+    </div>
+{% endblock %}
+
+
 </body>

@@ -1,6 +1,8 @@
+import datetime
+
 from django.db import models
 
-from utilizadores.models import Utilizador, Campus
+from utilizadores.models import Utilizador, Campus, Faculdade, Departamento
 
 
 class Escola(models.Model):
@@ -67,9 +69,10 @@ class Transporteproprio(models.Model):
     hora_chegada = models.TimeField()
     hora_partida = models.TimeField()
     tipo_transporte = models.CharField(max_length=255)
-    transporte_para_campus = models.CharField(max_length=255, blank=True, null=True)
-    transporte_entre_campus = models.CharField(max_length=255, blank=True, null=True)
-    hora_entre_campus = models.TimeField()
+    transporte_para_campus = models.CharField(max_length=255, null=True)
+    transporte_entre_campus = models.CharField(max_length=255, null=True)
+    ida_entre_campus = models.TimeField()
+    volta_entre_campus = models.TimeField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
@@ -112,75 +115,145 @@ class ParticipanteGrupo(models.Model):
         db_table = 'participante_grupo'
 
 
-# --------------------------------------------
+# -------------------------------------------------------------------------------------
 
-class Edicifio(models.Model):
-    nome_edificio = models.CharField(unique=True, max_length=45)
+class Edificio(models.Model):
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=40)
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
 
     class Meta:
-        managed = False
-        db_table = 'edicifio'
+        db_table = 'Edificio'
+        unique_together = (("nome", "campus"),)
 
     def __str__(self):
-        return self.nome_edificio
+        return self.nome
 
 
-class Localizacaoatividade(models.Model):
-    campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus', blank=True, null=True)
-    edificio = models.ForeignKey(Edicifio, models.DO_NOTHING, db_column='edificio', blank=True, null=True)
-    andar = models.IntegerField(blank=True, null=True)
-    sala = models.CharField(max_length=255, blank=True, null=True)
-    descricao = models.TextField(blank=True, null=True)
+class Sala(models.Model):
+    id = models.AutoField(primary_key=True)
+    identificacao = models.CharField(max_length=40)
+    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        managed = False
-        db_table = 'localizacaoatividade'
+        db_table = 'Sala'
+        unique_together = (("identificacao", "edificio"),)
+
+    def __str__(self):
+        return self.identificacao
 
 
-class Atividade(models.Model):
-    nome = models.CharField(max_length=255)
-    descricao = models.TextField(blank=True, null=True)
-    duracao = models.IntegerField()
-    validada = models.IntegerField()
-    tipo_atividade = models.TextField(blank=True, null=True)
-    publico_alvo = models.CharField(max_length=45, blank=True, null=True)
-    localizacao = models.ForeignKey(Localizacaoatividade, models.DO_NOTHING, db_column='localizacao', blank=True,
-                                    null=True)
-    docente = models.ForeignKey(Utilizador, models.DO_NOTHING)
+class Tematica(models.Model):
+    id = models.AutoField(primary_key=True)
+    tema = models.CharField(max_length=255, unique=True)
 
     class Meta:
-        managed = False
-        db_table = 'atividade'
+        db_table = 'Tematica'
+
+    def __str__(self):
+        return self.tema
+
+
+class TipoAtividade(models.Model):
+    id = models.AutoField(primary_key=True)
+    tipo = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        db_table = 'TipoAtividade'
+
+    def __str__(self):
+        return self.tipo
+
+
+class PublicoAlvo(models.Model):
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255, unique=True)
+
+    class Meta:
+        db_table = 'PublicoAlvo'
 
     def __str__(self):
         return self.nome
 
 
 class Sessao(models.Model):
-    hora_inicio = models.TimeField()
+    id = models.AutoField(primary_key=True)
+    hora = models.TimeField(unique=True, null=True)
 
     class Meta:
-        managed = False
-        db_table = 'sessao'
+        db_table = 'Sessao'
+
+    def get_hora(self):
+        return self.hora
+
+    def __str__(self):
+        return str(self.hora)
+
+
+class Atividade(models.Model):
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField(null=True)
+    duracao = models.IntegerField()
+    limite_participantes = models.IntegerField()
+    tipo_atividade = models.ForeignKey(TipoAtividade, on_delete=models.CASCADE, null=True)
+    publico_alvo = models.ManyToManyField(PublicoAlvo, related_name='publico_alvo')
+    data = models.DateField(default=datetime.date.today)
+    faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE, null=True)
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, null=True)
+    REJEITADA = 'RJ'  # invalidada
+    PENDENTE = 'PD'  # por validar
+    VALIDADA = 'VD'  # validada
+    VALIDACAO_CHOICES = [
+        ('RJ', 'Rejeitada'),
+        ('PD', 'Pendente'),
+        ('VD', 'Validada'),
+    ]
+    validada = models.CharField(
+        max_length=2,
+        choices=VALIDACAO_CHOICES,
+        default=PENDENTE,
+    )
+    tematicas = models.ManyToManyField(Tematica, related_name='temas')
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE, null=True)
+    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, null=True, blank=True)
+    sala = models.ForeignKey(Sala, on_delete=models.CASCADE, null=True, blank=True)
+    tipo_local = models.CharField(max_length=255, null=True, blank=True)
+    responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
+
+    class Meta:
+        db_table = 'Atividade'
+
+    def get_tipo(self):
+        return self.tipo_atividade
+
+    def get_tipo_local(self):
+        return self.tipo_local if self.tipo_local else 'Local não especificado'
+
+    def __str__(self):
+        return self.nome
 
 
 class SessaoAtividade(models.Model):
-    atividade = models.ForeignKey(Atividade, models.DO_NOTHING)
-    sessao = models.ForeignKey(Sessao, models.DO_NOTHING)
-    data = models.DateField()
-    n_alunos = models.IntegerField()
+    atividade = models.ForeignKey(Atividade, related_name='sessao_atividade', on_delete=models.CASCADE, null=True)
+    sessao = models.ForeignKey(Sessao, on_delete=models.SET_NULL, null=True)
+    dia = models.DateField(null=True)
+    numero_colaboradores = models.PositiveSmallIntegerField(default=0, blank=True)
+    n_alunos = models.PositiveIntegerField(default=0)
 
     class Meta:
-        managed = False
-        db_table = 'sessao_atividade'
+        db_table = 'SessaoAtividade'
+        unique_together = (("atividade", "sessao", "dia"),)
+
+    def __str__(self):
+        return self.atividade.nome
 
 
 class SessaoAtividadeInscricao(models.Model):
-    sessao_atividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING,
-                                         db_column='sessao-atividade_id')
-    inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
+    id = models.AutoField(primary_key=True)
+    sessaoAtividade = models.ForeignKey(SessaoAtividade, related_name='sessoes', on_delete=models.CASCADE)
+    inscricao = models.ForeignKey('Inscricao', related_name='inscricoes', on_delete=models.CASCADE)
     numero_alunos = models.IntegerField()
 
     class Meta:
-        managed = False
-        db_table = 'sessao_atividade_inscricao'
+        db_table = 'SessaoAtividadeInscricao'
