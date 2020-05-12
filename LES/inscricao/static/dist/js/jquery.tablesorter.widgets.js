@@ -1362,7 +1362,7 @@
 					.triggerHandler( tsf.hideFiltersCheck( c ) ? 'mouseleave' : 'mouseenter' );
 			}
 			// return if the last search is the same; but filter === false when updating the search
-			// see example-widget-filter.html filter toggle buttons
+			// see example-widget-criar_filter.html filter toggle buttons
 			if ( tsf.equalFilters(c, c.lastSearch, currentFilters) ) {
 				if ( filter !== false ) {
 					return;

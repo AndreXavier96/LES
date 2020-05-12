@@ -1,11 +1,12 @@
-from datetime import date
+from datetime import date, time
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib import messages
 
 from LES.utils import render_to_pdf
 from utilizadores.models import Utilizador
@@ -21,10 +22,10 @@ class HomeView(View):
     template_name = 'home.html'
 
     def get(self, request):
-        return render(request, 'home.html')
+        return render(request, 'home.html', )
 
 
-class InscricaoView(View):
+class CriarInscricaoView(View):
     template_name = 'inscricao.html'
 
     def get(self, request):
@@ -49,7 +50,7 @@ class InscricaoView(View):
         })
 
     def post(self, request):
-        # ------------escola
+        # --------------------------escola----------------------------------
         escola_escolhida = request.POST['Escola']
         print(escola_escolhida)
         if escola_escolhida != "Escolher":
@@ -64,7 +65,7 @@ class InscricaoView(View):
                 escola = Escola.objects.get(nome=nome)
             else:
                 escola = Escola.objects.get(nome=escola_escolhida)
-            inscricao = Inscricao.objects.create(escola=escola, estado="Pendente")
+            inscricao = Inscricao.objects.create(escola=escola, hora_check_in=time(23, 59, 59))
             # ------------inscricao grupo/individual
             # session user--------------------------------------
             auth_user = request.user
@@ -178,7 +179,7 @@ class InscricaoView(View):
                 if trans_entre_campus_value == 'idavolta':
                     Percursos.objects.create(origem=destinoentre,
                                              destino=origementre,
-                                             hora=entre_campus_ida,
+                                             hora=entre_campus_volta,
                                              transporteproprio=transporte
                                              )
             # ----------------------sessao------------------
@@ -196,6 +197,10 @@ class InscricaoView(View):
                         SessaoAtividadeInscricao.objects.create(sessaoAtividade=sessaoactividade,
                                                                 inscricao=inscricao, numero_alunos=n_inscritos
                                                                 )
+                        if sessaoactividade.sessao.hora < inscricao.hora_check_in:
+                            inscricao.hora_check_in = sessaoactividade.sessao.hora
+                            inscricao.unidadeorganica_checkin = sessaoactividade.atividade.unidadeorganica
+                            inscricao.save()
                         novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(
                             n_inscritos)
                         sessaoactividade.n_alunos = novo_numero_alunos
@@ -215,23 +220,64 @@ class InscricaoView(View):
                 email.from_email = settings.EMAIL_HOST_USER
                 email.to = [utilizador.email]
                 pdf = render_to_pdf(data)
-                # preview------------------comentar para enviar email----------
+                # preview------------comentar para enviar email----------
                 # if pdf:
                 #     response = HttpResponse(pdf, content_type='application/pdf')
                 #     filename = "PrivacyRequest_%s.pdf" % "1234"
                 #     content = "inline; filename='%s'" % filename
                 #     response['Content-Disposition'] = content
                 #     return response
-                # ----------------------------------------------------------------
+                # -------------------------------------------------------
                 email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
                 email.send()
                 return render(request, 'inscricao_sucess.html', context={'email': utilizador.email})
-            else:
-                return render(request, 'home.html', context={'MSG': "Deve de escolher pelo menos uma Sessao"})
-        else:
-            return render(request, 'home.html', context={'MSG': "Deve de escolher uma Escola"})
 
 
 class success(View):
     def get(self, request):
         return render(request, 'home.html', context={'MSG': "Sucesso"})
+
+
+class ConsultarInscricaoView(View):
+    template_name = 'consultarInscricao.html'
+
+    def get(self, request):
+        href = {"Minha Inscrição", "Inicio"}
+        inscricao = Inscricao.objects.all()
+        participante = Utilizadorparticipante.objects.all()
+        grupos = ParticipanteGrupo.objects.all()
+        individual = ParticipanteIndividual.objects.all()
+        sessoes = SessaoAtividadeInscricao.objects.all()
+        # session user--------------------------------------
+        auth_user = request.user
+        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        # --------------------------------------------------
+        return render(request, self.template_name, {
+            'href': href,
+            'inscricao': inscricao,
+            'participante': participante,
+            'grupos': grupos,
+            'individual': individual,
+            'sessoes': sessoes,
+            'utilizador': utilizador
+        })
+
+    def post(self, request):
+        insc = request.POST['del']
+        print(insc)
+        sai = SessaoAtividadeInscricao.objects.filter(inscricao=insc)
+        for s in sai:
+            s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos
+            s.sessaoAtividade.save()
+            s.delete()
+        EmentaInscricao.objects.get(inscricao=insc).delete()
+        utilizadorparticipante = Utilizadorparticipante.objects.get(inscricao=insc)
+        if utilizadorparticipante.utilizador.utilizadortipo.id == 6:
+            ParticipanteGrupo.objects.get(participante=utilizadorparticipante).delete()
+        elif utilizadorparticipante.utilizador.utilizadortipo.id == 1:
+            ParticipanteIndividual.objects.get(participante=utilizadorparticipante).delete()
+        utilizadorparticipante.delete()
+        Transporteproprio.objects.get(inscricao=insc).delete()
+        sai.delete()
+        Inscricao.objects.get(pk=insc).delete()
+        return render(request, 'home.html', context={'MSG': "apagado com sucesso"}) # alterar
