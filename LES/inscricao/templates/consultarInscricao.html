@@ -144,13 +144,6 @@
                                                                 <td data-label="buttons" class="">
                                                                     <div class="field is-grouped">
                                                                         <p class="control">
-                                                                            <button class="button">
-                                                                                <span class="icon">
-                                                                                    <i class="mdi mdi-pencil mdi-24px"></i>
-                                                                                </span>
-                                                                            </button>
-                                                                        </p>
-                                                                        <p class="control">
                                                                             <button class="button is-danger is-outlined"
                                                                                     type="button"
                                                                                     id=""
@@ -342,27 +335,18 @@
                                                                         {% endif %}
                                                                     {% endfor %}
                                                                     <td data-label="buttons" class="">
-                                                                        <div class="field is-grouped">
-                                                                            <p class="control">
-                                                                                <button class="button">
-                                                                                    <span class="icon">
-                                                                                        <i class="mdi mdi-pencil mdi-24px"></i>
-                                                                                    </span>
-                                                                                </button>
-                                                                            </p>
-                                                                            <p class="control">
-                                                                                <button class="button is-danger is-outlined"
-                                                                                        type="button"
-                                                                                        id=""
-                                                                                        name=""
-                                                                                        value="{{ p.id }}"
-                                                                                        onclick="deleteInscricao(this.value)">
+                                                                        <p class="control">
+                                                                            <button class="button is-danger is-outlined"
+                                                                                    type="button"
+                                                                                    id=""
+                                                                                    name=""
+                                                                                    value="{{ p.id }}"
+                                                                                    onclick="deleteInscricao(this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
-                                                                                </button>
-                                                                            </p>
-                                                                        </div>
+                                                                            </button>
+                                                                        </p>
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="detail tablesorter-childRow">
@@ -402,23 +386,57 @@
                                                                                                         <tr draggable="false"
                                                                                                             class="">
                                                                                                             <td data-label="atividade"
-                                                                                                                class="">
-                                                                                                                {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                                class=""
+                                                                                                                style="width: 35%">
+                                                                                                                {{ s.sessaoAtividade.atividade.nome }} {{ s.id }}
                                                                                                                 <p id="sessao{{ s.id }}"
                                                                                                                    class=""
                                                                                                                    hidden></p>
                                                                                                             </td>
                                                                                                             <td data-label="sessao"
-                                                                                                                class="">
+                                                                                                                class=""
+                                                                                                                style="width: 35%">
                                                                                                                 {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
                                                                                                             </td>
                                                                                                             <td data-label="sessao"
-                                                                                                                class="">
+                                                                                                                class=""
+                                                                                                                id="inscritos{{ s.id }}"
+                                                                                                                style="width: 29%">
                                                                                                                 {{ s.numero_alunos }}
+                                                                                                            </td>
+                                                                                                            <td data-label="sessao"
+                                                                                                                class=""
+                                                                                                                id="novosinscritos{{ s.id }}"
+                                                                                                                style="width: 29%">
+                                                                                                                <input type="number"
+                                                                                                                       class="input"
+                                                                                                                       name="inputinscritos{{ s.id }}"
+                                                                                                                       id="inputinscritos{{ s.id }}"
+                                                                                                                       style="display: none; width: 25%"
+                                                                                                                       onchange="editarsessaoinscrita('{{ s.id }}', 'change', this.value, 'n/a')">
+                                                                                                                <button class="button is-success is-small is-outlined"
+                                                                                                                        type="button"
+                                                                                                                        onclick="editarsessaoinscrita('{{ s.id }}', 'concluir', '{{ s.numero_alunos }}', '{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}')"
+                                                                                                                        id="butao{{ s.id }}"
+                                                                                                                        style="display: none">
+                                                                                                                            <span class="icon">
+                                                                                                                                <i class="mdi mdi-check mdi-24px"></i>
+                                                                                                                            </span>
+                                                                                                                </button>
                                                                                                             </td>
                                                                                                             <td data-label="buttons"
                                                                                                                 class="">
                                                                                                                 <div class="field is-grouped">
+                                                                                                                    <p class="control">
+                                                                                                                        <button class="button"
+                                                                                                                                type="button"
+                                                                                                                                {#      onclick="location.href='editar/{{ s.id }}';"#}
+                                                                                                                                onclick="editarsessaoinscrita('{{ s.id }}', 'editar', '{{ s.numero_alunos }}', 'n/a')">
+                                                                                                                            <span class="icon">
+                                                                                                                                <i class="mdi mdi-pencil mdi-24px"></i>
+                                                                                                                            </span>
+                                                                                                                        </button>
+                                                                                                                    </p>
                                                                                                                     <p class="control">
                                                                                                                         <button class="button is-danger is-outlined"
                                                                                                                                 type="button"
@@ -552,13 +570,6 @@
                                                                                     {% endfor %}
                                                                                     <td data-label="buttons" class="">
                                                                                         <div class="field is-grouped">
-                                                                                            <p class="control">
-                                                                                                <button class="button">
-                                                                                                    <span class="icon">
-                                                                                                        <i class="mdi mdi-pencil mdi-24px"></i>
-                                                                                                    </span>
-                                                                                                </button>
-                                                                                            </p>
                                                                                             <p class="control">
                                                                                                 <button class="button is-danger is-outlined"
                                                                                                         type="button"
@@ -701,7 +712,8 @@
             </div>
             {% include 'includes/footer.html' %}
         </div>
-        <input type="number" id="type" name="type" value="">
+        {#-----------------------------hidden inputs-------------------------------------------------------#}
+        <input type="number" id="type" name="type" value="" hidden>
         {#------------------------popup eliminar Insricao---------------------------------------------#}
         <div id="popup_eliminar_inscricao" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>
@@ -737,6 +749,26 @@
                         Cancelar
                     </button>
                     <button type="submit" name="del2" id="del2" class="button is-success" value="">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
+        </div>
+        {#----------------------------Popup editar sessao inscrita---------------------------------------------------------#}
+        <div id="popup_editar_sessao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content" id="content_editar_sessao"></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="button" id="popup_editar" class="button" value=""
+                            onclick="editarsessaoinscrita('popup_editar_sessao', 'cancel', this.value, 'n/a')">
+                        Cancelar
+                    </button>
+                    <button type="submit" name="edit" id="edit" class="button is-success" value="">
                         Confirmar
                     </button>
                 </footer>

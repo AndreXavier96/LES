@@ -25,6 +25,11 @@ class HomeView(View):
         return render(request, 'home.html', )
 
 
+class success(View):
+    def get(self, request):
+        return render(request, 'home.html', context={'MSG': "Sucesso"})
+
+
 class CriarInscricaoView(View):
     template_name = 'inscricao.html'
 
@@ -233,11 +238,6 @@ class CriarInscricaoView(View):
                 return render(request, 'inscricao_sucess.html', context={'email': utilizador.email})
 
 
-class success(View):
-    def get(self, request):
-        return render(request, 'home.html', context={'MSG': "Sucesso"})
-
-
 class ConsultarInscricaoView(View):
     template_name = 'consultarInscricao.html'
 
@@ -292,5 +292,19 @@ class ConsultarInscricaoView(View):
             sai.sessaoAtividade.n_alunos = sai.sessaoAtividade.n_alunos + sai.numero_alunos
             sai.sessaoAtividade.save()
             sai.delete()
-        # return render(request, 'home.html', context={'MSG': "sessao apagada com sucesso"})  # alterar
+        elif typee == "3":
+            id = request.POST['edit']
+            novos_inscritos = request.POST['inputinscritos' + id]
+            sai = SessaoAtividadeInscricao.objects.get(pk=id)
+            old_inscritos = sai.numero_alunos
+            if int(novos_inscritos) == 0:
+                sai.delete()
+            else:
+                sai.numero_alunos = novos_inscritos
+                sai.save()
+                sn = sai.sessaoAtividade.n_alunos
+                sn = sn + int(novos_inscritos) - old_inscritos
+                sai.sessaoAtividade.n_alunos = sn
+                sai.sessaoAtividade.save()
         return redirect('/inscricao/consultar')
+

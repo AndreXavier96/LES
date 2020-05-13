@@ -32,7 +32,7 @@ class Inscricao(models.Model):
         db_table = 'inscricao'
 
     def __str__(self):
-        return self.escola.__str__()
+        return self.id.__str__()
 
 
 class Ementa(models.Model):
@@ -266,3 +266,6 @@ class SessaoAtividadeInscricao(models.Model):
 
     class Meta:
         db_table = 'SessaoAtividadeInscricao'
+
+    def __str__(self):
+        return self.id
