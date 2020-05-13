@@ -7,10 +7,11 @@ class Faculdade(models.Model):
     nome = models.CharField(max_length=100, unique=True)
 
     class Meta:
-        db_table = 'Faculdade'
+        db_table = 'faculdade'
 
     def __str__(self):
         return self.nome
+
 
 
 class Departamento(models.Model):
@@ -40,6 +41,8 @@ class Unidadeorganica(models.Model):
     nome = models.CharField(max_length=255)
     campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus')
 
+    def __str__(self):
+        return self.nome
     class Meta:
         managed = False
         db_table = 'unidadeorganica'
@@ -48,6 +51,9 @@ class Unidadeorganica(models.Model):
 class Utilizadortipo(models.Model):
     id = models.IntegerField(primary_key=True)
     tipo = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return self.tipo
 
     class Meta:
         managed = False
@@ -67,6 +73,10 @@ class Utilizador(models.Model):
     validado = models.IntegerField(blank=True, null=True)
     unidadeorganica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, blank=True, null=True)
     departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=True, null=True)
+
+
+
+
 
     class Meta:
         managed = False

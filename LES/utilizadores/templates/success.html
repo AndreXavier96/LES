@@ -9,7 +9,7 @@
     <p>O utilizador <b>{{user.username}}</b> iniciou sessão com sucesso.</p>
     <form method="POST">
         {% csrf_token %}
-          <p><a href="{% url 'logout' %}">Logout</a></p>
+          <p><a href="/utilizadores/register" ">Logout</a></p>
     </form>
 {% endblock content %}
 </body>

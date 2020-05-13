@@ -1,0 +1,96 @@
+
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
+    <title>Dia Aberto-Apagar Utilizadores</title>
+{% block content %}
+
+    {% include "includes/navbar.html" %}
+
+    {#    paf   css #}
+    <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
+
+
+
+
+
+<style type="text/css">
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+  .form-signin .checkbox {
+    font-weight: 400;
+  }
+  .form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .h3{
+    text-align: center;
+  }
+
+
+</style>
+<div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold"><div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div></div>
+
+</head>
+<body>
+
+
+
+
+<div data-v-8716d23a="" id="page-content">
+    <div data-v-8716d23a="" class="card">
+        <div data-v-8716d23a="" class="card-content">
+            <div data-v-8716d23a="">
+                <nav aria-label="breadcrumbs" class="breadcrumb"><ul>
+                    <li><a href="/" class="router-link-active">Início</a></li>
+                    <li class="is-active"><a href="/utilizadores" class="router-link-exact-active router-link-active">Consultar Utilizadores</a></li>
+                    <li class="is-active"><a href="/utilizadores" class="router-link-exact-active router-link-active">Apagar Utilizadores</a></li>
+                </ul></nav>
+                <div class="section">
+                     <div class="column is-12"><h1 class="title has-text-centered"> Apagar Utilizadores</h1>
+                    <div class="column">
+
+
+
+<script type="text/javascript">
+    function user_type(val) {
+        let element = document.getElementById('asda');
+        if (val === "Docente" || val === "Colaborador" || val === "Coordenador" ){
+            element.style.display = 'block';
+        } else if (val === "Participante Individual" || val === "Participante em Grupo") {
+            element.style.display = 'none';
+        }
+    }
+
+</script>
+
+                            <br>
+                            <br>
+
+<form action='.' method='POST' class="title has-text-centered"> {% csrf_token %}
+<h1>Deseja apagar o utilizador "{{ obj.nome }}" ?</h1>
+    <br>
+    <button class="btn btn-lg btn-primary btn-block button is-danger" type="submit" id="2" name="del" value="{{ obj.id }}">Apagar</button>
+</form>
+
+
+{% endblock %}
+
