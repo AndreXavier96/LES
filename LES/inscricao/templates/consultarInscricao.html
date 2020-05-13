@@ -36,671 +36,676 @@
             <div id="page-content" data-v-8716d23a="">
                 <div class="card" data-v-8716d23a="">
                     <div class="card-content" data-v-8716d23a="">
-                        <div id="top" data-v-8716d23a="">
-                            <nav aria-label="breadcrumbs" class="breadcrumb">
-                                <ul>
-                                    <li>
-                                        <a href="/" class="router-link-active">Início</a>
-                                    </li>
-                                    <li class="is-active">
-                                        <a href="/inscricao" class="router-link-exact-active router-link-active">Inscrições</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div style="padding: 3rem 2vw 1rem" data-v-8716d23a="">
-                                <div class="columns" data-v-8716d23a="">
-                                    {% include 'includes/consultar_filter.html' %}
-                                    {#------------------------------------------------------------------------------#}
-                                    <div class="column" data-v-8716d23a="">
-                                        <div class="b-table">
-                                            <div class="table-wrapper">
-                                                {% if utilizador.utilizadortipo.tipo == "Administrador" %}
-                                                    <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
-                                                           id="table_atividades">
-                                                        <thead>
-                                                        <tr>
-                                                            <th width="40px"></th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">ID</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Hora Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">U.O Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Escola</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Turma</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Nª Alunos</div>
-                                                            </th>
-                                                            <th class="">
-                                                                <div class="th-wrap"></div>
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for p in participante %}
-                                                            <tr draggable="false" class="">
-                                                                <td class="chevron-cell toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">
-                                                                    <a role="button">
+                        <div class="columns" data-v-8716d23a="">
+                            {% include 'includes/consultar_filter.html' %}
+                            {#------------------------------------------------------------------------------#}
+                            <div class="column" data-v-8716d23a="">
+                                <nav aria-label="breadcrumbs" class="breadcrumb">
+                                    <ul>
+                                        <li>
+                                            <a href="/inscricao/home" class="router-link-active">Início</a>
+                                        </li>
+                                        <li class="is-active">
+                                            <a href="/inscricao"
+                                               class="router-link-exact-active router-link-active">Inscrições</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <a href="/inscricao/criar" class="button is-success is-outlined" type="button"
+                                   style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                        <span class="icon is-small">
+                                            <i class="mdi mdi-plus"></i>
+                                        </span>
+                                    <span> Adicionar Inscrição </span>
+                                </a>
+                                <div class="b-table">
+                                    <div class="table-wrapper">
+                                        {% if utilizador.utilizadortipo.tipo == "Administrador" %}
+                                            <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
+                                                   id="table_atividades">
+                                                <thead>
+                                                <tr>
+                                                    <th width="40px"></th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">ID</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Hora Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">U.O Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Escola</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Turma</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Nª Alunos</div>
+                                                    </th>
+                                                    <th class="">
+                                                        <div class="th-wrap"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for p in participante %}
+                                                    <tr draggable="false" class="">
+                                                        <td class="chevron-cell toggle pointer"
+                                                            onclick="expandAtividade('{{ p.id }}')">
+                                                            <a role="button">
                                                                         <span class="icon" id="icon_{{ p.id }}">
                                                                             <i class="mdi mdi-chevron-right mdi-24px"></i>
                                                                         </span>
-                                                                    </a>
+                                                            </a>
+                                                        </td>
+                                                        {% for i in individual %}
+                                                            {% if i.participante.id == p.id %}
+                                                                <td data-label="Id" class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">
+                                                                    Individual{{ p.id }}
+                                                                    <p hidden id="{{ p.id }}"
+                                                                       class="Individual"></p>
                                                                 </td>
-                                                                {% for i in individual %}
-                                                                    {% if i.participante.id == p.id %}
-                                                                        <td data-label="Id" class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">
-                                                                            Individual{{ p.id }}
-                                                                            <p hidden id="{{ p.id }}"
-                                                                               class="Individual"></p>
-                                                                        </td>
-                                                                        <td data-label="check"
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                        <td data-label="U.O."
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                        <td data-label="Escola"
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                        <td data-label="turma" class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')"></td>
-                                                                        <td data-label="n_alunos" class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">1
-                                                                        </td>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                                {% for g in grupos %}
-                                                                    {% if g.participante.id == p.id %}
-                                                                        <td data-label="Id" class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">
-                                                                            Grupo{{ p.id }}
-                                                                            <p hidden id="{{ p.id }}" class="Grupo"></p>
-                                                                        </td>
-                                                                        <td data-label="check"
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                        <td data-label="U.O."
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                        <td data-label="Escola"
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                        <td data-label="turma" class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
-                                                                        <td data-label="n_alunos"
-                                                                            class="toggle pointer"
-                                                                            onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                                <td data-label="buttons" class="">
-                                                                    <div class="field is-grouped">
-                                                                        <p class="control">
-                                                                            <button class="button is-danger is-outlined"
-                                                                                    type="button"
-                                                                                    id=""
-                                                                                    name=""
-                                                                                    value="{{ p.id }}"
-                                                                                    onclick="deleteInscricao(this.value)">
+                                                                <td data-label="check"
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                <td data-label="U.O."
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                <td data-label="Escola"
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                <td data-label="turma" class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')"></td>
+                                                                <td data-label="n_alunos" class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">1
+                                                                </td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {% for g in grupos %}
+                                                            {% if g.participante.id == p.id %}
+                                                                <td data-label="Id" class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">
+                                                                    Grupo{{ p.id }}
+                                                                    <p hidden id="{{ p.id }}" class="Grupo"></p>
+                                                                </td>
+                                                                <td data-label="check"
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                <td data-label="U.O."
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                <td data-label="Escola"
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                <td data-label="turma" class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
+                                                                <td data-label="n_alunos"
+                                                                    class="toggle pointer"
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <td data-label="buttons" class="">
+                                                            <div class="field is-grouped">
+                                                                <p class="control">
+                                                                    <button class="button is-danger is-outlined"
+                                                                            type="button"
+                                                                            id=""
+                                                                            name=""
+                                                                            value="{{ p.id }}"
+                                                                            onclick="deleteInscricao(this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
-                                                                            </button>
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="detail tablesorter-childRow">
-                                                                <td colspan="8">
-                                                                    <div class="detail-container">
-                                                                        <div class="content">
-                                                                            <div style="font-size: 15px;">
-                                                                                <div class="b-table">
-                                                                                    <div class="table-wrapper">
-                                                                                        <table class="table has-mobile-cards is-hoverable tablesorter"
-                                                                                               id="table_atividades">
-                                                                                            <thead>
-                                                                                            <tr>
-                                                                                                <th>
-                                                                                                    <div class="th-wrap">
-                                                                                                        Atividade
-                                                                                                    </div>
-                                                                                                </th>
-                                                                                                <th>
-                                                                                                    <div class="th-wrap">
-                                                                                                        Sessão
-                                                                                                    </div>
-                                                                                                </th>
-                                                                                                <th>
-                                                                                                    <div class="th-wrap">
-                                                                                                        Inscritos
-                                                                                                    </div>
-                                                                                                </th>
-                                                                                                <th>
-                                                                                                    <div class="th-wrap"></div>
-                                                                                                </th>
-                                                                                            </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                            {% for s in sessoes %}
-                                                                                                {% if s.inscricao.id == p.inscricao.id %}
-                                                                                                    <tr draggable="false"
-                                                                                                        class="">
-                                                                                                        <td data-label="atividade"
-                                                                                                            class="">
-                                                                                                            {{ s.sessaoAtividade.atividade.nome }}
-                                                                                                            <p id="sessao{{ s.id }}"
-                                                                                                               class=""
-                                                                                                               hidden></p>
-                                                                                                        </td>
-                                                                                                        <td data-label="sessao"
-                                                                                                            class="">
-                                                                                                            {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
-                                                                                                        </td>
-                                                                                                        <td data-label="sessao"
-                                                                                                            class="">
-                                                                                                            {{ s.numero_alunos }}
-                                                                                                        </td>
-                                                                                                        <td data-label="buttons"
-                                                                                                            class="">
-                                                                                                            <div class="field is-grouped">
-                                                                                                                <p class="control">
-                                                                                                                    <button class="button is-danger is-outlined"
-                                                                                                                            type="button"
-                                                                                                                            id=""
-                                                                                                                            name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
-                                                                                                                            value="{{ s.id }}"
-                                                                                                                            onclick="deleteSessao(this.value, this.name)">
+                                                                    </button>
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="detail tablesorter-childRow">
+                                                        <td colspan="8">
+                                                            <div class="detail-container">
+                                                                <div class="content">
+                                                                    <div style="font-size: 15px;">
+                                                                        <div class="b-table">
+                                                                            <div class="table-wrapper">
+                                                                                <table class="table has-mobile-cards is-hoverable tablesorter"
+                                                                                       id="table_atividades">
+                                                                                    <thead>
+                                                                                    <tr>
+                                                                                        <th>
+                                                                                            <div class="th-wrap">
+                                                                                                Atividade
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            <div class="th-wrap">
+                                                                                                Sessão
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            <div class="th-wrap">
+                                                                                                Inscritos
+                                                                                            </div>
+                                                                                        </th>
+                                                                                        <th>
+                                                                                            <div class="th-wrap"></div>
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                    {% for s in sessoes %}
+                                                                                        {% if s.inscricao.id == p.inscricao.id %}
+                                                                                            <tr draggable="false"
+                                                                                                class="">
+                                                                                                <td data-label="atividade"
+                                                                                                    class="">
+                                                                                                    {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                    <p id="sessao{{ s.id }}"
+                                                                                                       class=""
+                                                                                                       hidden></p>
+                                                                                                </td>
+                                                                                                <td data-label="sessao"
+                                                                                                    class="">
+                                                                                                    {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
+                                                                                                </td>
+                                                                                                <td data-label="sessao"
+                                                                                                    class="">
+                                                                                                    {{ s.numero_alunos }}
+                                                                                                </td>
+                                                                                                <td data-label="buttons"
+                                                                                                    class="">
+                                                                                                    <div class="field is-grouped">
+                                                                                                        <p class="control">
+                                                                                                            <button class="button is-danger is-outlined"
+                                                                                                                    type="button"
+                                                                                                                    id=""
+                                                                                                                    name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                    value="{{ s.id }}"
+                                                                                                                    onclick="deleteSessao(this.value, this.name)">
                                                                                                                             <span class="icon">
                                                                                                                                 <i class="mdi mdi-close mdi-24px"></i>
                                                                                                                             </span>
-                                                                                                                    </button>
-                                                                                                                </p>
-                                                                                                            </div>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                {% endif %}
-                                                                                            {% endfor %}
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </div>
-                                                                                </div>
+                                                                                                            </button>
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        {% endif %}
+                                                                                    {% endfor %}
+                                                                                    </tbody>
+                                                                                </table>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% elif utilizador.utilizadortipo.tipo == "Participante Individual" or utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
-                                                    <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
-                                                           id="table_atividades">
-                                                        <thead>
-                                                        <tr>
-                                                            <th width="40px"></th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">ID</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Hora Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">U.O Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Escola</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Turma</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Nª Alunos</div>
-                                                            </th>
-                                                            <th class="">
-                                                                <div class="th-wrap"></div>
-                                                            </th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for p in participante %}
-                                                            {% if p.utilizador.id == utilizador.id %}
-                                                                <tr draggable="false" class="">
-                                                                    <td class="chevron-cell toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">
-                                                                        <a role="button">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% elif utilizador.utilizadortipo.tipo == "Participante Individual" or utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
+                                            <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
+                                                   id="table_atividades">
+                                                <thead>
+                                                <tr>
+                                                    <th width="40px"></th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">ID</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Hora Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">U.O Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Escola</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Turma</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Nª Alunos</div>
+                                                    </th>
+                                                    <th class="">
+                                                        <div class="th-wrap"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for p in participante %}
+                                                    {% if p.utilizador.id == utilizador.id %}
+                                                        <tr draggable="false" class="">
+                                                            <td class="chevron-cell toggle pointer"
+                                                                onclick="expandAtividade('{{ p.id }}')">
+                                                                <a role="button">
                                                                             <span class="icon" id="icon_{{ p.id }}">
                                                                                 <i class="mdi mdi-chevron-right mdi-24px"></i>
                                                                             </span>
-                                                                        </a>
+                                                                </a>
+                                                            </td>
+                                                            {% for i in individual %}
+                                                                {% if i.participante.id == p.id %}
+                                                                    <td data-label="Id" class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                        Individual{{ p.id }}
+                                                                        <p hidden id="{{ p.id }}"
+                                                                           class="Individual"></p>
                                                                     </td>
-                                                                    {% for i in individual %}
-                                                                        {% if i.participante.id == p.id %}
-                                                                            <td data-label="Id" class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                Individual{{ p.id }}
-                                                                                <p hidden id="{{ p.id }}"
-                                                                                   class="Individual"></p>
-                                                                            </td>
-                                                                            <td data-label="check"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                            <td data-label="U.O."
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                            <td data-label="Escola"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                            <td data-label="turma"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')"></td>
-                                                                            <td data-label="n_alunos"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                1
-                                                                            </td>
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                    {% for g in grupos %}
-                                                                        {% if g.participante.id == p.id %}
-                                                                            <td data-label="Id" class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                Grupo{{ p.id }}
-                                                                                <p hidden id="{{ p.id }}"
-                                                                                   class="Grupo"></p>
-                                                                            </td>
-                                                                            <td data-label="check"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                            <td data-label="U.O."
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                            <td data-label="Escola"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                            <td data-label="turma"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
-                                                                            <td data-label="n_alunos"
-                                                                                class="toggle pointer"
-                                                                                onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
-                                                                        {% endif %}
-                                                                    {% endfor %}
-                                                                    <td data-label="buttons" class="">
-                                                                        <p class="control">
-                                                                            <button class="button is-danger is-outlined"
-                                                                                    type="button"
-                                                                                    id=""
-                                                                                    name=""
-                                                                                    value="{{ p.id }}"
-                                                                                    onclick="deleteInscricao(this.value)">
+                                                                    <td data-label="check"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                    <td data-label="U.O."
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                    <td data-label="Escola"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                    <td data-label="turma"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')"></td>
+                                                                    <td data-label="n_alunos"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                        1
+                                                                    </td>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% for g in grupos %}
+                                                                {% if g.participante.id == p.id %}
+                                                                    <td data-label="Id" class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                        Grupo{{ p.id }}
+                                                                        <p hidden id="{{ p.id }}"
+                                                                           class="Grupo"></p>
+                                                                    </td>
+                                                                    <td data-label="check"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                    <td data-label="U.O."
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                    <td data-label="Escola"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                    <td data-label="turma"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
+                                                                    <td data-label="n_alunos"
+                                                                        class="toggle pointer"
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            <td data-label="buttons" class="">
+                                                                <p class="control">
+                                                                    <button class="button is-danger is-outlined"
+                                                                            type="button"
+                                                                            id=""
+                                                                            name=""
+                                                                            value="{{ p.id }}"
+                                                                            onclick="deleteInscricao(this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
-                                                                            </button>
-                                                                        </p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr class="detail tablesorter-childRow">
-                                                                    <td colspan="8">
-                                                                        <div class="detail-container">
-                                                                            <div class="content">
-                                                                                <div style="font-size: 15px;">
-                                                                                    <div class="b-table">
-                                                                                        <div class="table-wrapper">
-                                                                                            <table class="table has-mobile-cards is-hoverable tablesorter"
-                                                                                                   id="table_atividades">
-                                                                                                <thead>
-                                                                                                <tr>
-                                                                                                    <th>
-                                                                                                        <div class="th-wrap">
-                                                                                                            Atividade
-                                                                                                        </div>
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        <div class="th-wrap">
-                                                                                                            Sessão
-                                                                                                        </div>
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        <div class="th-wrap">
-                                                                                                            Inscritos
-                                                                                                        </div>
-                                                                                                    </th>
-                                                                                                    <th>
-                                                                                                        <div class="th-wrap"></div>
-                                                                                                    </th>
-                                                                                                </tr>
-                                                                                                </thead>
-                                                                                                <tbody>
-                                                                                                {% for s in sessoes %}
-                                                                                                    {% if s.inscricao.id == p.inscricao.id %}
-                                                                                                        <tr draggable="false"
-                                                                                                            class="">
-                                                                                                            <td data-label="atividade"
-                                                                                                                class=""
-                                                                                                                style="width: 35%">
-                                                                                                                {{ s.sessaoAtividade.atividade.nome }} {{ s.id }}
-                                                                                                                <p id="sessao{{ s.id }}"
-                                                                                                                   class=""
-                                                                                                                   hidden></p>
-                                                                                                            </td>
-                                                                                                            <td data-label="sessao"
-                                                                                                                class=""
-                                                                                                                style="width: 35%">
-                                                                                                                {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
-                                                                                                            </td>
-                                                                                                            <td data-label="sessao"
-                                                                                                                class=""
-                                                                                                                id="inscritos{{ s.id }}"
-                                                                                                                style="width: 29%">
-                                                                                                                {{ s.numero_alunos }}
-                                                                                                            </td>
-                                                                                                            <td data-label="sessao"
-                                                                                                                class=""
-                                                                                                                id="novosinscritos{{ s.id }}"
-                                                                                                                style="width: 29%">
-                                                                                                                <input type="number"
-                                                                                                                       class="input"
-                                                                                                                       name="inputinscritos{{ s.id }}"
-                                                                                                                       id="inputinscritos{{ s.id }}"
-                                                                                                                       style="display: none; width: 25%"
-                                                                                                                       onchange="editarsessaoinscrita('{{ s.id }}', 'change', this.value, 'n/a')">
-                                                                                                                <button class="button is-success is-small is-outlined"
-                                                                                                                        type="button"
-                                                                                                                        onclick="editarsessaoinscrita('{{ s.id }}', 'concluir', '{{ s.numero_alunos }}', '{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}')"
-                                                                                                                        id="butao{{ s.id }}"
-                                                                                                                        style="display: none">
+                                                                    </button>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="detail tablesorter-childRow">
+                                                            <td colspan="8">
+                                                                <div class="detail-container">
+                                                                    <div class="content">
+                                                                        <div style="font-size: 15px;">
+                                                                            <div class="b-table">
+                                                                                <div class="table-wrapper">
+                                                                                    <table class="table has-mobile-cards is-hoverable tablesorter"
+                                                                                           id="table_atividades">
+                                                                                        <thead>
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                <div class="th-wrap">
+                                                                                                    Atividade
+                                                                                                </div>
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                <div class="th-wrap">
+                                                                                                    Sessão
+                                                                                                </div>
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                <div class="th-wrap">
+                                                                                                    Inscritos
+                                                                                                </div>
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                <div class="th-wrap"></div>
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        {% for s in sessoes %}
+                                                                                            {% if s.inscricao.id == p.inscricao.id %}
+                                                                                                <tr draggable="false"
+                                                                                                    class="">
+                                                                                                    <td data-label="atividade"
+                                                                                                        class=""
+                                                                                                        style="width: 35%">
+                                                                                                        {{ s.sessaoAtividade.atividade.nome }} {{ s.id }}
+                                                                                                        <p id="sessao{{ s.id }}"
+                                                                                                           class=""
+                                                                                                           hidden></p>
+                                                                                                    </td>
+                                                                                                    <td data-label="sessao"
+                                                                                                        class=""
+                                                                                                        style="width: 35%">
+                                                                                                        {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
+                                                                                                    </td>
+                                                                                                    <td data-label="sessao"
+                                                                                                        class=""
+                                                                                                        id="inscritos{{ s.id }}"
+                                                                                                        style="width: 29%">
+                                                                                                        {{ s.numero_alunos }}
+                                                                                                    </td>
+                                                                                                    <td data-label="sessao"
+                                                                                                        class=""
+                                                                                                        id="novosinscritos{{ s.id }}"
+                                                                                                        style="width: 29%">
+                                                                                                        <input type="number"
+                                                                                                               class="input"
+                                                                                                               name="inputinscritos{{ s.id }}"
+                                                                                                               id="inputinscritos{{ s.id }}"
+                                                                                                               style="display: none; width: 25%"
+                                                                                                               onchange="editarsessaoinscrita('{{ s.id }}', 'change', this.value, 'n/a')"
+                                                                                                               min="0">
+                                                                                                        <button class="button is-success is-small is-outlined"
+                                                                                                                type="button"
+                                                                                                                onclick="editarsessaoinscrita('{{ s.id }}', 'concluir', '{{ s.numero_alunos }}', '{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}')"
+                                                                                                                id="butao{{ s.id }}"
+                                                                                                                style="display: none">
                                                                                                                             <span class="icon">
                                                                                                                                 <i class="mdi mdi-check mdi-24px"></i>
                                                                                                                             </span>
-                                                                                                                </button>
-                                                                                                            </td>
-                                                                                                            <td data-label="buttons"
-                                                                                                                class="">
-                                                                                                                <div class="field is-grouped">
-                                                                                                                    <p class="control">
-                                                                                                                        <button class="button"
-                                                                                                                                type="button"
-                                                                                                                                {#      onclick="location.href='editar/{{ s.id }}';"#}
-                                                                                                                                onclick="editarsessaoinscrita('{{ s.id }}', 'editar', '{{ s.numero_alunos }}', 'n/a')">
+                                                                                                        </button>
+                                                                                                    </td>
+                                                                                                    <td data-label="buttons"
+                                                                                                        class="">
+                                                                                                        <div class="field is-grouped">
+                                                                                                            <p class="control">
+                                                                                                                <button class="button"
+                                                                                                                        type="button"
+                                                                                                                        {#      onclick="location.href='editar/{{ s.id }}';"#}
+                                                                                                                        onclick="editarsessaoinscrita('{{ s.id }}', 'editar', '{{ s.numero_alunos }}', 'n/a')">
                                                                                                                             <span class="icon">
                                                                                                                                 <i class="mdi mdi-pencil mdi-24px"></i>
                                                                                                                             </span>
-                                                                                                                        </button>
-                                                                                                                    </p>
-                                                                                                                    <p class="control">
-                                                                                                                        <button class="button is-danger is-outlined"
-                                                                                                                                type="button"
-                                                                                                                                id=""
-                                                                                                                                name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
-                                                                                                                                value="{{ s.id }}"
-                                                                                                                                onclick="deleteSessao(this.value, this.name)">
+                                                                                                                </button>
+                                                                                                            </p>
+                                                                                                            <p class="control">
+                                                                                                                <button class="button is-danger is-outlined"
+                                                                                                                        type="button"
+                                                                                                                        id=""
+                                                                                                                        name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                        value="{{ s.id }}"
+                                                                                                                        onclick="deleteSessao(this.value, this.name)">
                                                                                                                             <span class="icon">
                                                                                                                                 <i class="mdi mdi-close mdi-24px"></i>
                                                                                                                             </span>
-                                                                                                                        </button>
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    {% endif %}
-                                                                                                {% endfor %}
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </div>
+                                                                                                                </button>
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            {% endif %}
+                                                                                        {% endfor %}
+                                                                                        </tbody>
+                                                                                    </table>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </td>
-                                                                </tr>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% elif utilizador.utilizadortipo.tipo == "Coordenador" %}
-                                                    <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
-                                                           id="table_atividades">
-                                                        <thead>
-                                                        <tr>
-                                                            <th width="40px"></th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">ID</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Hora Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">U.O Check-in</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Escola</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Turma</div>
-                                                            </th>
-                                                            <th class="is-sortable">
-                                                                <div class="th-wrap">Nª Alunos</div>
-                                                            </th>
-                                                            <th class="">
-                                                                <div class="th-wrap"></div>
-                                                            </th>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
                                                         </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {% for p in participante %}
-                                                            {% for ss in sessoes %}
-                                                                {% if p.inscricao == ss.inscricao %}
-                                                                    {% if ss.sessaoAtividade.atividade.unidadeorganica == utilizador.unidadeorganica %}
-                                                                        {% with a=ss.sessaoAtividade.atividade.unidadeorganica %}
-                                                                            {% if utilizador.unidadeorganica == a %}
-                                                                                <tr draggable="false" class="">
-                                                                                    <td class="chevron-cell toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">
-                                                                                        <a role="button">
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% elif utilizador.utilizadortipo.tipo == "Coordenador" %}
+                                            <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
+                                                   id="table_atividades">
+                                                <thead>
+                                                <tr>
+                                                    <th width="40px"></th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">ID</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Hora Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">U.O Check-in</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Escola</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Turma</div>
+                                                    </th>
+                                                    <th class="is-sortable">
+                                                        <div class="th-wrap">Nª Alunos</div>
+                                                    </th>
+                                                    <th class="">
+                                                        <div class="th-wrap"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for p in participante %}
+                                                    {% for ss in sessoes %}
+                                                        {% if p.inscricao == ss.inscricao %}
+                                                            {% if ss.sessaoAtividade.atividade.unidadeorganica == utilizador.unidadeorganica %}
+                                                                {% with a=ss.sessaoAtividade.atividade.unidadeorganica %}
+                                                                    {% if utilizador.unidadeorganica == a %}
+                                                                        <tr draggable="false" class="">
+                                                                            <td class="chevron-cell toggle pointer"
+                                                                                onclick="expandAtividade('{{ p.id }}')">
+                                                                                <a role="button">
                                                                                 <span class="icon" id="icon_{{ p.id }}">
                                                                                     <i class="mdi mdi-chevron-right mdi-24px"></i>
                                                                                 </span>
-                                                                                        </a>
+                                                                                </a>
+                                                                            </td>
+                                                                            {% for i in individual %}
+                                                                                {% if i.participante.id == p.id %}
+                                                                                    <td data-label="Id"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                                        Individual{{ p.id }}
+                                                                                        <p hidden
+                                                                                           id="{{ p.id }}"
+                                                                                           class="Individual"></p>
                                                                                     </td>
-                                                                                    {% for i in individual %}
-                                                                                        {% if i.participante.id == p.id %}
-                                                                                            <td data-label="Id"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                                Individual{{ p.id }}
-                                                                                                <p hidden
-                                                                                                   id="{{ p.id }}"
-                                                                                                   class="Individual"></p>
-                                                                                            </td>
-                                                                                            <td data-label="check"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                                            <td data-label="U.O."
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                                            <td data-label="Escola"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                                            <td data-label="turma"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')"></td>
-                                                                                            <td data-label="n_alunos"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                                1
-                                                                                            </td>
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    {% for g in grupos %}
-                                                                                        {% if g.participante.id == p.id %}
-                                                                                            <td data-label="Id"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">
-                                                                                                Grupo{{ p.id }}
-                                                                                                <p hidden
-                                                                                                   id="{{ p.id }}"
-                                                                                                   class="Grupo"></p>
-                                                                                            </td>
-                                                                                            <td data-label="check"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
-                                                                                            <td data-label="U.O."
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
-                                                                                            <td data-label="Escola"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
-                                                                                            <td data-label="turma"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
-                                                                                            <td data-label="n_alunos"
-                                                                                                class="toggle pointer"
-                                                                                                onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
-                                                                                        {% endif %}
-                                                                                    {% endfor %}
-                                                                                    <td data-label="buttons" class="">
-                                                                                        <div class="field is-grouped">
-                                                                                            <p class="control">
-                                                                                                <button class="button is-danger is-outlined"
-                                                                                                        type="button"
-                                                                                                        id=""
-                                                                                                        name=""
-                                                                                                        value="{{ p.id }}"
-                                                                                                        onclick="deleteInscricao(this.value)">
+                                                                                    <td data-label="check"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                                    <td data-label="U.O."
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                                    <td data-label="Escola"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                                    <td data-label="turma"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')"></td>
+                                                                                    <td data-label="n_alunos"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                                        1
+                                                                                    </td>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                            {% for g in grupos %}
+                                                                                {% if g.participante.id == p.id %}
+                                                                                    <td data-label="Id"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">
+                                                                                        Grupo{{ p.id }}
+                                                                                        <p hidden
+                                                                                           id="{{ p.id }}"
+                                                                                           class="Grupo"></p>
+                                                                                    </td>
+                                                                                    <td data-label="check"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                                    <td data-label="U.O."
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                                    <td data-label="Escola"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                                    <td data-label="turma"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
+                                                                                    <td data-label="n_alunos"
+                                                                                        class="toggle pointer"
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
+                                                                                {% endif %}
+                                                                            {% endfor %}
+                                                                            <td data-label="buttons" class="">
+                                                                                <div class="field is-grouped">
+                                                                                    <p class="control">
+                                                                                        <button class="button is-danger is-outlined"
+                                                                                                type="button"
+                                                                                                id=""
+                                                                                                name=""
+                                                                                                value="{{ p.id }}"
+                                                                                                onclick="deleteInscricao(this.value)">
                                                                                                     <span class="icon">
                                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                                     </span>
-                                                                                                </button>
-                                                                                            </p>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr class="detail tablesorter-childRow">
-                                                                                    <td colspan="8">
-                                                                                        <div class="detail-container">
-                                                                                            <div class="content">
-                                                                                                <div style="font-size: 15px;">
-                                                                                                    <div class="b-table">
-                                                                                                        <div class="table-wrapper">
-                                                                                                            <table class="table has-mobile-cards is-hoverable tablesorter"
-                                                                                                                   id="table_atividades">
-                                                                                                                <thead>
-                                                                                                                <tr>
-                                                                                                                    <th>
-                                                                                                                        <div class="th-wrap">
-                                                                                                                            Atividade
-                                                                                                                        </div>
-                                                                                                                    </th>
-                                                                                                                    <th>
-                                                                                                                        <div class="th-wrap">
-                                                                                                                            Sessão
-                                                                                                                        </div>
-                                                                                                                    </th>
-                                                                                                                    <th>
-                                                                                                                        <div class="th-wrap">
-                                                                                                                            Inscritos
-                                                                                                                        </div>
-                                                                                                                    </th>
-                                                                                                                    <th>
-                                                                                                                        <div class="th-wrap"></div>
-                                                                                                                    </th>
-                                                                                                                </tr>
-                                                                                                                </thead>
-                                                                                                                <tbody>
-                                                                                                                {% for s in sessoes %}
-                                                                                                                    {% if s.inscricao.id == p.inscricao.id and s.sessaoAtividade.atividade.unidadeorganica.nome == utilizador.unidadeorganica.nome %}
-                                                                                                                        <tr draggable="false"
-                                                                                                                            class="">
-                                                                                                                            <td data-label="atividade"
-                                                                                                                                class="">
-                                                                                                                                {{ s.sessaoAtividade.atividade.nome }}
-                                                                                                                                <p id="sessao{{ s.id }}"
-                                                                                                                                   class=""
-                                                                                                                                   hidden></p>
-                                                                                                                            </td>
-                                                                                                                            <td data-label="sessao"
-                                                                                                                                class="">
-                                                                                                                                {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
-                                                                                                                            </td>
-                                                                                                                            <td data-label="sessao"
-                                                                                                                                class="">
-                                                                                                                                {{ s.numero_alunos }}
-                                                                                                                            </td>
-                                                                                                                            <td data-label="buttons"
-                                                                                                                                class="">
-                                                                                                                                <div class="field is-grouped">
-                                                                                                                                    <p class="control">
-                                                                                                                                        <button class="button is-danger is-outlined"
-                                                                                                                                                type="button"
-                                                                                                                                                id=""
-                                                                                                                                                name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
-                                                                                                                                                value="{{ s.id }}"
-                                                                                                                                                onclick="deleteSessao(this.value, this.name)">
+                                                                                        </button>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="detail tablesorter-childRow">
+                                                                            <td colspan="8">
+                                                                                <div class="detail-container">
+                                                                                    <div class="content">
+                                                                                        <div style="font-size: 15px;">
+                                                                                            <div class="b-table">
+                                                                                                <div class="table-wrapper">
+                                                                                                    <table class="table has-mobile-cards is-hoverable tablesorter"
+                                                                                                           id="table_atividades">
+                                                                                                        <thead>
+                                                                                                        <tr>
+                                                                                                            <th>
+                                                                                                                <div class="th-wrap">
+                                                                                                                    Atividade
+                                                                                                                </div>
+                                                                                                            </th>
+                                                                                                            <th>
+                                                                                                                <div class="th-wrap">
+                                                                                                                    Sessão
+                                                                                                                </div>
+                                                                                                            </th>
+                                                                                                            <th>
+                                                                                                                <div class="th-wrap">
+                                                                                                                    Inscritos
+                                                                                                                </div>
+                                                                                                            </th>
+                                                                                                            <th>
+                                                                                                                <div class="th-wrap"></div>
+                                                                                                            </th>
+                                                                                                        </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody>
+                                                                                                        {% for s in sessoes %}
+                                                                                                            {% if s.inscricao.id == p.inscricao.id and s.sessaoAtividade.atividade.unidadeorganica.nome == utilizador.unidadeorganica.nome %}
+                                                                                                                <tr draggable="false"
+                                                                                                                    class="">
+                                                                                                                    <td data-label="atividade"
+                                                                                                                        class="">
+                                                                                                                        {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                                        <p id="sessao{{ s.id }}"
+                                                                                                                           class=""
+                                                                                                                           hidden></p>
+                                                                                                                    </td>
+                                                                                                                    <td data-label="sessao"
+                                                                                                                        class="">
+                                                                                                                        {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}
+                                                                                                                    </td>
+                                                                                                                    <td data-label="sessao"
+                                                                                                                        class="">
+                                                                                                                        {{ s.numero_alunos }}
+                                                                                                                    </td>
+                                                                                                                    <td data-label="buttons"
+                                                                                                                        class="">
+                                                                                                                        <div class="field is-grouped">
+                                                                                                                            <p class="control">
+                                                                                                                                <button class="button is-danger is-outlined"
+                                                                                                                                        type="button"
+                                                                                                                                        id=""
+                                                                                                                                        name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                                        value="{{ s.id }}"
+                                                                                                                                        onclick="deleteSessao(this.value, this.name)">
                                                                                                                             <span class="icon">
                                                                                                                                 <i class="mdi mdi-close mdi-24px"></i>
                                                                                                                             </span>
-                                                                                                                                        </button>
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            </td>
-                                                                                                                        </tr>
-                                                                                                                    {% endif %}
-                                                                                                                {% endfor %}
-                                                                                                                </tbody>
-                                                                                                            </table>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                                                </button>
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            {% endif %}
+                                                                                                        {% endfor %}
+                                                                                                        </tbody>
+                                                                                                    </table>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            {% endif %}
-                                                                        {% endwith %}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
                                                                     {% endif %}
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                        {% endfor %}
-                                                        </tbody>
-                                                    </table>
-                                                {% endif %}
-                                            </div>
-                                            <div class="level">
-                                                <div class="level-left"></div>
-                                                <div class="level-right">
-                                                    <div class="level-item">
-                                                        <nav class="pagination"><a role="button" href="#"
-                                                                                   disabled="disabled"
-                                                                                   aria-label="Page 0."
-                                                                                   class="pagination-link pagination-previous"><span
-                                                                class="icon" aria-hidden="true"><i
-                                                                class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
-                                                                role="button" href="#" disabled="disabled"
-                                                                aria-label="Page 2."
-                                                                class="pagination-link pagination-next"><span
-                                                                class="icon"
-                                                                aria-hidden="true"><i
-                                                                class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                            <ul class="pagination-list"><!----> <!---->
-                                                                <li><a role="button" href="#"
-                                                                       aria-label="Current page, Page 1."
-                                                                       aria-current="true"
-                                                                       class="pagination-link is-current ">1</a></li>
-                                                                <!---->
-                                                                <!----></ul>
-                                                        </nav>
-                                                    </div>
-                                                </div>
+                                                                {% endwith %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        {% endif %}
+                                    </div>
+                                    <div class="level">
+                                        <div class="level-left"></div>
+                                        <div class="level-right">
+                                            <div class="level-item">
+                                                <nav class="pagination"><a role="button" href="#"
+                                                                           disabled="disabled"
+                                                                           aria-label="Page 0."
+                                                                           class="pagination-link pagination-previous"><span
+                                                        class="icon" aria-hidden="true"><i
+                                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
+                                                        role="button" href="#" disabled="disabled"
+                                                        aria-label="Page 2."
+                                                        class="pagination-link pagination-next"><span
+                                                        class="icon"
+                                                        aria-hidden="true"><i
+                                                        class="mdi mdi-chevron-right mdi-24px"></i></span></a>
+                                                    <ul class="pagination-list"><!----> <!---->
+                                                        <li><a role="button" href="#"
+                                                               aria-label="Current page, Page 1."
+                                                               aria-current="true"
+                                                               class="pagination-link is-current ">1</a></li>
+                                                        <!---->
+                                                        <!----></ul>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>

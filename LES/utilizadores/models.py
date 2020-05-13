@@ -37,7 +37,7 @@ class Campus(models.Model):
         db_table = 'campus'
 
 
-class Unidadeorganica(models.Model):
+class UnidadeOrganica(models.Model):
     nome = models.CharField(max_length=255)
     campus = models.ForeignKey(Campus, models.DO_NOTHING, db_column='campus')
 
@@ -71,7 +71,7 @@ class Utilizador(models.Model):
     permitir_localizacao = models.IntegerField()
     utilizar_dados_pessoais = models.IntegerField()
     validado = models.IntegerField(blank=True, null=True)
-    unidadeorganica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, blank=True, null=True)
+    unidadeorganica = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, blank=True, null=True)
     departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=True, null=True)
 
 
@@ -111,8 +111,9 @@ class Diaaberto(models.Model):
         managed = False
         db_table = 'diaaberto'
 
+
 class UnidadeorganicaDepartamento(models.Model):
-    unidade_organica = models.ForeignKey(Unidadeorganica, models.DO_NOTHING, db_column='unidade_organica')
+    unidade_organica = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, db_column='unidade_organica')
     departamento = models.ForeignKey(Departamento, models.DO_NOTHING, db_column='departamento')
 
     class Meta:
