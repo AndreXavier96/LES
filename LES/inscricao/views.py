@@ -263,21 +263,34 @@ class ConsultarInscricaoView(View):
         })
 
     def post(self, request):
-        insc = request.POST['del']
-        print(insc)
-        sai = SessaoAtividadeInscricao.objects.filter(inscricao=insc)
-        for s in sai:
-            s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos
-            s.sessaoAtividade.save()
-            s.delete()
-        EmentaInscricao.objects.get(inscricao=insc).delete()
-        utilizadorparticipante = Utilizadorparticipante.objects.get(inscricao=insc)
-        if utilizadorparticipante.utilizador.utilizadortipo.id == 6:
-            ParticipanteGrupo.objects.get(participante=utilizadorparticipante).delete()
-        elif utilizadorparticipante.utilizador.utilizadortipo.id == 1:
-            ParticipanteIndividual.objects.get(participante=utilizadorparticipante).delete()
-        utilizadorparticipante.delete()
-        Transporteproprio.objects.get(inscricao=insc).delete()
-        sai.delete()
-        Inscricao.objects.get(pk=insc).delete()
-        return render(request, 'home.html', context={'MSG': "apagado com sucesso"}) # alterar
+        typee = request.POST['type']
+        # 1-apagar inscricao completa;    2-aapgar sessao da inscricao
+        print("tipo= " + typee)
+        if typee == "1":
+            insc = request.POST['del']
+            sai = SessaoAtividadeInscricao.objects.filter(inscricao=insc)
+            for s in sai:
+                s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos
+                s.sessaoAtividade.save()
+                s.delete()
+            EmentaInscricao.objects.get(inscricao=insc).delete()
+            utilizadorparticipante = Utilizadorparticipante.objects.get(inscricao=insc)
+            if utilizadorparticipante.utilizador.utilizadortipo.id == 6:
+                ParticipanteGrupo.objects.get(participante=utilizadorparticipante).delete()
+            elif utilizadorparticipante.utilizador.utilizadortipo.id == 1:
+                ParticipanteIndividual.objects.get(participante=utilizadorparticipante).delete()
+            utilizadorparticipante.delete()
+            trans = Transporteproprio.objects.get(inscricao=insc)
+            for p in Percursos.objects.filter(transporteproprio=trans):
+                p.delete()
+            trans.delete()
+            sai.delete()
+            Inscricao.objects.get(pk=insc).delete()
+        elif typee == "2":
+            del2 = request.POST['del2']
+            sai = SessaoAtividadeInscricao.objects.get(pk=del2)
+            sai.sessaoAtividade.n_alunos = sai.sessaoAtividade.n_alunos + sai.numero_alunos
+            sai.sessaoAtividade.save()
+            sai.delete()
+        # return render(request, 'home.html', context={'MSG': "sessao apagada com sucesso"})  # alterar
+        return redirect('/inscricao/consultar')

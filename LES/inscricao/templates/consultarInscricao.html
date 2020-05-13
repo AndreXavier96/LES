@@ -21,35 +21,9 @@
     <script src="{% static 'main/js/filter.js' %}"></script>
     <link rel="stylesheet" href="{% static 'main/css/filter.css' %}">
 
+    <script src="{% static 'main/js/consultar_inscricao.js' %}"></script>
+
 </head>
-<script>
-    $(function () {
-        $("#table_atividades").tablesorter();
-    });
-    $(function () {
-        $('.tablesorter-childRow td').hide();
-
-        $(".tablesorter")
-            .tablesorter({
-                theme: 'blue',
-                cssChildRow: "tablesorter-childRow"
-            })
-
-        $('.tablesorter').delegate('.toggle', 'click', function () {
-            $(this).closest('tr').nextUntil('tr:not(.tablesorter-childRow)').find('td').toggle();
-            return false;
-        });
-    });
-
-    function expandAtividade(id) {
-        let icon = document.getElementById('icon_' + id)
-        if (icon.classList.contains('is-expanded')) {
-            icon.classList.remove('is-expanded')
-        } else {
-            icon.classList.add('is-expanded')
-        }
-    }
-</script>
 <body>
 {% block content %}
     <form method="POST">
@@ -111,21 +85,23 @@
                                                         </thead>
                                                         <tbody>
                                                         {% for p in participante %}
-                                                            <tr draggable="false" class=""
-                                                                onclick="expandAtividade('{{ p.id }}')">
+                                                            <tr draggable="false" class="">
                                                                 <td class="chevron-cell toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">
                                                                     <a role="button">
-                                                                <span class="icon" id="icon_{{ p.id }}">
-                                                                    <i class="mdi mdi-chevron-right mdi-24px"></i>
-                                                                </span>
+                                                                        <span class="icon" id="icon_{{ p.id }}">
+                                                                            <i class="mdi mdi-chevron-right mdi-24px"></i>
+                                                                        </span>
                                                                     </a>
                                                                 </td>
                                                                 {% for i in individual %}
                                                                     {% if i.participante.id == p.id %}
                                                                         <td data-label="Id" class="toggle pointer"
                                                                             onclick="expandAtividade('{{ p.id }}')">
-                                                                            Individual{{ p.id }}</td>
+                                                                            Individual{{ p.id }}
+                                                                            <p hidden id="{{ p.id }}"
+                                                                               class="Individual"></p>
+                                                                        </td>
                                                                         <td data-label="check"
                                                                             class="toggle pointer"
                                                                             onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -146,7 +122,9 @@
                                                                     {% if g.participante.id == p.id %}
                                                                         <td data-label="Id" class="toggle pointer"
                                                                             onclick="expandAtividade('{{ p.id }}')">
-                                                                            Grupo{{ p.id }}</td>
+                                                                            Grupo{{ p.id }}
+                                                                            <p hidden id="{{ p.id }}" class="Grupo"></p>
+                                                                        </td>
                                                                         <td data-label="check"
                                                                             class="toggle pointer"
                                                                             onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -163,7 +141,7 @@
                                                                             onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
                                                                     {% endif %}
                                                                 {% endfor %}
-                                                                <td data-label="delete" class="">
+                                                                <td data-label="buttons" class="">
                                                                     <div class="field is-grouped">
                                                                         <p class="control">
                                                                             <button class="button">
@@ -174,20 +152,21 @@
                                                                         </p>
                                                                         <p class="control">
                                                                             <button class="button is-danger is-outlined"
-                                                                                    type="submit"
+                                                                                    type="button"
                                                                                     id=""
-                                                                                    name="del"
-                                                                                    value="{{ p.inscricao.id }}">
-                                                                                <span class="icon">
-                                                                                    <i class="mdi mdi-close mdi-24px"></i>
-                                                                                </span>
+                                                                                    name=""
+                                                                                    value="{{ p.id }}"
+                                                                                    onclick="deleteInscricao(this.value)">
+                                                                                    <span class="icon">
+                                                                                        <i class="mdi mdi-close mdi-24px"></i>
+                                                                                    </span>
                                                                             </button>
                                                                         </p>
                                                                     </div>
                                                                 </td>
                                                             </tr>
                                                             <tr class="detail tablesorter-childRow">
-                                                                <td colspan="7">
+                                                                <td colspan="8">
                                                                     <div class="detail-container">
                                                                         <div class="content">
                                                                             <div style="font-size: 15px;">
@@ -212,6 +191,9 @@
                                                                                                         Inscritos
                                                                                                     </div>
                                                                                                 </th>
+                                                                                                <th>
+                                                                                                    <div class="th-wrap"></div>
+                                                                                                </th>
                                                                                             </tr>
                                                                                             </thead>
                                                                                             <tbody>
@@ -222,6 +204,9 @@
                                                                                                         <td data-label="atividade"
                                                                                                             class="">
                                                                                                             {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                            <p id="sessao{{ s.id }}"
+                                                                                                               class=""
+                                                                                                               hidden></p>
                                                                                                         </td>
                                                                                                         <td data-label="sessao"
                                                                                                             class="">
@@ -230,6 +215,23 @@
                                                                                                         <td data-label="sessao"
                                                                                                             class="">
                                                                                                             {{ s.numero_alunos }}
+                                                                                                        </td>
+                                                                                                        <td data-label="buttons"
+                                                                                                            class="">
+                                                                                                            <div class="field is-grouped">
+                                                                                                                <p class="control">
+                                                                                                                    <button class="button is-danger is-outlined"
+                                                                                                                            type="button"
+                                                                                                                            id=""
+                                                                                                                            name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                            value="{{ s.id }}"
+                                                                                                                            onclick="deleteSessao(this.value, this.name)">
+                                                                                                                            <span class="icon">
+                                                                                                                                <i class="mdi mdi-close mdi-24px"></i>
+                                                                                                                            </span>
+                                                                                                                    </button>
+                                                                                                                </p>
+                                                                                                            </div>
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                 {% endif %}
@@ -278,21 +280,23 @@
                                                         <tbody>
                                                         {% for p in participante %}
                                                             {% if p.utilizador.id == utilizador.id %}
-                                                                <tr draggable="false" class=""
-                                                                    onclick="expandAtividade('{{ p.id }}')">
+                                                                <tr draggable="false" class="">
                                                                     <td class="chevron-cell toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">
                                                                         <a role="button">
-                                                                    <span class="icon" id="icon_{{ p.id }}">
-                                                                        <i class="mdi mdi-chevron-right mdi-24px"></i>
-                                                                    </span>
+                                                                            <span class="icon" id="icon_{{ p.id }}">
+                                                                                <i class="mdi mdi-chevron-right mdi-24px"></i>
+                                                                            </span>
                                                                         </a>
                                                                     </td>
                                                                     {% for i in individual %}
                                                                         {% if i.participante.id == p.id %}
                                                                             <td data-label="Id" class="toggle pointer"
                                                                                 onclick="expandAtividade('{{ p.id }}')">
-                                                                                Individual{{ p.id }}</td>
+                                                                                Individual{{ p.id }}
+                                                                                <p hidden id="{{ p.id }}"
+                                                                                   class="Individual"></p>
+                                                                            </td>
                                                                             <td data-label="check"
                                                                                 class="toggle pointer"
                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -316,7 +320,10 @@
                                                                         {% if g.participante.id == p.id %}
                                                                             <td data-label="Id" class="toggle pointer"
                                                                                 onclick="expandAtividade('{{ p.id }}')">
-                                                                                Grupo{{ p.id }}</td>
+                                                                                Grupo{{ p.id }}
+                                                                                <p hidden id="{{ p.id }}"
+                                                                                   class="Grupo"></p>
+                                                                            </td>
                                                                             <td data-label="check"
                                                                                 class="toggle pointer"
                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -334,7 +341,7 @@
                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
                                                                         {% endif %}
                                                                     {% endfor %}
-                                                                    <td data-label="delete" class="">
+                                                                    <td data-label="buttons" class="">
                                                                         <div class="field is-grouped">
                                                                             <p class="control">
                                                                                 <button class="button">
@@ -345,10 +352,11 @@
                                                                             </p>
                                                                             <p class="control">
                                                                                 <button class="button is-danger is-outlined"
-                                                                                        type="submit"
+                                                                                        type="button"
                                                                                         id=""
-                                                                                        name="del"
-                                                                                        value="{{ p.inscricao.id }}">
+                                                                                        name=""
+                                                                                        value="{{ p.id }}"
+                                                                                        onclick="deleteInscricao(this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
@@ -358,7 +366,7 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="detail tablesorter-childRow">
-                                                                    <td colspan="7">
+                                                                    <td colspan="8">
                                                                         <div class="detail-container">
                                                                             <div class="content">
                                                                                 <div style="font-size: 15px;">
@@ -383,6 +391,9 @@
                                                                                                             Inscritos
                                                                                                         </div>
                                                                                                     </th>
+                                                                                                    <th>
+                                                                                                        <div class="th-wrap"></div>
+                                                                                                    </th>
                                                                                                 </tr>
                                                                                                 </thead>
                                                                                                 <tbody>
@@ -393,6 +404,9 @@
                                                                                                             <td data-label="atividade"
                                                                                                                 class="">
                                                                                                                 {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                                <p id="sessao{{ s.id }}"
+                                                                                                                   class=""
+                                                                                                                   hidden></p>
                                                                                                             </td>
                                                                                                             <td data-label="sessao"
                                                                                                                 class="">
@@ -401,6 +415,23 @@
                                                                                                             <td data-label="sessao"
                                                                                                                 class="">
                                                                                                                 {{ s.numero_alunos }}
+                                                                                                            </td>
+                                                                                                            <td data-label="buttons"
+                                                                                                                class="">
+                                                                                                                <div class="field is-grouped">
+                                                                                                                    <p class="control">
+                                                                                                                        <button class="button is-danger is-outlined"
+                                                                                                                                type="button"
+                                                                                                                                id=""
+                                                                                                                                name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                                value="{{ s.id }}"
+                                                                                                                                onclick="deleteSessao(this.value, this.name)">
+                                                                                                                            <span class="icon">
+                                                                                                                                <i class="mdi mdi-close mdi-24px"></i>
+                                                                                                                            </span>
+                                                                                                                        </button>
+                                                                                                                    </p>
+                                                                                                                </div>
                                                                                                             </td>
                                                                                                         </tr>
                                                                                                     {% endif %}
@@ -468,7 +499,11 @@
                                                                                             <td data-label="Id"
                                                                                                 class="toggle pointer"
                                                                                                 onclick="expandAtividade('{{ p.id }}')">
-                                                                                                Individual{{ p.id }}</td>
+                                                                                                Individual{{ p.id }}
+                                                                                                <p hidden
+                                                                                                   id="{{ p.id }}"
+                                                                                                   class="Individual"></p>
+                                                                                            </td>
                                                                                             <td data-label="check"
                                                                                                 class="toggle pointer"
                                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -493,7 +528,11 @@
                                                                                             <td data-label="Id"
                                                                                                 class="toggle pointer"
                                                                                                 onclick="expandAtividade('{{ p.id }}')">
-                                                                                                Grupo{{ p.id }}</td>
+                                                                                                Grupo{{ p.id }}
+                                                                                                <p hidden
+                                                                                                   id="{{ p.id }}"
+                                                                                                   class="Grupo"></p>
+                                                                                            </td>
                                                                                             <td data-label="check"
                                                                                                 class="toggle pointer"
                                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
@@ -511,7 +550,7 @@
                                                                                                 onclick="expandAtividade('{{ p.id }}')">{{ g.total_participantes }}</td>
                                                                                         {% endif %}
                                                                                     {% endfor %}
-                                                                                    <td data-label="delete" class="">
+                                                                                    <td data-label="buttons" class="">
                                                                                         <div class="field is-grouped">
                                                                                             <p class="control">
                                                                                                 <button class="button">
@@ -522,10 +561,11 @@
                                                                                             </p>
                                                                                             <p class="control">
                                                                                                 <button class="button is-danger is-outlined"
-                                                                                                        type="submit"
+                                                                                                        type="button"
                                                                                                         id=""
-                                                                                                        name="del"
-                                                                                                        value="{{ p.inscricao.id }}">
+                                                                                                        name=""
+                                                                                                        value="{{ p.id }}"
+                                                                                                        onclick="deleteInscricao(this.value)">
                                                                                                     <span class="icon">
                                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                                     </span>
@@ -535,7 +575,7 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr class="detail tablesorter-childRow">
-                                                                                    <td colspan="7">
+                                                                                    <td colspan="8">
                                                                                         <div class="detail-container">
                                                                                             <div class="content">
                                                                                                 <div style="font-size: 15px;">
@@ -560,6 +600,9 @@
                                                                                                                             Inscritos
                                                                                                                         </div>
                                                                                                                     </th>
+                                                                                                                    <th>
+                                                                                                                        <div class="th-wrap"></div>
+                                                                                                                    </th>
                                                                                                                 </tr>
                                                                                                                 </thead>
                                                                                                                 <tbody>
@@ -570,6 +613,9 @@
                                                                                                                             <td data-label="atividade"
                                                                                                                                 class="">
                                                                                                                                 {{ s.sessaoAtividade.atividade.nome }}
+                                                                                                                                <p id="sessao{{ s.id }}"
+                                                                                                                                   class=""
+                                                                                                                                   hidden></p>
                                                                                                                             </td>
                                                                                                                             <td data-label="sessao"
                                                                                                                                 class="">
@@ -578,6 +624,23 @@
                                                                                                                             <td data-label="sessao"
                                                                                                                                 class="">
                                                                                                                                 {{ s.numero_alunos }}
+                                                                                                                            </td>
+                                                                                                                            <td data-label="buttons"
+                                                                                                                                class="">
+                                                                                                                                <div class="field is-grouped">
+                                                                                                                                    <p class="control">
+                                                                                                                                        <button class="button is-danger is-outlined"
+                                                                                                                                                type="button"
+                                                                                                                                                id=""
+                                                                                                                                                name="{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}"
+                                                                                                                                                value="{{ s.id }}"
+                                                                                                                                                onclick="deleteSessao(this.value, this.name)">
+                                                                                                                            <span class="icon">
+                                                                                                                                <i class="mdi mdi-close mdi-24px"></i>
+                                                                                                                            </span>
+                                                                                                                                        </button>
+                                                                                                                                    </p>
+                                                                                                                                </div>
                                                                                                                             </td>
                                                                                                                         </tr>
                                                                                                                     {% endif %}
@@ -637,6 +700,47 @@
                 </div>
             </div>
             {% include 'includes/footer.html' %}
+        </div>
+        <input type="number" id="type" name="type" value="">
+        {#------------------------popup eliminar Insricao---------------------------------------------#}
+        <div id="popup_eliminar_inscricao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content" id="content_delete_inscricao"></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="button" id="popup_cancel" class="button"
+                            onclick="canceldelete('popup_eliminar_inscricao')">
+                        Cancelar
+                    </button>
+                    <button type="submit" name="del" id="del" class="button is-success" value="">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
+        </div>
+        {#----------------------------Popup eliminar sessao inscrita---------------------------------------------------------#}
+        <div id="popup_eliminar_sessao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content" id="content_delete_sessao"></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="button" id="popup_cancel" class="button"
+                            onclick="canceldelete('popup_eliminar_sessao')">
+                        Cancelar
+                    </button>
+                    <button type="submit" name="del2" id="del2" class="button is-success" value="">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
         </div>
     </form>
 {% endblock %}
