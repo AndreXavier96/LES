@@ -2,7 +2,7 @@ import datetime
 
 from django.db import models
 
-from utilizadores.models import Utilizador, Campus, Faculdade, Departamento
+from utilizadores.models import Utilizador, Campus, Faculdade, Departamento, UnidadeOrganica
 
 
 class Escola(models.Model):
@@ -23,14 +23,16 @@ class Escola(models.Model):
 class Inscricao(models.Model):
     dia = models.DateField(auto_now_add=True)
     escola = models.ForeignKey(Escola, models.DO_NOTHING, blank=True, null=True)
-    estado = models.CharField(max_length=45, blank=True, null=True)
+    # estado = models.CharField(max_length=45, blank=True, null=True)
+    hora_check_in = models.TimeField()
+    unidadeorganica_checkin = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, db_column='unidadeorganica_checkin', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'inscricao'
 
     def __str__(self):
-        return self.escola.__str__()
+        return self.id.__str__()
 
 
 class Ementa(models.Model):
@@ -66,18 +68,25 @@ class EmentaInscricao(models.Model):
 
 class Transporteproprio(models.Model):
     data = models.DateField(blank=True, null=True)
-    hora_chegada = models.TimeField()
-    hora_partida = models.TimeField()
     tipo_transporte = models.CharField(max_length=255)
     transporte_para_campus = models.CharField(max_length=255, null=True)
     transporte_entre_campus = models.CharField(max_length=255, null=True)
-    ida_entre_campus = models.TimeField()
-    volta_entre_campus = models.TimeField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'transporteproprio'
+
+
+class Percursos(models.Model):
+    origem = models.CharField(max_length=255)
+    destino = models.CharField(max_length=255)
+    hora = models.TimeField()
+    transporteproprio = models.ForeignKey(Transporteproprio, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'percursos'
 
 
 class Utilizadorparticipante(models.Model):
@@ -199,7 +208,7 @@ class Atividade(models.Model):
     tipo_atividade = models.ForeignKey(TipoAtividade, on_delete=models.CASCADE, null=True)
     publico_alvo = models.ManyToManyField(PublicoAlvo, related_name='publico_alvo')
     data = models.DateField(default=datetime.date.today)
-    faculdade = models.ForeignKey(Faculdade, on_delete=models.CASCADE, null=True)
+    unidadeorganica = models.ForeignKey(UnidadeOrganica, on_delete=models.CASCADE, null=True)
     departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE, null=True)
     REJEITADA = 'RJ'  # invalidada
     PENDENTE = 'PD'  # por validar
@@ -252,8 +261,11 @@ class SessaoAtividade(models.Model):
 class SessaoAtividadeInscricao(models.Model):
     id = models.AutoField(primary_key=True)
     sessaoAtividade = models.ForeignKey(SessaoAtividade, related_name='sessoes', on_delete=models.CASCADE)
-    inscricao = models.ForeignKey('Inscricao', related_name='inscricoes', on_delete=models.CASCADE)
+    inscricao = models.ForeignKey(Inscricao, related_name='inscricoes', on_delete=models.CASCADE)
     numero_alunos = models.IntegerField()
 
     class Meta:
         db_table = 'SessaoAtividadeInscricao'
+
+    def __str__(self):
+        return self.id

@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 
 from .forms import RegisterForm
-from .models import Utilizador, Utilizadortipo, Unidadeorganica, Departamento, UnidadeorganicaDepartamento
+from .models import Utilizador, Utilizadortipo, UnidadeOrganica, Departamento, UnidadeorganicaDepartamento
 
 
 class register(View):
@@ -17,7 +17,7 @@ class register(View):
         form = RegisterForm()
         utilizadortipo = Utilizadortipo.objects.all
         departamento = Departamento.objects.all
-        unidadeorganica = Unidadeorganica.objects.all
+        unidadeorganica = UnidadeOrganica.objects.all
         unidadeorganica_dep = UnidadeorganicaDepartamento.objects.all
         return render(request, self.template_name, {
             'form': form,
@@ -77,7 +77,7 @@ class register(View):
             else:
                 unidadeorganica1 = request.POST['unidadeorganica']
                 print(unidadeorganica1)
-                unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica1)
+                unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica1)
                 if unidadeorganica1 == "Escola Superior de Gestão, Hotelaria e Turismo" or unidadeorganica1 == "Faculdade de Economia" or unidadeorganica1 == "Departamento de Ciências Biomédicas e Medicina":
                     departamento = None
                     print("noneeeee")
@@ -106,7 +106,7 @@ class register(View):
             print(unidadeorganica)
             #departamento = request.POST['departamento']
             print(departamento)
-            #unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
+            #unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica)
             #departamento = request.POST['departamento']
            # departamento = Departamento.objects.get(nome=departamento)
 

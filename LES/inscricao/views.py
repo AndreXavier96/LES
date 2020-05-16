@@ -1,16 +1,17 @@
-from datetime import date
+from datetime import date, time
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib import messages
 
 from LES.utils import render_to_pdf
 from utilizadores.models import Utilizador
 from .models import Ementa, Escola, Inscricao, Utilizadorparticipante, ParticipanteIndividual, ParticipanteGrupo, \
-    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao
+    EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, SessaoAtividadeInscricao, Percursos
 
 
 def remove_all_space(string):
@@ -21,10 +22,15 @@ class HomeView(View):
     template_name = 'home.html'
 
     def get(self, request):
-        return render(request, 'home.html')
+        return render(request, 'home.html', )
 
 
-class InscricaoView(View):
+class success(View):
+    def get(self, request):
+        return render(request, 'home.html', context={'MSG': "Sucesso"})
+
+
+class CriarInscricaoView(View):
     template_name = 'inscricao.html'
 
     def get(self, request):
@@ -49,7 +55,7 @@ class InscricaoView(View):
         })
 
     def post(self, request):
-        # ------------escola
+        # --------------------------escola----------------------------------
         escola_escolhida = request.POST['Escola']
         print(escola_escolhida)
         if escola_escolhida != "Escolher":
@@ -64,7 +70,7 @@ class InscricaoView(View):
                 escola = Escola.objects.get(nome=nome)
             else:
                 escola = Escola.objects.get(nome=escola_escolhida)
-            inscricao = Inscricao.objects.create(escola=escola, estado="Pendente")
+            inscricao = Inscricao.objects.create(escola=escola, hora_check_in=time(23, 59, 59))
             # ------------inscricao grupo/individual
             # session user--------------------------------------
             auth_user = request.user
@@ -94,8 +100,7 @@ class InscricaoView(View):
                 print("uploaded_file")
                 print(uploaded_file)
                 fs = FileSystemStorage()
-                fs_saved = '/home/xavi6696/PycharmProjects/LES/LES/inscricao/static/autorizacao/inscricao' + \
-                           str(inscricao.id)
+                fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + str(inscricao.id)
                 fs.save(fs_saved, uploaded_file)
                 ParticipanteIndividual.objects.create(autorizacao=0,
                                                       ficheiro_autorizacao=fs_saved,
@@ -112,31 +117,77 @@ class InscricaoView(View):
                                            numero_outro_normal=n_outro
                                            )
             ementainscricao = EmentaInscricao.objects.get(inscricao=inscricao)
-            # -----------transporte
+            # -----------transporte------------------------------------
             drop_value = request.POST['tipo_transporte']
             trans_para_campus = "nao"
             if drop_value == "autocarro" or drop_value == "comboio":
                 trans_para_campus_value = request.POST['QuerTransportePara']
                 if trans_para_campus_value == "sim":
-                    trans_para_campus = request.POST['qual']
+                    trans_para_campus = "sim"
+            else:
+                trans_para_campus = "nao"
             trans_entre_campus_value = request.POST['QuerTransporteEntre']
-            if trans_entre_campus_value == 'sim':
-                trans_entre_campus = request.POST['transporte_campus']
+            if trans_entre_campus_value == 'ida':
+                trans_entre_campus = "só ida"
+            elif trans_entre_campus_value == 'idavolta':
+                trans_entre_campus = "ida e volta"
             else:
                 trans_entre_campus = "nao"
+            Transporteproprio.objects.create(tipo_transporte=drop_value,
+                                             transporte_para_campus=trans_para_campus,
+                                             transporte_entre_campus=trans_entre_campus,
+                                             inscricao=inscricao
+                                             )
+            transporte = Transporteproprio.objects.get(inscricao=inscricao)
             chegada = remove_all_space(request.POST['timepicker-one'])
             partida = remove_all_space(request.POST['timepicker-two'])
             entre_campus_ida = remove_all_space(request.POST['timepicker-three'])
             entre_campus_volta = remove_all_space(request.POST['timepicker-four'])
-            Transporteproprio.objects.create(hora_chegada=chegada, hora_partida=partida,
-                                             tipo_transporte=drop_value,
-                                             transporte_para_campus=trans_para_campus,
-                                             transporte_entre_campus=trans_entre_campus,
-                                             ida_entre_campus=entre_campus_ida,
-                                             volta_entre_campus=entre_campus_volta,
-                                             inscricao=inscricao
+            if drop_value == "autocarro" or drop_value == "comboio":
+                trans_para_campus_value = request.POST['QuerTransportePara']
+                if trans_para_campus_value == "sim":
+                    destino = request.POST['qual']
+                    if drop_value == "autocarro":
+                        origem = "estacao autocarros"
+                    else:
+                        origem = "estacao comboios"
+                    Percursos.objects.create(origem=origem,
+                                             destino=destino,
+                                             hora=chegada,
+                                             transporteproprio=transporte
                                              )
-            transporte = Transporteproprio.objects.get(inscricao=inscricao)
+                    if trans_entre_campus_value == 'ida':
+                        if destino == 'penha':
+                            destino = 'gambelas'
+                        elif destino == 'gambelas':
+                            destino = 'penha'
+                    Percursos.objects.create(origem=destino,
+                                             destino=origem,
+                                             hora=partida,
+                                             transporteproprio=transporte
+                                             )
+            origementre = ""
+            destinoentre = ""
+            if trans_entre_campus_value == 'ida' or trans_entre_campus_value == 'idavolta':
+                trans_entre_campus = request.POST['transporte_campus']
+                if trans_entre_campus == "penha_para_gambelas":
+                    origementre = "penha"
+                    destinoentre = "gambelas"
+                elif trans_entre_campus == "gambelas_para_penha":
+                    origementre = "gambelas"
+                    destinoentre = "penha"
+                Percursos.objects.create(origem=origementre,
+                                         destino=destinoentre,
+                                         hora=entre_campus_ida,
+                                         transporteproprio=transporte
+                                         )
+                if trans_entre_campus_value == 'idavolta':
+                    Percursos.objects.create(origem=destinoentre,
+                                             destino=origementre,
+                                             hora=entre_campus_volta,
+                                             transporteproprio=transporte
+                                             )
+            # ----------------------sessao------------------
             row_count = int(request.POST['row_countt'])
             if row_count > 0:
                 rows_deleted_count = request.POST['row_deletedd']
@@ -151,6 +202,10 @@ class InscricaoView(View):
                         SessaoAtividadeInscricao.objects.create(sessaoAtividade=sessaoactividade,
                                                                 inscricao=inscricao, numero_alunos=n_inscritos
                                                                 )
+                        if sessaoactividade.sessao.hora < inscricao.hora_check_in:
+                            inscricao.hora_check_in = sessaoactividade.sessao.hora
+                            inscricao.unidadeorganica_checkin = sessaoactividade.atividade.unidadeorganica
+                            inscricao.save()
                         novo_numero_alunos = SessaoAtividade.objects.get(pk=sessao_actividade_id).n_alunos - int(
                             n_inscritos)
                         sessaoactividade.n_alunos = novo_numero_alunos
@@ -170,18 +225,86 @@ class InscricaoView(View):
                 email.from_email = settings.EMAIL_HOST_USER
                 email.to = [utilizador.email]
                 pdf = render_to_pdf(data)
-                # preview------------------comentar para enviar email----------
+                # preview------------comentar para enviar email----------
                 # if pdf:
                 #     response = HttpResponse(pdf, content_type='application/pdf')
                 #     filename = "PrivacyRequest_%s.pdf" % "1234"
                 #     content = "inline; filename='%s'" % filename
                 #     response['Content-Disposition'] = content
                 #     return response
-                # ----------------------------------------------------------------
+                # -------------------------------------------------------
                 email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
                 email.send()
-                return render(request, 'home.html', context={'MSG': "Inscricao com Sucesso"})
+                return render(request, 'inscricao_sucess.html', context={'email': utilizador.email})
+
+
+class ConsultarInscricaoView(View):
+    template_name = 'consultarInscricao.html'
+
+    def get(self, request):
+        href = {"Minha Inscrição", "Inicio"}
+        inscricao = Inscricao.objects.all()
+        participante = Utilizadorparticipante.objects.all()
+        grupos = ParticipanteGrupo.objects.all()
+        individual = ParticipanteIndividual.objects.all()
+        sessoes = SessaoAtividadeInscricao.objects.all()
+        # session user--------------------------------------
+        auth_user = request.user
+        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        # --------------------------------------------------
+        return render(request, self.template_name, {
+            'href': href,
+            'inscricao': inscricao,
+            'participante': participante,
+            'grupos': grupos,
+            'individual': individual,
+            'sessoes': sessoes,
+            'utilizador': utilizador
+        })
+
+    def post(self, request):
+        typee = request.POST['type']
+        # 1-apagar inscricao completa;    2-aapgar sessao da inscricao
+        print("tipo= " + typee)
+        if typee == "1":
+            insc = request.POST['del']
+            sai = SessaoAtividadeInscricao.objects.filter(inscricao=insc)
+            for s in sai:
+                s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos
+                s.sessaoAtividade.save()
+                s.delete()
+            EmentaInscricao.objects.get(inscricao=insc).delete()
+            utilizadorparticipante = Utilizadorparticipante.objects.get(inscricao=insc)
+            if utilizadorparticipante.utilizador.utilizadortipo.id == 6:
+                ParticipanteGrupo.objects.get(participante=utilizadorparticipante).delete()
+            elif utilizadorparticipante.utilizador.utilizadortipo.id == 1:
+                ParticipanteIndividual.objects.get(participante=utilizadorparticipante).delete()
+            utilizadorparticipante.delete()
+            trans = Transporteproprio.objects.get(inscricao=insc)
+            for p in Percursos.objects.filter(transporteproprio=trans):
+                p.delete()
+            trans.delete()
+            sai.delete()
+            Inscricao.objects.get(pk=insc).delete()
+        elif typee == "2":
+            del2 = request.POST['del2']
+            sai = SessaoAtividadeInscricao.objects.get(pk=del2)
+            sai.sessaoAtividade.n_alunos = sai.sessaoAtividade.n_alunos + sai.numero_alunos
+            sai.sessaoAtividade.save()
+            sai.delete()
+        elif typee == "3":
+            id = request.POST['edit']
+            novos_inscritos = request.POST['inputinscritos' + id]
+            sai = SessaoAtividadeInscricao.objects.get(pk=id)
+            old_inscritos = sai.numero_alunos
+            if int(novos_inscritos) == 0:
+                sai.delete()
             else:
-                return render(request, 'home.html', context={'MSG': "Deve de escolher pelo menos uma Sessao"})
-        else:
-            return render(request, 'home.html', context={'MSG': "Deve de escolher uma Escola"})
+                sai.numero_alunos = novos_inscritos
+                sai.save()
+                sn = sai.sessaoAtividade.n_alunos
+                sn = sn + int(novos_inscritos) - old_inscritos
+                sai.sessaoAtividade.n_alunos = sn
+                sai.sessaoAtividade.save()
+        return redirect('/inscricao/consultar')
+

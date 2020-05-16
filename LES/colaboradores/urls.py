@@ -20,7 +20,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 #from .views import register
-from .views import Criar_colab, Editar_colab, Apagar_colab, Consultar_colab
+from .views import Criar_colab, Editar_colab, Apagar_colab, Consultar_colab, Consultar_tarefa
 
 app_name = "colaboradores"
 
@@ -29,4 +29,5 @@ urlpatterns = [
     path("consultar_colab/editar_colab/<int:pk>", Editar_colab.as_view(), name='editar_colab'),
     path("apagar_colab/", Apagar_colab.as_view(), name='apagar_colab'),
     path("consultar_colab/", Consultar_colab.as_view(), name='consultar_colab'),
+    path("consultar_tarefa/", Consultar_tarefa.as_view(), name='consultar_tarefa'),
 ]
