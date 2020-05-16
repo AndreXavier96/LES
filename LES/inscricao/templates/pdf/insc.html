@@ -64,12 +64,6 @@
             width: 90%;
         }
 
-        th, td {
-            text-align: left;
-            padding: 8px;
-            margin: 1px;
-        }
-
         .tablerow {
             background-color: #2d74d8;
             color: white;
@@ -82,6 +76,7 @@
     <body>
     <div class='wrapper'>
         <div class='header'>
+            <img src="{% static 'main/img/ualg-logo.png' %}">
             <p class='title'>Inscricao Dia Aberto Ualg</p>
         </div>
         <div class='details'>
@@ -157,23 +152,23 @@
                         <th>Hora Inicio</th>
                         <th>Duracao</th>
                         <th>Numero inscritos</th>
-                        <th>Local</th>
                         <th>Campus</th>
+                        <th>Local</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for s in sessao %}
                         <tr>
-                            <th>{{ s.sessaoAtividade.atividade.nome }}</th>
-                            <th>{{ s.sessaoAtividade.sessao.hora }}</th>
-                            <th>{{ s.sessaoAtividade.atividade.duracao }}</th>
-                            <th>{{ s.numero_alunos }}</th>
-                            {% if atividade.edificio.nome == None %}
+                            <td>{{ s.sessaoAtividade.atividade.nome }}</td>
+                            <td>{{ s.sessaoAtividade.sessao.hora }}</td>
+                            <td>{{ s.sessaoAtividade.atividade.duracao }}</td>
+                            <td>{{ s.numero_alunos }}</td>
+                            <td>{{ s.sessaoAtividade.atividade.campus.nome }}</td>
+                            {% if s.sessaoAtividade.atividade.edificio.nome == None %}
                                 <td>{{ s.sessaoAtividade.atividade.tipo_local }}</td>
                             {% else %}
                                 <td>{{ s.sessaoAtividade.atividade.edificio.nome }} {{ s.sessaoAtividade.atividade.sala.identificacao }}</td>
                             {% endif %}
-                            <th>{{ s.sessaoAtividade.atividade.campus.nome }}</th>
                         </tr>
                     {% endfor %}
                     </tbody>
