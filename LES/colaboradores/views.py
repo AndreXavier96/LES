@@ -5,7 +5,8 @@ from django.views.generic import View
 
 
 # from .forms import Criar_Colab_Form, Editar_Colab_From
-from utilizadores.models import Colaboracao, Diaaberto
+from utilizadores.models import Colaboracao, Diaaberto, UtilizadorTarefa
+
 
 def remove_all_space(string):
     return string.replace(" ", "")
@@ -158,6 +159,7 @@ class Consultar_colab(View):
     def get(self, request):
         lista_colab3 = []
         user_id=request.user
+        print(user_id.pk)
         lista_colab_final = Colaboracao.objects.filter(colaborador_id=user_id.pk)
         # for x in lista_colab:
         #     lista_colab3.append(str(x.data_colaboracao))
@@ -180,3 +182,32 @@ class Consultar_colab(View):
         Colaboracao.objects.filter(pk=id).delete()
         return redirect('/colaboradores/consultar_colab/')
     #
+
+class Consultar_tarefa(View):
+    template_name = 'consultar_tarefa.html'
+
+    def get(self, request):
+        lista_colab3 = []
+        user_id=request.user
+        lista_tarefa = UtilizadorTarefa.objects.filter(colaborador_id=user_id.pk)
+        print(lista_tarefa)
+        # for x in lista_colab:
+        #     lista_colab3.append(str(x.data_colaboracao))
+        #     lista_colab_final =  zip(lista_colab, lista_colab3)
+        #hora_str1 = Colaboracao.objects.get(pk=1).hora_inicio_colab
+        #hora_str = str(hora_str1)
+        #print(lista_colab)
+        return render(request, self.template_name, {
+            # 'form': form,
+            #'lista_colab': lista_colab,
+            #'hora_str': hora_str,
+            #'lista_colab3': lista_colab3,
+            'lista_tarefa': lista_tarefa,
+        })
+
+    def post(self, request):
+        post= request.POST
+        id=post['del']
+        print(id)
+        #Colaboracao.objects.filter(pk=id).delete()
+        return redirect('/colaboradores/consultar_colab/')
