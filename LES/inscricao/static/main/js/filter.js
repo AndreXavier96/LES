@@ -8,7 +8,7 @@ $(function () {
         widthFixed: true,
 
         // initialize zebra striping and filter widgets
-        widgets: ["zebra", "filter"],
+        widgets: ["zebra", "filter", 'columns'],
 
         ignoreCase: false,
 

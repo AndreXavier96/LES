@@ -342,6 +342,14 @@
                                                             {% endfor %}
                                                             <td data-label="buttons" class="">
                                                                 <p class="control">
+                                                                    <button class="button"
+                                                                            type="button" onclick="location.href='editar/{{ s.id }}';">
+                                                                                <span class="icon">
+                                                                                    <i class="mdi mdi-pencil mdi-24px"></i>
+                                                                                </span>
+                                                                    </button>
+                                                                </p>
+                                                                <p class="control">
                                                                     <button class="button is-danger is-outlined"
                                                                             type="button"
                                                                             id=""
@@ -410,40 +418,9 @@
                                                                                                         style="width: 29%">
                                                                                                         {{ s.numero_alunos }}
                                                                                                     </td>
-                                                                                                    <td data-label="sessao"
-                                                                                                        class=""
-                                                                                                        id="novosinscritos{{ s.id }}"
-                                                                                                        style="width: 29%">
-                                                                                                        <input type="number"
-                                                                                                               class="input"
-                                                                                                               name="inputinscritos{{ s.id }}"
-                                                                                                               id="inputinscritos{{ s.id }}"
-                                                                                                               style="display: none; width: 25%"
-                                                                                                               onchange="editarsessaoinscrita('{{ s.id }}', 'change', this.value, 'n/a')"
-                                                                                                               min="0">
-                                                                                                        <button class="button is-success is-small is-outlined"
-                                                                                                                type="button"
-                                                                                                                onclick="editarsessaoinscrita('{{ s.id }}', 'concluir', '{{ s.numero_alunos }}', '{{ s.sessaoAtividade.atividade.nome }} ás {{ s.sessaoAtividade.sessao.hora|date:"H:i" }}')"
-                                                                                                                id="butao{{ s.id }}"
-                                                                                                                style="display: none">
-                                                                                                                            <span class="icon">
-                                                                                                                                <i class="mdi mdi-check mdi-24px"></i>
-                                                                                                                            </span>
-                                                                                                        </button>
-                                                                                                    </td>
                                                                                                     <td data-label="buttons"
                                                                                                         class="">
                                                                                                         <div class="field is-grouped">
-                                                                                                            <p class="control">
-                                                                                                                <button class="button"
-                                                                                                                        type="button"
-                                                                                                                        {#      onclick="location.href='editar/{{ s.id }}';"#}
-                                                                                                                        onclick="editarsessaoinscrita('{{ s.id }}', 'editar', '{{ s.numero_alunos }}', 'n/a')">
-                                                                                                                            <span class="icon">
-                                                                                                                                <i class="mdi mdi-pencil mdi-24px"></i>
-                                                                                                                            </span>
-                                                                                                                </button>
-                                                                                                            </p>
                                                                                                             <p class="control">
                                                                                                                 <button class="button is-danger is-outlined"
                                                                                                                         type="button"
@@ -682,29 +659,31 @@
                                             </table>
                                         {% endif %}
                                     </div>
+
+
                                     <div class="level">
                                         <div class="level-left"></div>
                                         <div class="level-right">
                                             <div class="level-item">
-                                                <nav class="pagination"><a role="button" href="#"
-                                                                           disabled="disabled"
-                                                                           aria-label="Page 0."
-                                                                           class="pagination-link pagination-previous"><span
-                                                        class="icon" aria-hidden="true"><i
-                                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a> <a
-                                                        role="button" href="#" disabled="disabled"
-                                                        aria-label="Page 2."
-                                                        class="pagination-link pagination-next"><span
-                                                        class="icon"
-                                                        aria-hidden="true"><i
-                                                        class="mdi mdi-chevron-right mdi-24px"></i></span></a>
-                                                    <ul class="pagination-list"><!----> <!---->
-                                                        <li><a role="button" href="#"
-                                                               aria-label="Current page, Page 1."
-                                                               aria-current="true"
-                                                               class="pagination-link is-current ">1</a></li>
-                                                        <!---->
-                                                        <!----></ul>
+                                                <nav class="pagination pager">
+                                                    <a role="button" class="prev pagination-link pagination-previous">
+                                                        <span class="icon" aria-hidden="true">
+                                                            <i class="mdi mdi-chevron-left mdi-24px"></i>
+                                                        </span>
+                                                    </a>
+                                                    <a role="button" class="next pagination-link pagination-next">
+                                                        <span class="icon" aria-hidden="true">
+                                                            <i class="mdi mdi-chevron-right mdi-24px"></i>
+                                                        </span>
+                                                    </a>
+                                                    <ul class="pagination-list">
+                                                        <li>
+                                                            <a role="button" aria-current="true"
+                                                               class="pagination-link is-current ">
+                                                                1
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </nav>
                                             </div>
                                         </div>
