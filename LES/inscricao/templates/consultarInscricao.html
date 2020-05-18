@@ -37,7 +37,7 @@
                 <div class="card" data-v-8716d23a="">
                     <div class="card-content" data-v-8716d23a="">
                         <div class="columns" data-v-8716d23a="">
-                            {% include 'includes/consultar_filter.html' %}
+                            {% include 'includes/inscricao_consultar_filter.html' %}
                             {#------------------------------------------------------------------------------#}
                             <div class="column" data-v-8716d23a="">
                                 <nav aria-label="breadcrumbs" class="breadcrumb">
@@ -283,9 +283,9 @@
                                                             <td class="chevron-cell toggle pointer"
                                                                 onclick="expandAtividade('{{ p.id }}')">
                                                                 <a role="button">
-                                                                            <span class="icon" id="icon_{{ p.id }}">
-                                                                                <i class="mdi mdi-chevron-right mdi-24px"></i>
-                                                                            </span>
+                                                                    <span class="icon" id="icon_{{ p.id }}">
+                                                                        <i class="mdi mdi-chevron-right mdi-24px"></i>
+                                                                    </span>
                                                                 </a>
                                                             </td>
                                                             {% for i in individual %}
@@ -341,26 +341,28 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                             <td data-label="buttons" class="">
-                                                                <p class="control">
-                                                                    <button class="button"
-                                                                            type="button" onclick="location.href='editar/{{ s.id }}';">
+                                                                <div class="field is-grouped">
+                                                                    <p class="control">
+                                                                        <button class="button" type="button"
+                                                                                onclick="location.href='editar/{{ p.inscricao }}';">
+                                                                            <span class="icon">
+                                                                                <i class="mdi mdi-pencil mdi-24px"></i>
+                                                                            </span>
+                                                                        </button>
+                                                                    </p>
+                                                                    <p class="control">
+                                                                        <button class="button is-danger is-outlined"
+                                                                                type="button"
+                                                                                id=""
+                                                                                name=""
+                                                                                value="{{ p.id }}"
+                                                                                onclick="deleteInscricao(this.value)">
                                                                                 <span class="icon">
-                                                                                    <i class="mdi mdi-pencil mdi-24px"></i>
+                                                                                    <i class="mdi mdi-close mdi-24px"></i>
                                                                                 </span>
-                                                                    </button>
-                                                                </p>
-                                                                <p class="control">
-                                                                    <button class="button is-danger is-outlined"
-                                                                            type="button"
-                                                                            id=""
-                                                                            name=""
-                                                                            value="{{ p.id }}"
-                                                                            onclick="deleteInscricao(this.value)">
-                                                                                    <span class="icon">
-                                                                                        <i class="mdi mdi-close mdi-24px"></i>
-                                                                                    </span>
-                                                                    </button>
-                                                                </p>
+                                                                        </button>
+                                                                    </p>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                         <tr class="detail tablesorter-childRow">
@@ -733,26 +735,6 @@
                         Cancelar
                     </button>
                     <button type="submit" name="del2" id="del2" class="button is-success" value="">
-                        Confirmar
-                    </button>
-                </footer>
-            </div>
-        </div>
-        {#----------------------------Popup editar sessao inscrita---------------------------------------------------------#}
-        <div id="popup_editar_sessao" class="dialog modal is-active" style="display: none">
-            <div class="modal-background"></div>
-            <div class="modal-card animation-content">
-                <section class="modal-card-body is-titleless">
-                    <div class="media">
-                        <div class="media-content" id="content_editar_sessao"></div>
-                    </div>
-                </section>
-                <footer class="modal-card-foot">
-                    <button type="button" id="popup_editar" class="button" value=""
-                            onclick="editarsessaoinscrita('popup_editar_sessao', 'cancel', this.value, 'n/a')">
-                        Cancelar
-                    </button>
-                    <button type="submit" name="edit" id="edit" class="button is-success" value="">
                         Confirmar
                     </button>
                 </footer>

@@ -1,9 +1,9 @@
-﻿{% load static %}
+{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
     <meta charset="utf-8"/>
-    <title>Dia Aberto - Criar Inscrição</title>
+    <title>Editar Inscrição {{ inscricao.id }}</title>
     {#    jquery  #}
     <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
             integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs=" crossorigin="anonymous"></script>
@@ -31,6 +31,7 @@
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
 
+    <script src="{% static 'main/js/editarinscricao.js' %}"></script>
     <script>
         let options = {
             twentyFour: true,
@@ -79,7 +80,25 @@
     </script>
 
 </head>
-<body onload="document.inscricao_form.reset();">
+
+
+{% for si in sessoesinscritas %}
+    <div><p>{{ si.id }} {{ si.sessaoAtividade.id }} {{ si.numero_alunos }}</p></div>
+{% endfor %}
+
+<body onload="document.inscricao_form.reset(); MultiplicaPreco();
+        editar('{{ utilizadorparticipante.area_estudos }}', '{{ inscricao.escola }}',
+        '{{ refeicao.numero_aluno_normal }}', '{{ refeicao.numero_outro_normal }}',
+        '{{ transporte.tipo_transporte }}', '{{ transporte.transporte_para_campus }}',
+        '{{ percurso.0.destino }}','{{ transporte.transporte_entre_campus }}',
+        '{{ percurso.2.origem }}');
+        {% for si in sessoesinscritas %}
+            SessaoInitial('quantity_{{ si.sessaoAtividade.id }}', '{{ si.numero_alunos }}');
+            EscolherSessao('{{ si.sessaoAtividade.atividade.nome }}', '{{ si.sessaoAtividade.id }}', '{{ si.sessaoAtividade.sessao.hora|date:"H:i" }}',
+            '{{ si.sessaoAtividade.atividade.duracao }}', '{{ si.sessaoAtividade.atividade.nome }}', '{{ si.sessaoAtividade.atividade.edificio.nome }}',
+            '{{ si.sessaoAtividade.atividade.sala.identificacao }}', '{{ si.sessaoAtividade.atividade.campus.nome }}', '{{ si.sessaoAtividade.n_alunos }}',
+            'quantity_{{ si.sessaoAtividade.id }}');
+        {% endfor %}">
 {% block content %}
     <form method="POST" name="inscricao_form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -98,7 +117,7 @@
                                         <a href="/inscricao/home" class="router-link-active">Início</a>
                                     </li>
                                     <li class="is-active">
-                                        <a href="#" class="router-link-exact-active router-link-active">Minha
+                                        <a href="#" class="router-link-exact-active router-link-active">Editar Minha
                                             Inscrição</a>
                                     </li>
                                 </ul>
@@ -106,7 +125,6 @@
                             <div style="padding: 3rem 2vw 1rem">
                                 <div class="b-steps">
                                     {% include "includes/progress_bar.html" %}
-                                    {% include 'includes/msg.html' %}
                                     <section class="step-content">
                                         <div class="step-item" id="pag1" style="">
                                             <div style="padding: 1rem 2vw 0;">
@@ -121,11 +139,11 @@
                                                         <span class="select is-fullwidth">
                                                             <label for="id_area_estudos"></label>
                                                             <select name="area_estudos" id="id_area_estudos">
-                                                                <option value="escolha" hidden="hidden">Escolher</option>
-                                                                <option value="Ciências e Tecnologias">Ciências e Tecnologias</option>
-                                                                <option value="Línguas e Humanidades">Línguas e Humanidades</option>
-                                                                <option value="Artes Visuais">Artes Visuais</option>
-                                                                <option value="Ciências Socioeconómicas">Ciências Socioeconómicas</option>
+                                                                <option value="{{ utilizadorparticipante.area_estudos }}" hidden="hidden">{{ utilizadorparticipante.area_estudos }}</option>
+                                                                <option id="id_ciencias" value="Ciências e Tecnologias">Ciências e Tecnologias</option>
+                                                                <option id="id_humanidades" value="Línguas e Humanidades">Línguas e Humanidades</option>
+                                                                <option id="id_artes" value="Artes Visuais">Artes Visuais</option>
+                                                                <option id="id_socioeconomicas" value="Ciências Socioeconómicas">Ciências Socioeconómicas</option>
                                                             </select>
                                                         </span>
                                                             </div>
@@ -138,6 +156,7 @@
                                                             <div class="control">
                                                                 <input class="input" type="number" name="ano_estudos"
                                                                        required="required"
+                                                                       value="{{ utilizadorparticipante.ano_estudos }}"
                                                                        id="id_ano_estudos" min="0"
                                                                        max="12">
                                                             </div>
@@ -153,7 +172,8 @@
                                                                            name="acompanhantes"
                                                                            required=""
                                                                            id="id_acompanhantes"
-                                                                           min="0">
+                                                                           min="0"
+                                                                           value="{{ participante.acompanhantes }}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -164,7 +184,8 @@
                                                                        for="id_turma">Turma:</label>
                                                                 <div class="control">
                                                                     <input class="input" type="text" name="turma"
-                                                                           required="" id="id_turma">
+                                                                           required="" id="id_turma"
+                                                                           value="{{ participante.turma }}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -175,7 +196,7 @@
                                                 {% if utilizador.utilizadortipo.tipo == "Participante Individual" and age < 18 %}
                                                     <h2 class="title has-text-grey is-uppercase"
                                                         style="font-size: 0.9rem;">
-                                                        Autorização Encarregado Educação</h2>
+                                                        [Falta fazer] Autorização Encarregado Educação</h2>
                                                     <div class="columns">
                                                         <div class="column">
                                                             <div class="field">
@@ -203,34 +224,14 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                            {#------------------------------------------------------------------------------------------------------#}
-                                                            {#                                                            <div class="file has-name">#}
-                                                            {#                                                                <label class="file-label">#}
-                                                            {#                                                                    <input class="file-input" type="file" name="resume"#}
-                                                            {#                                                                           id="file_upload" onchange="showFileName()">#}
-                                                            {#                                                                    <span class="file-cta">#}
-                                                            {#                                                                              <span class="file-icon">#}
-                                                            {#                                                                                <i class="fas fa-upload"></i>#}
-                                                            {#                                                                              </span>#}
-                                                            {#                                                                              <span class="file-label">#}
-                                                            {#                                                                                Choose a file…#}
-                                                            {#                                                                              </span>#}
-                                                            {#                                                                            </span>#}
-                                                            {#                                                                    <span class="file-name" id="filename_upload"></span>#}
-                                                            {#                                                                </label>#}
-                                                            {#                                                            </div>#}
-                                                            {#------------------------------------------------------------------------------------------------------#}
-
                                                         </div>
                                                         <div class="column"></div>
                                                     </div>
                                                 {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                                                     <h2 class="title has-text-grey is-uppercase"
-                                                        style="font-size: 0.9rem;">
-                                                        Tamanho Grupo </h2>
+                                                        style="font-size: 0.9rem;">Tamanho Grupo </h2>
                                                     <div class="field  has-numberinput has-numberinput-compact">
-                                                        <label for="preco_aluno_normal">Total
-                                                            Participantes</label>
+                                                        <label for="preco_aluno_normal">Total Participantes</label>
                                                         <div class="b-numberinput field has-addons">
                                                             <p class="control">
                                                                 <button type="button" class="button is-primary"
@@ -244,7 +245,8 @@
                                                                 <label for="id_total_participantes"></label>
                                                                 <input type="number" autocomplete="on" step="1"
                                                                        class="input" name="total_participantes"
-                                                                       value="0" min="0" required=""
+                                                                       value="{{ participante.total_participantes }}"
+                                                                       min="0" required=""
                                                                        id="id_total_participantes">
                                                             </div>
                                                             <p class="control">
@@ -271,7 +273,8 @@
                                                                     <label for="id_total_professores"></label>
                                                                     <input type="number" autocomplete="on" step="1"
                                                                            class="input" name="total_professores"
-                                                                           value="0" min="0" required=""
+                                                                           value="{{ participante.total_professores }}"
+                                                                           min="0" required=""
                                                                            id="id_total_professores">
                                                                 </div>
                                                                 <p class="control">
@@ -291,9 +294,7 @@
                                         <div class="step-item" id="pag2" style="display: none">
                                             <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase"
-                                                    style="font-size: 0.9rem;">
-                                                    Escola Participante </h2>
+                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">Escola Participante </h2>
                                                 <div class="columns">
                                                     <div class="column">
                                                         <div class="field">
@@ -301,15 +302,12 @@
                                                             <div class="control is-expanded">
                                                                 <span class="select">
                                                                     <label for="Escola"></label>
-                                                                    <select id="Escola" name="Escola"
-                                                                            onchange='CheckEscola(this.value);'
-                                                                            required>
-                                                                        <option value="Escolher"
-                                                                                hidden>Escolher</option>
-                                                                        {% for e in escolas %}
-                                                                            <option value="{{ e.nome }}">{{ e.nome }}</option>
-                                                                        {% endfor %}
-                                                                        <option value="others">Outra Escola...</option>
+                                                                <select id="Escola" name="Escola" onchange='CheckEscola(this.value);'>
+                                                                    <option value="{{ inscricao.escola }}" hidden="hidden">{{ inscricao.escola }}</option>
+                                                                    {% for e in escolas %}
+                                                                        <option value="{{ e.nome }}">{{ e.nome }}</option>
+                                                                    {% endfor %}
+                                                                    <option value="others">Outra Escola...</option>
                                                                 </select>
                                                                 </span>
                                                             </div>
@@ -318,17 +316,14 @@
                                                 </div>
                                                 <div id="form_escola" style="display: none">
                                                     <hr>
-                                                    <h2 class="title has-text-grey is-uppercase"
-                                                        style="font-size: 0.9rem;">
+                                                    <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                                         Informações da Escola </h2>
                                                     <div class="columns">
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_nome">Nome da Escola</label>
                                                                 <div class="control is-clearfix">
-                                                                    <input class="input" type="text" name="nome"
-                                                                           maxlength="50" id="id_nome"
-                                                                           required="required">
+                                                                    <input class="input" type="text" name="nome" maxlength="50" id="id_nome">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -337,8 +332,7 @@
                                                                 <label for="id_morada">Morada</label>
                                                                 <div class="control is-clearfix">
                                                                     <input class="input" type="text" name="morada"
-                                                                           maxlength="50" id="id_morada"
-                                                                           required="required">
+                                                                           maxlength="50" id="id_morada">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -351,7 +345,6 @@
                                                                     <input class="input" type="text"
                                                                            name="codigo_postal" maxlength="8"
                                                                            id="id_codigo_postal"
-                                                                           required="required"
                                                                            pattern="\d{4}[ -]\d{3}"
                                                                            placeholder="xxxx-xxx">
                                                                 </div>
@@ -363,8 +356,7 @@
                                                                 <div class="control is-clearfix">
                                                                     <input class="input" type="text"
                                                                            name="localidade"
-                                                                           maxlength="50" id="id_localidade"
-                                                                           required="required">
+                                                                           maxlength="50" id="id_localidade">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -375,8 +367,7 @@
                                                                     <input class="input" type="number"
                                                                            name="contacto"
                                                                            min="0"
-                                                                           max="999999999" id="id_contacto"
-                                                                           required="required">
+                                                                           max="999999999" id="id_contacto">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -392,20 +383,18 @@
                                                     Refeição </h2>
                                                 <p style="display: inline-block; padding-right: 2rem;"> Vai desejar
                                                     Almoçar nas nossas Cantinas? </p>
-                                                <label class="b-radio radio"><input type="radio" name="QuerRefeicao"
-                                                                                    value="sim"
-                                                                                    onchange="CheckRefeicao(this.value);"
-                                                                                    required=""
-                                                                                    id="id_QuerRefeicao_0">
+                                                <label class="b-radio radio">
+                                                    <input type="radio" name="QuerRefeicao" value="sim"
+                                                           onchange="CheckRefeicao(this.value);"
+                                                           required="" id="id_QuerRefeicao_0">
                                                     <span class="check"></span> <span
-                                                            class="control-label"> Sim </span></label>
-                                                <label class="b-radio radio"><input type="radio" name="QuerRefeicao"
-                                                                                    value="nao"
-                                                                                    onchange="CheckRefeicao(this.value);"
-                                                                                    required=""
-                                                                                    id="id_QuerRefeicao_1">
+                                                        class="control-label"> Sim </span></label>
+                                                <label class="b-radio radio">
+                                                    <input type="radio" name="QuerRefeicao" value="nao"
+                                                           onchange="CheckRefeicao(this.value);"
+                                                           required="" id="id_QuerRefeicao_1">
                                                     <span class="check"></span> <span
-                                                            class="control-label"> Não </span></label>
+                                                        class="control-label"> Não </span></label>
 
                                                 <div id="quer_refeicao" style="display:none;">
                                                     <hr>
@@ -441,7 +430,8 @@
                                                                     <label for="id_numero_aluno_normal"></label>
                                                                     <input type="number" autocomplete="on" step="1"
                                                                            class="input" name="numero_aluno_normal"
-                                                                           value="0" min="0" required=""
+                                                                           value="{{ refeicao.numero_aluno_normal }}"
+                                                                           min="0" required=""
                                                                            id="id_numero_aluno_normal">
                                                                 </div>
                                                                 <p class="control">
@@ -472,7 +462,8 @@
                                                                     <label for="id_numero_outro_normal"></label><input
                                                                         type="number" autocomplete="on" step="1"
                                                                         class="input" name="numero_outro_normal"
-                                                                        value="0" min="0" required=""
+                                                                        value="{{ refeicao.numero_outro_normal }}"
+                                                                        min="0" required=""
                                                                         id="id_numero_outro_normal">
                                                                 </div>
                                                                 <p class="control">
@@ -508,8 +499,7 @@
                                         <div class="step-item" id="pag4" style="display: none">
                                             <div style="padding: 1rem 2vw 0;">
                                                 <hr>
-                                                <h2 class="title has-text-grey is-uppercase"
-                                                    style="font-size: 0.9rem;">
+                                                <h2 class="title has-text-grey is-uppercase" style="font-size: 0.9rem;">
                                                     Transportes Para o Dia Aberto </h2>
                                                 <div class="columns">
                                                     <div class="column">
@@ -519,12 +509,11 @@
                                                                 <span class="select">
                                                                     <label for="tipo_transporte"></label>
                                                                     <select name="tipo_transporte" id="tipo_transporte"
-                                                                            onchange="tipoTransporte(this.value)"
-                                                                            required>
-                                                                        <option hidden>Escolher</option>
-                                                                        <option value="proprio">Transporte próprio</option>
-                                                                        <option value="autocarro">Autocarro Publico</option>
-                                                                        <option value="comboio">Comboio</option>
+                                                                            onchange="tipoTransporte(this.value)" required>
+                                                                        <option value="{{ transporte.tipo_transporte }}" hidden>{{ transporte.tipo_transporte }}</option>
+                                                                        <option value="Transporte próprio">Transporte próprio</option>
+                                                                        <option value="Autocarro Publico">Autocarro Publico</option>
+                                                                        <option value="Comboio">Comboio</option>
                                                                     </select>
                                                                 </span>
                                                             </div>
@@ -631,7 +620,6 @@
                                                                     <select name="transporte_campus"
                                                                             id="transporte_campus"
                                                                             onchange="entreCampusRelogio(this.value)">
-                                                                        <option hidden>Escolher</option>
                                                                         <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
                                                                         <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
                                                                     </select>
@@ -923,34 +911,10 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    {#                                                                -------------------------------------------------#}
+                                                                    {#  -------------------------------------------------#}
                                                                     <div class="level">
                                                                         <div class="level-left"></div>
                                                                         <div class="level-right">
-                                                                            {#                                                                            <div class="level-item">#}
-                                                                            {#                                                                                <nav class="pagination"><a role="button"#}
-                                                                            {#                                                                                                           href="#"#}
-                                                                            {#                                                                                                           disabled="disabled"#}
-                                                                            {#                                                                                                           aria-label="Page 0."#}
-                                                                            {#                                                                                                           class="pagination-link pagination-previous"><span#}
-                                                                            {#                                                                                        class="icon" aria-hidden="true"><i#}
-                                                                            {#                                                                                        class="mdi mdi-chevron-left mdi-24px"></i></span></a>#}
-                                                                            {#                                                                                    <a role="button" href="#"#}
-                                                                            {#                                                                                       disabled="disabled"#}
-                                                                            {#                                                                                       aria-label="Page 2."#}
-                                                                            {#                                                                                       class="pagination-link pagination-next"><span#}
-                                                                            {#                                                                                            class="icon"#}
-                                                                            {#                                                                                            aria-hidden="true"><i#}
-                                                                            {#                                                                                            class="mdi mdi-chevron-right mdi-24px"></i></span></a>#}
-                                                                            {#                                                                                    <ul class="pagination-list"><!---->#}
-                                                                            {#                                                                                        <!---->#}
-                                                                            {#                                                                                        <li><a role="button" href="#"#}
-                                                                            {#                                                                                               aria-label="Current page, Page 1."#}
-                                                                            {#                                                                                               aria-current="true"#}
-                                                                            {#                                                                                               class="pagination-link is-current ">1</a>#}
-                                                                            {#                                                                                        </li> <!----> <!----></ul>#}
-                                                                            {#                                                                                </nav>#}
-                                                                            {#                                                                            </div>#}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1091,12 +1055,12 @@
                                     </div>
                                     {#    ----------------------------------------hidden forms------------------------------------------------------------#}
                                     <label for="row_countt" style="display:none;"></label>
-                                    <input type="number" id="row_countt" name="row_countt" value="" >
+                                    <input type="number" id="row_countt" name="row_countt" value="" hidden>
                                     <table id="rows_deleted_table" hidden></table>
                                     <label for="row_deletedd" hidden></label>
-                                    <input type="number" id="row_deletedd" name="row_deletedd" value="" >
+                                    <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
                                     <label for="max_incritos_id"></label>
-                                    <input type="number" id="max_incritos_id" value="" >
+                                    <input type="number" id="max_incritos_id" value="" hidden>
 
                                 </div>
                             </div>

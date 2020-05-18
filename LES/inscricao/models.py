@@ -71,6 +71,8 @@ class Transporteproprio(models.Model):
     tipo_transporte = models.CharField(max_length=255)
     transporte_para_campus = models.CharField(max_length=255, null=True)
     transporte_entre_campus = models.CharField(max_length=255, null=True)
+    hora_chegada = models.TimeField()
+    hora_partida = models.TimeField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
@@ -87,6 +89,9 @@ class Percursos(models.Model):
     class Meta:
         managed = False
         db_table = 'percursos'
+
+    def __str__(self):
+        return self.origem+' '+self.destino
 
 
 class Utilizadorparticipante(models.Model):
@@ -255,7 +260,7 @@ class SessaoAtividade(models.Model):
         unique_together = (("atividade", "sessao", "dia"),)
 
     def __str__(self):
-        return self.atividade.nome
+        return self.atividade.nome + ' ' + str(self.sessao.hora)
 
 
 class SessaoAtividadeInscricao(models.Model):
@@ -268,4 +273,4 @@ class SessaoAtividadeInscricao(models.Model):
         db_table = 'SessaoAtividadeInscricao'
 
     def __str__(self):
-        return self.id
+        return str(self.id)
