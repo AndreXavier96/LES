@@ -253,6 +253,8 @@ class ConsultarInscricaoView(View):
         # session user--------------------------------------
         auth_user = request.user
         utilizador = Utilizador.objects.get(pk=auth_user.id)
+        transportes = Transporteproprio.objects.all()
+        ementainscricao = EmentaInscricao.objects.all()
         # --------------------------------------------------
         return render(request, self.template_name, {
             'href': href,
@@ -261,12 +263,14 @@ class ConsultarInscricaoView(View):
             'grupos': grupos,
             'individual': individual,
             'sessoes': sessoes,
-            'utilizador': utilizador
+            'utilizador': utilizador,
+            'transportes': transportes,
+            'ementainscricao': ementainscricao,
         })
 
     def post(self, request):
         typee = request.POST['type']
-        # 1-apagar inscricao completa;    2-aapgar sessao da inscricao
+        # 1-apagar inscricao completa;    2-apgar sessao da inscricao
         print("tipo= " + typee)
         if typee == "1":
             insc = request.POST['del']
@@ -385,12 +389,13 @@ class EditarInscricaoView(View):
             participante2.save()
         elif radio_value_tipo_part == "Participante Individual":
             acompanhantes = request.POST['acompanhantes']
-            # uploaded_file = request.FILES['myfile']
-            # fs = FileSystemStorage()
-            # fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + str(inscricao.id)
-            # fs.save(fs_saved, uploaded_file)
+            uploaded_file = request.FILES['myfile']
+            fs = FileSystemStorage()
+            fs_saved = 'LES/inscricao/static/autorizacao/inscricao' + str(inscricao.id)
+            fs.save(fs_saved, uploaded_file)
             participante2 = ParticipanteIndividual.objects.get(participante=participante)
             participante2.acompanhantes = acompanhantes
+            participante2.ficheiro_autorizacao = fs_saved
             participante2.save()
         # ---------refeicao
         n_aluno = request.POST['numero_aluno_normal']

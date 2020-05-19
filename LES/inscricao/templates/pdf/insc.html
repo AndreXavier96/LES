@@ -115,8 +115,8 @@
             <div class="half">
                 <h2>Transportes</h2>
                 <p>Transporte para Ualg: {{ transporte.tipo_transporte }}</p>
-                <p>Hora Chegada: {{ transporte.hora_chegada }}</p>
-                <p>Hora Partida: {{ transporte.hora_partida }}</p>
+                <p>Hora Chegada: {{ transporte.hora_chegada|date:"H:i" }}</p>
+                <p>Hora Partida: {{ transporte.hora_partida|date:"H:i" }}</p>
                 {% if transporte.transporte_para_campus == '' %}
                     <p>Requer Transporte Da Estação para Campus: Não</p>
                 {% else %}
@@ -159,7 +159,7 @@
                     {% for s in sessao %}
                         <tr>
                             <td>{{ s.sessaoAtividade.atividade.nome }}</td>
-                            <td>{{ s.sessaoAtividade.sessao.hora }}</td>
+                            <td>{{ s.sessaoAtividade.sessao.hora|date:"H:i" }}</td>
                             <td>{{ s.sessaoAtividade.atividade.duracao }}</td>
                             <td>{{ s.numero_alunos }}</td>
                             <td>{{ s.sessaoAtividade.atividade.campus.nome }}</td>
