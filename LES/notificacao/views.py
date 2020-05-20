@@ -12,10 +12,12 @@ class notificacao(View):
         # ---------------get autenticated user
         auth_user = request.user
         utilizador_env = Utilizador.objects.get(pk=auth_user.id)
+        utilizadortipo = Utilizadortipo.objects.all
         # ----------------------
         return render(request, self.template_name, {
                                                     'form': form,
-                                                    'utilizador_env': utilizador_env
+                                                    'utilizador_env': utilizador_env,
+                                                    'utilizadortipo': utilizadortipo
                                                     })
     def post(self, request):
         form_notificacao = NotificacaoForm(request.POST)
@@ -33,13 +35,14 @@ class notificacao(View):
             #utilizador_env_value = form_notificacao.cleaned_data.get("utilizador_env")
             #print(utilizador_env_value)
             #utilizador_env = Utilizador.objects.get(nome=utilizador_env_value)
-            utilizador_rec= form_notificacao['utilizador_rec'].value()
-            utilizador_rec1 = Utilizador.objects.get(email=utilizador_rec)
+            utilizadortipo_value = request.POST['utilizadortipo']
+            print(utilizadortipo_value)
+
             teste = form_notificacao['teste'].value()
-            if len(teste)!=0:
+            if len(utilizadortipo_value)!=0:
                 print("1,2")
                 print(teste)
-                id_u= Utilizadortipo.objects.get(tipo=teste)
+                id_u= Utilizadortipo.objects.get(tipo=utilizadortipo_value)
                 print(id_u)
                 teste1=Utilizador.objects.all().filter(utilizadortipo=id_u)
                 print(teste1)
@@ -48,10 +51,36 @@ class notificacao(View):
                     Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
                                            prioridade=prioridade, utilizador_env=utilizador_env,
                                            utilizador_rec=x)
+
             #teste1= Utilizador.objects.get(utilizadortipo=id_u)
             else:
+                utilizador_rec = form_notificacao['utilizador_rec'].value()
+                utilizador_rec1 = Utilizador.objects.get(email=utilizador_rec)
                 Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
                                        prioridade=prioridade, utilizador_env=utilizador_env,
                                        utilizador_rec=utilizador_rec1)
-        return redirect('/notificacao')
+        return redirect('/notificacao/consultar_notificacao/')
 
+
+class Consultar_notificacao(View):
+    template_name = 'consultar_notificacao.html'
+
+    def get(self, request):
+        lista_colab3 = []
+        user_id=request.user
+        lista_notificacao_final = Notificacao.objects.filter(utilizador_env_id=user_id.pk)
+        return render(request, self.template_name, {
+            # 'form': form,
+            #'lista_colab': lista_colab,
+            #'hora_str': hora_str,
+            #'lista_colab3': lista_colab3,
+            'lista_notificacao_final': lista_notificacao_final,
+        })
+
+    def post(self, request):
+        post= request.POST
+        id=post['del']
+        print(id)
+        Notificacao.objects.filter(pk=id).delete()
+        return redirect('/notificacao/consultar_notificacao/')
+    #
