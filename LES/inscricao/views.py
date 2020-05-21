@@ -273,7 +273,7 @@ class ConsultarInscricaoView(View):
         # 1-apagar inscricao completa;    2-apgar sessao da inscricao
         print("tipo= " + typee)
         if typee == "1":
-            insc = request.POST['del']
+            insc = Utilizadorparticipante.objects.get(pk=request.POST['del']).inscricao.id
             sai = SessaoAtividadeInscricao.objects.filter(inscricao=insc)
             for s in sai:
                 s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos

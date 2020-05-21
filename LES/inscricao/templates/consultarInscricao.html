@@ -51,13 +51,7 @@
                                         </li>
                                     </ul>
                                 </nav>
-                                <a href="/inscricao/criar" class="button is-success is-outlined" type="button"
-                                   style="margin-bottom: 0.9rem; margin-right: 1rem;">
-                                        <span class="icon is-small">
-                                            <i class="mdi mdi-plus"></i>
-                                        </span>
-                                    <span> Adicionar Inscrição </span>
-                                </a>
+
                                 <div class="b-table">
                                     <div class="table-wrapper">
                                         {% if utilizador.utilizadortipo.tipo == "Administrador" %}
@@ -117,7 +111,8 @@
                                                                 <td data-label="Escola" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                 <td data-label="ano" class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                </td>
                                                                 <td data-label="turma" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')"></td>
                                                                 <td data-label="n_alunos" class="toggle pointer"
@@ -144,7 +139,8 @@
                                                                     class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                 <td data-label="ano" class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                </td>
                                                                 <td data-label="turma" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
                                                                 <td data-label="n_alunos"
@@ -553,6 +549,14 @@
                                                 </tbody>
                                             </table>
                                         {% elif utilizador.utilizadortipo.tipo == "Participante Individual" or utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
+                                            <a href="/inscricao/criar" class="button is-success is-outlined"
+                                               type="button"
+                                               style="margin-bottom: 0.9rem; margin-right: 1rem;">
+                                                <span class="icon is-small">
+                                                    <i class="mdi mdi-plus"></i>
+                                                </span>
+                                                <span> Adicionar Inscrição </span>
+                                            </a>
                                             <table class="table is-striped has-mobile-cards is-hoverable tablesorter"
                                                    id="table_atividades">
                                                 <thead>
@@ -617,7 +621,8 @@
                                                                         class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                     <td data-label="ano" class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                    </td>
                                                                     <td data-label="turma"
                                                                         class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')"></td>
@@ -648,7 +653,8 @@
                                                                         class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                     <td data-label="ano" class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                    </td>
                                                                     <td data-label="turma"
                                                                         class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
@@ -1125,7 +1131,8 @@
                                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                                     <td data-label="ano"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                                    </td>
                                                                                     <td data-label="turma"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')"></td>
@@ -1160,7 +1167,8 @@
                                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
                                                                                     <td data-label="ano"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
+                                                                                    </td>
                                                                                     <td data-label="turma"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')">{{ g.turma }}</td>
