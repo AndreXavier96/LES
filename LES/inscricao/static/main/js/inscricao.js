@@ -112,7 +112,6 @@ let deleted_rows = 0
 
 function EscolherSessao(atividade_id, sessao_id, ini, dur,
                         nome, loc, cam, vag, ses_id) {
-    console.log(ses_id.toString())
     let val = document.getElementById('quantity_' + sessao_id).value;
     let table_inscrito = document.getElementById("inscritos_body");
     let table_inscrito_length = document.getElementById("inscritos_body").rows.length;

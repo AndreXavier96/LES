@@ -54,9 +54,7 @@ class EmentaInscricao(models.Model):
     ementa = models.ForeignKey(Ementa, models.DO_NOTHING)
     inscricao = models.ForeignKey('Inscricao', models.DO_NOTHING)
     numero_aluno_normal = models.IntegerField(blank=True, null=True)
-    numero_aluno_economico = models.IntegerField(blank=True, null=True)
     numero_outro_normal = models.IntegerField(blank=True, null=True)
-    numero_outro_economico = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
