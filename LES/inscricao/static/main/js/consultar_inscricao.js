@@ -50,3 +50,15 @@ function canceldelete(id) {
     document.getElementById(id).style.display = 'none'
     document.getElementById('type').value = 0
 }
+
+function calcrefeicaototal(id) {
+    console.log("testclick works" + id.toString())
+    let normal = document.getElementById("normal" + id).innerHTML
+    let outro = document.getElementById("outro" + id).innerHTML
+    console.log(normal)
+    console.log(outro)
+    let normal_value = document.getElementById("preco_aluno_normal").value
+    let outro_value = document.getElementById("preco_outro_normal").value
+    let mult_value = normal_value * outro_value
+    document.getElementById("preco_total" + id).innerHTML = mult_value.toString()+ '&euro;'
+}

@@ -87,7 +87,7 @@
 {% endfor %}
 
 <body onload="document.inscricao_form.reset(); MultiplicaPreco();
-        editar('{{ utilizadorparticipante.area_estudos }}', '{{ inscricao.escola }}',
+        editar('{{ inscricao.area_estudos }}', '{{ inscricao.escola }}',
         '{{ refeicao.numero_aluno_normal }}', '{{ refeicao.numero_outro_normal }}',
         '{{ transporte.tipo_transporte }}', '{{ transporte.transporte_para_campus }}',
         '{{ percurso.0.destino }}','{{ transporte.transporte_entre_campus }}',
@@ -139,7 +139,7 @@
                                                         <span class="select is-fullwidth">
                                                             <label for="id_area_estudos"></label>
                                                             <select name="area_estudos" id="id_area_estudos">
-                                                                <option value="{{ utilizadorparticipante.area_estudos }}" hidden="hidden">{{ utilizadorparticipante.area_estudos }}</option>
+                                                                <option value="{{ inscricao.area_estudos }}" hidden="hidden">{{ inscricao.area_estudos }}</option>
                                                                 <option id="id_ciencias" value="Ciências e Tecnologias">Ciências e Tecnologias</option>
                                                                 <option id="id_humanidades" value="Línguas e Humanidades">Línguas e Humanidades</option>
                                                                 <option id="id_artes" value="Artes Visuais">Artes Visuais</option>
@@ -156,7 +156,7 @@
                                                             <div class="control">
                                                                 <input class="input" type="number" name="ano_estudos"
                                                                        required="required"
-                                                                       value="{{ utilizadorparticipante.ano_estudos }}"
+                                                                       value="{{ inscricao.ano_estudos }}"
                                                                        id="id_ano_estudos" min="0"
                                                                        max="12">
                                                             </div>

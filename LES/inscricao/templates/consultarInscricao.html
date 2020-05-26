@@ -87,8 +87,8 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for p in participante %}
-                                                    <tr draggable="false" class="">
+                                                {% for p in inscricao %}
+                                                    <tr draggable="false" class="" onclick="calcrefeicaototal({{ p.id }})">
                                                         <td class="chevron-cell toggle pointer"
                                                             onclick="expandAtividade('{{ p.id }}')">
                                                             <a role="button">
@@ -98,18 +98,18 @@
                                                             </a>
                                                         </td>
                                                         {% for i in individual %}
-                                                            {% if i.participante.id == p.id %}
+                                                            {% if i.inscricao.id == p.id %}
                                                                 <td data-label="Id" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">
                                                                     Individual{{ p.id }}
                                                                     <p hidden id="{{ p.id }}" class="Individual"></p>
                                                                 </td>
                                                                 <td data-label="check" class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                 <td data-label="U.O." class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                 <td data-label="Escola" class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                 <td data-label="ano" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
                                                                 </td>
@@ -123,7 +123,7 @@
                                                             {% endif %}
                                                         {% endfor %}
                                                         {% for g in grupos %}
-                                                            {% if g.participante.id == p.id %}
+                                                            {% if g.inscricao.id == p.id %}
                                                                 <td data-label="Id" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">
                                                                     Grupo{{ p.id }}
@@ -131,13 +131,13 @@
                                                                 </td>
                                                                 <td data-label="check"
                                                                     class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                 <td data-label="U.O."
                                                                     class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                 <td data-label="Escola"
                                                                     class="toggle pointer"
-                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                    onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                 <td data-label="ano" class="toggle pointer"
                                                                     onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
                                                                 </td>
@@ -247,13 +247,13 @@
                                                                                             class="">
                                                                                             {% if p.utilizador.utilizadortipo.tipo == "Participante Individual" %}
                                                                                                 {% for i in individual %}
-                                                                                                    {% if p.id == i.participante.id %}
+                                                                                                    {% if p.id == i.inscricao.id %}
                                                                                                         {{ i.acompanhantes }}
                                                                                                     {% endif %}
                                                                                                 {% endfor %}
                                                                                             {% elif p.utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                                                                                                 {% for g in grupos %}
-                                                                                                    {% if p.id == g.participante.id %}
+                                                                                                    {% if p.id == g.inscricao.id %}
                                                                                                         {{ g.total_professores }}
                                                                                                     {% endif %}
                                                                                                 {% endfor %}
@@ -308,7 +308,7 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                     {% for t in transportes %}
-                                                                                        {% if t.inscricao.id == p.inscricao.id %}
+                                                                                        {% if t.inscricao.id == p.id %}
                                                                                             <tr draggable="false"
                                                                                                 class="">
                                                                                                 <td data-label="atividade"
@@ -386,7 +386,7 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                     {% for emi in ementainscricao %}
-                                                                                        {% if emi.inscricao.id == p.inscricao.id %}
+                                                                                        {% if emi.inscricao.id == p.id %}
                                                                                             {% if emi.numero_aluno_normal == 0 and emi.numero_outro_normal == 0 %}
                                                                                                 <tr draggable="false"
                                                                                                     class="">
@@ -414,13 +414,13 @@
                                                                                                         class="">Sim
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class="">{{ emi.numero_aluno_normal }}
+                                                                                                        class="" id="normal{{ p.id }}">{{ emi.numero_aluno_normal }}
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class="">{{ eminsc.numero_outro_normal }}
+                                                                                                        class="" id="outro{{ p.id }}">{{ emi.numero_outro_normal }}
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class="">
+                                                                                                        class="" id="preco_total{{ p.id }}">
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
                                                                                                         class=""></td>
@@ -474,7 +474,7 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                     {% for s in sessoes %}
-                                                                                        {% if s.inscricao.id == p.inscricao.id %}
+                                                                                        {% if s.inscricao.id == p.id %}
                                                                                             <tr draggable="false"
                                                                                                 class="">
                                                                                                 <td data-label="atividade"
@@ -592,9 +592,9 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for p in participante %}
+                                                {% for p in inscricao %}
                                                     {% if p.utilizador.id == utilizador.id %}
-                                                        <tr draggable="false" class="">
+                                                        <tr draggable="false" class="" onclick="calcrefeicaototal({{ p.id }})">
                                                             <td class="chevron-cell toggle pointer"
                                                                 onclick="expandAtividade('{{ p.id }}')">
                                                                 <a role="button">
@@ -604,7 +604,7 @@
                                                                 </a>
                                                             </td>
                                                             {% for i in individual %}
-                                                                {% if i.participante.id == p.id %}
+                                                                {% if i.inscricao.id == p.id %}
                                                                     <td data-label="Id" class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">
                                                                         Individual{{ p.id }}
@@ -613,13 +613,13 @@
                                                                     </td>
                                                                     <td data-label="check"
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                     <td data-label="U.O."
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                     <td data-label="Escola"
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                     <td data-label="ano" class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
                                                                     </td>
@@ -636,7 +636,7 @@
                                                                 {% endif %}
                                                             {% endfor %}
                                                             {% for g in grupos %}
-                                                                {% if g.participante.id == p.id %}
+                                                                {% if g.inscricao.id == p.id %}
                                                                     <td data-label="Id" class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">
                                                                         Grupo{{ p.id }}
@@ -645,13 +645,13 @@
                                                                     </td>
                                                                     <td data-label="check"
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                     <td data-label="U.O."
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                     <td data-label="Escola"
                                                                         class="toggle pointer"
-                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                     <td data-label="ano" class="toggle pointer"
                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
                                                                     </td>
@@ -669,7 +669,7 @@
                                                                 <div class="field is-grouped">
                                                                     <p class="control">
                                                                         <button class="button" type="button"
-                                                                                onclick="location.href='editar/{{ p.inscricao }}';">
+                                                                                onclick="location.href='editar/{{ p }}';">
                                                                             <span class="icon">
                                                                                 <i class="mdi mdi-pencil mdi-24px"></i>
                                                                             </span>
@@ -788,13 +788,13 @@
                                                                                                 class="">
                                                                                                 {% if p.utilizador.utilizadortipo.tipo == "Participante Individual" %}
                                                                                                     {% for i in individual %}
-                                                                                                        {% if p.id == i.participante.id %}
+                                                                                                        {% if p.id == i.inscricao.id %}
                                                                                                             {{ i.acompanhantes }}
                                                                                                         {% endif %}
                                                                                                     {% endfor %}
                                                                                                 {% elif p.utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                                                                                                     {% for g in grupos %}
-                                                                                                        {% if p.id == g.participante.id %}
+                                                                                                        {% if p.id == g.inscricao.id %}
                                                                                                             {{ g.total_professores }}
                                                                                                         {% endif %}
                                                                                                     {% endfor %}
@@ -851,7 +851,7 @@
                                                                                         </thead>
                                                                                         <tbody>
                                                                                         {% for t in transportes %}
-                                                                                            {% if t.inscricao.id == p.inscricao.id %}
+                                                                                            {% if t.inscricao.id == p.id %}
                                                                                                 <tr draggable="false"
                                                                                                     class="">
                                                                                                     <td data-label="atividade"
@@ -931,7 +931,7 @@
                                                                                         </thead>
                                                                                         <tbody>
                                                                                         {% for emi in ementainscricao %}
-                                                                                            {% if emi.inscricao.id == p.inscricao.id %}
+                                                                                            {% if emi.inscricao.id == p.id %}
                                                                                                 {% if emi.numero_aluno_normal == 0 and emi.numero_outro_normal == 0 %}
                                                                                                     <tr draggable="false"
                                                                                                         class="">
@@ -958,18 +958,21 @@
                                                                                                         <td data-label="atividade"
                                                                                                             class="">Sim
                                                                                                         </td>
-                                                                                                        <td data-label="atividade"
-                                                                                                            class="">{{ emi.numero_aluno_normal }}
+                                                                                                        <td data-label="normal"
+                                                                                                            class=""
+                                                                                                            id="normal{{ p.id }}">{{ emi.numero_aluno_normal }}
+                                                                                                        </td>
+                                                                                                        <td data-label="outro"
+                                                                                                            class=""
+                                                                                                            id="outro{{ p.id }}">{{ emi.numero_outro_normal }}
                                                                                                         </td>
                                                                                                         <td data-label="atividade"
-                                                                                                            class="">{{ eminsc.numero_outro_normal }}
-                                                                                                        </td>
-                                                                                                        <td data-label="atividade"
-                                                                                                            class="">
+                                                                                                            class=""
+                                                                                                            id="preco_total{{ p.id }}">
                                                                                                         </td>
                                                                                                         <td data-label="atividade"
                                                                                                             class=""></td>
-                                                                                                        <td data-label="atividade"
+                                                                                                        <td data-label="asdas"
                                                                                                             class=""></td>
                                                                                                     </tr>
                                                                                                 {% endif %}
@@ -1007,7 +1010,7 @@
                                                                                         </thead>
                                                                                         <tbody>
                                                                                         {% for s in sessoes %}
-                                                                                            {% if s.inscricao.id == p.inscricao.id %}
+                                                                                            {% if s.inscricao.id == p.id %}
                                                                                                 <tr draggable="false"
                                                                                                     class="">
                                                                                                     <td data-label="atividade"
@@ -1095,9 +1098,9 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for p in participante %}
+                                                {% for p in inscricao %}
                                                     {% for ss in sessoes %}
-                                                        {% if p.inscricao == ss.inscricao %}
+                                                        {% if p == ss.inscricao %}
                                                             {% if ss.sessaoAtividade.atividade.unidadeorganica == utilizador.unidadeorganica %}
                                                                 {% with a=ss.sessaoAtividade.atividade.unidadeorganica %}
                                                                     {% if utilizador.unidadeorganica == a %}
@@ -1111,7 +1114,7 @@
                                                                                 </a>
                                                                             </td>
                                                                             {% for i in individual %}
-                                                                                {% if i.participante.id == p.id %}
+                                                                                {% if i.inscricao.id == p.id %}
                                                                                     <td data-label="Id"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')">
@@ -1122,13 +1125,13 @@
                                                                                     </td>
                                                                                     <td data-label="check"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                                     <td data-label="U.O."
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                                     <td data-label="Escola"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                                     <td data-label="ano"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
@@ -1147,7 +1150,7 @@
                                                                                 {% endif %}
                                                                             {% endfor %}
                                                                             {% for g in grupos %}
-                                                                                {% if g.participante.id == p.id %}
+                                                                                {% if g.inscricao.id == p.id %}
                                                                                     <td data-label="Id"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')">
@@ -1158,13 +1161,13 @@
                                                                                     </td>
                                                                                     <td data-label="check"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.hora_check_in|date:'H:i' }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.hora_check_in|date:'H:i' }}</td>
                                                                                     <td data-label="U.O."
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.unidadeorganica_checkin.nome }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.unidadeorganica_checkin.nome }}</td>
                                                                                     <td data-label="Escola"
                                                                                         class="toggle pointer"
-                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.inscricao.escola.nome }}</td>
+                                                                                        onclick="expandAtividade('{{ p.id }}')">{{ p.escola.nome }}</td>
                                                                                     <td data-label="ano"
                                                                                         class="toggle pointer"
                                                                                         onclick="expandAtividade('{{ p.id }}')">{{ p.ano_estudos }}º
@@ -1287,13 +1290,13 @@
                                                                                                                 class="">
                                                                                                                 {% if p.utilizador.utilizadortipo.tipo == "Participante Individual" %}
                                                                                                                     {% for i in individual %}
-                                                                                                                        {% if p.id == i.participante.id %}
+                                                                                                                        {% if p.id == i.inscricao.id %}
                                                                                                                             {{ i.acompanhantes }}
                                                                                                                         {% endif %}
                                                                                                                     {% endfor %}
                                                                                                                 {% elif p.utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                                                                                                                     {% for g in grupos %}
-                                                                                                                        {% if p.id == g.participante.id %}
+                                                                                                                        {% if p.id == g.inscricao.id %}
                                                                                                                             {{ g.total_professores }}
                                                                                                                         {% endif %}
                                                                                                                     {% endfor %}
@@ -1337,7 +1340,7 @@
                                                                                                         </thead>
                                                                                                         <tbody>
                                                                                                         {% for s in sessoes %}
-                                                                                                            {% if s.inscricao.id == p.inscricao.id and s.sessaoAtividade.atividade.unidadeorganica.nome == utilizador.unidadeorganica.nome %}
+                                                                                                            {% if s.inscricao.id == p.id and s.sessaoAtividade.atividade.unidadeorganica.nome == utilizador.unidadeorganica.nome %}
                                                                                                                 <tr draggable="false"
                                                                                                                     class="">
                                                                                                                     <td data-label="atividade"
@@ -1417,6 +1420,8 @@
         </div>
         {#-----------------------------hidden inputs-------------------------------------------------------#}
         <input type="number" id="type" name="type" value="" hidden>
+        <input type="number" id="preco_aluno_normal" name="preco_aluno_normal" value="{{ ementa.preco_aluno_normal }}" hidden>
+        <input type="number" id="preco_outro_normal" name="preco_outro_normal" value="{{ ementa.preco_outro_normal }}" hidden>
         {#------------------------popup eliminar Insricao---------------------------------------------#}
         <div id="popup_eliminar_inscricao" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>
