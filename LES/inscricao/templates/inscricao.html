@@ -4,6 +4,7 @@
     <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
     <meta charset="utf-8"/>
     <title>Dia Aberto - Criar Inscrição</title>
+
     {#    jquery  #}
     <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
             integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs=" crossorigin="anonymous"></script>
@@ -168,7 +169,7 @@
                                                                        for="id_turma">Turma:</label>
                                                                 <div class="control" id="id_turma_div">
                                                                     <input class="input" type="text" name="turma"
-                                                                           required="" id="id_turma" oninput="formerror(this.name, this.id, 'text')">
+                                                                           required="" id="id_turma" oninput="formerror(this.name, this.id, 'mixed')">
                                                                     <span id="id_turma_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
@@ -356,7 +357,7 @@
                                                                     <input class="input" type="text"
                                                                            name="localidade"
                                                                            maxlength="50" id="id_localidade"
-                                                                           oninput="formerror(this.name, this.id, 'text')">
+                                                                           oninput="formerror(this.name, this.id, 'textandnumber')">
                                                                     <span id="id_localidade_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
@@ -516,7 +517,7 @@
                                                                     <select name="tipo_transporte" id="tipo_transporte"
                                                                             onchange="tipoTransporte(this.value)"
                                                                             required>
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="proprio">Transporte próprio</option>
                                                                         <option value="autocarro">Autocarro Publico</option>
                                                                         <option value="comboio">Comboio</option>
@@ -553,7 +554,7 @@
                                                     <div class="control is-expanded">
                                                                 <span class="select">
                                                                     <select name="qual" id="qual_campus_2">
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="penha">Campus da Penha</option>
                                                                         <option value="gambelas">Campus das Gambelas</option>
                                                                     </select>
@@ -626,7 +627,7 @@
                                                                     <select name="transporte_campus"
                                                                             id="transporte_campus"
                                                                             onchange="entreCampusRelogio(this.value)">
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
                                                                         <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
                                                                     </select>
