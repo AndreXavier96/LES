@@ -224,7 +224,7 @@ class Atividade(models.Model):
    # responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
-        db_table = 'atividade'
+        db_table = 'Atividade'
 
     def get_tipo(self):
         return self.tipo_atividade
