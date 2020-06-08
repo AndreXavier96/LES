@@ -1,11 +1,10 @@
 import re
 
 from django.contrib import messages
-from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import View
 
 from .forms import RegisterForm
@@ -156,12 +155,10 @@ class register(View):
 
             return redirect('/inscricao/home')"""
         return redirect('/utilizadores/login')
-
 def logout_request(request):
     logout(request)
     messages.info(request, "Terminou a sessão com sucesso")
     return redirect('/utilizadores/login')
-
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
@@ -195,27 +192,37 @@ def success(request):
 class Consultar_user(View):
     template_name = 'consultar_utilizador.html'
 
-    def get( self, request):
+    def get(self, request):
         queryset = Utilizador.objects.all()
         ut1 = Utilizador.objects.get(pk=6).utilizadortipo
-        ut=str(ut1)
-        print(ut)
+        ut = str(ut1)
+
+        authuser = request.user
+        utilizador = Utilizador.objects.get(pk=authuser.id)
 
 
         context = {
             "ut": ut,
-            "object_list": queryset
-         }
-
+            "object_list": queryset,
+            "utilizador": utilizador
+        }
         return render(request, "consultar_utilizador..html", context)
+
+    def post(self, request):
+            post = request.POST
+            id = post['del']
+            print(id)
+            Utilizador.objects.filter(pk=id).delete()
+            return redirect('/utilizadores/consultar_utilizador/')
+
 
 
 
 class Apagar_user(View):
     template_name = 'apagar_utilizador.html'
 
-    def get(self,request,pk):
-        obj=Utilizador.objects.get(pk=pk)
+    def get(self, request, pk):
+        obj = Utilizador.objects.get(pk=pk)
         context = {
             "obj": obj
         }
@@ -227,141 +234,131 @@ class Apagar_user(View):
         id = post['del']
         print(id)
         Utilizador.objects.filter(pk=id).delete()
+        messages.add_message(request, messages.WARNING, "Utilizador APAGADO com sucesso")
 
         return redirect('/utilizadores/consultar_utilizadores/')
 
 
-
-
 class Editar_user(View):
-        template_name = 'editar_utilizador.html'
+    template_name = 'editar_utilizador.html'
 
-        def get(self, request, pk):
-            obj = Utilizador.objects.get(pk=pk)
-            form = RegisterForm
-            data_nascimento = Utilizador.objects.get(pk=pk).data_nascimento
-            email = Utilizador.objects.get(pk=pk).email
-            nome = Utilizador.objects.get(pk=pk).nome
-            numero_telemovel = Utilizador.objects.get(pk=pk).numero_telemovel
-            cartao_cidadao = Utilizador.objects.get(pk=pk).cartao_cidadao
-            deficiencias = Utilizador.objects.get(pk=pk).deficiencias
-            permitir_localizacao = Utilizador.objects.get(pk=pk).permitir_localizacao
-            utilizar_dados_pessoais = Utilizador.objects.get(pk=pk).utilizar_dados_pessoais
-            #utilizadortipo = Utilizadortipo.objects.get(pk=pk).utilizadortipo
-            #departamento = Departamento.objects.get(pk=pk).departamento
-            #unidadeorganica = Unidadeorganica.objects.get(pk=pk).unidadeorganica
-            return render(request, self.template_name, {
-                'obj': obj,
-                'form': form,
-                'data_nascimento': data_nascimento,
-                'email': email,
-                'nome': nome,
-                'numero_telemovel': numero_telemovel,
-                'cartao_cidadao': cartao_cidadao,
-                'deficiencias': deficiencias,
-                'permitir_localizacao': permitir_localizacao,
-                'utilizar_dados_pessoais': utilizar_dados_pessoais,
-                #'utilizadortipo': utilizadortipo,
-                #'departamento': departamento,
-                #'unidadeorganica': unidadeorganica
-            })
+    def get(self, request, pk):
+        obj = Utilizador.objects.get(pk=pk)
+        form = RegisterForm
+        data_nascimento = Utilizador.objects.get(pk=pk).data_nascimento
+        email = Utilizador.objects.get(pk=pk).email
+        nome = Utilizador.objects.get(pk=pk).nome
+        numero_telemovel = Utilizador.objects.get(pk=pk).numero_telemovel
+        cartao_cidadao = Utilizador.objects.get(pk=pk).cartao_cidadao
+        deficiencias = Utilizador.objects.get(pk=pk).deficiencias
+        permitir_localizacao = Utilizador.objects.get(pk=pk).permitir_localizacao
+        utilizar_dados_pessoais = Utilizador.objects.get(pk=pk).utilizar_dados_pessoais
 
+        return render(request, self.template_name, {
+            'obj': obj,
+            'form': form,
+            'data_nascimento': data_nascimento,
+            'email': email,
+            'nome': nome,
+            'numero_telemovel': numero_telemovel,
+            'cartao_cidadao': cartao_cidadao,
+            'deficiencias': deficiencias,
+            'permitir_localizacao': permitir_localizacao,
+            'utilizar_dados_pessoais': utilizar_dados_pessoais,
 
-        def post(self, request, pk):
-            form_register = RegisterForm(request.POST)
-            print(form_register.errors)
-            if form_register.is_valid():
-                # regex = '\w[\w\.-]*@\w[\w\.-]+\.\w+'
-                # print("dasd")
-                # print(form_register.errors)
-                #utilizadortipo_value = request.POST['utilizadortipo']
-                #utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
-                # print(utilizadortipo)
-                # print(utilizadortipo_value)
-                email = form_register['email'].value()
-                print(email)
-                nome = form_register['nome'].value()
-                data_nascimento = form_register['data_nascimento'].value()
-                numero_telemovel = form_register['numero_telemovel'].value()
-                cartao_cidadao = form_register['cartao_cidadao'].value()
-                deficiencias = form_register['deficiencias'].value()
-                # permitir_localizacao = form_register['permitir_localizacao'].value()
-                permitir_localizacao = request.POST['permitir_localizacao']
-                if permitir_localizacao == "sim":
-                    permitir_localizacao = 1
-                else:
-                    permitir_localizacao = 0
-                # utilizar_dados_pessoais = form_register['utilizar_dados_pessoais'].value()
-                utilizar_dados_pessoais = request.POST['utilizar_dados_pessoais']
-                if utilizar_dados_pessoais == "sim":
-                    utilizar_dados_pessoais = 1
-                else:
-                    utilizar_dados_pessoais = 0
+        })
 
-               # print(utilizadortipo_value)
-               # if utilizadortipo_value == "Participante Individual" or utilizadortipo_value == "Participante em Grupo":
-                #    unidadeorganica = None
-                #    departamento = None
-               # else:
-                    #unidadeorganica = request.POST['unidadeorganica']
-                   # departamento = request.POST['departamento']
-                   # departamento = Departamento.objects.get(nome=departamento)
-                    #unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
-                #print(unidadeorganica)
-                # departamento = request.POST['departamento']
-               # print(departamento)
-                # unidadeorganica = Unidadeorganica.objects.get(nome=unidadeorganica)
-                # departamento = request.POST['departamento']
-                # departamento = Departamento.objects.get(nome=departamento)
+    def post(self, request, pk):
 
-                User.objects.create_user(username=email)
-                Utilizador.objects.filter(pk=pk). update(utilizadortipo=utilizadortipo, email=email,
-                                          nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
-                                          cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
-                                          permitir_localizacao=permitir_localizacao,
-                                          utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                          )
-                """escola = Escola.objects.get(nome=nome)
-                Inscricao.objects.create(escola=escola)
-                inscricao = Inscricao.objects.get(escola=escola)
+        email = request.POST['email']
+        nome = request.POST['nome']
+        numero_telemovel = request.POST['numero_telemovel']
+        cartao_cidadao = request.POST['cartao_cidadao']
+        #deficiencias = request.POST['deficiencias']
 
-                if form_prato.is_valid():
-                    radio_value = form_prato.cleaned_data.get("prato")
-                    prato = Prato.objects.get(tipo=radio_value)
+        permitir_localizacao = request.POST['permitir_localizacao']
+        if permitir_localizacao == "sim":
+            permitir_localizacao = 1
+        else:
+            permitir_localizacao = 0
+        utilizar_dados_pessoais = request.POST['utilizar_dados_pessoais']
+        if utilizar_dados_pessoais == "sim":
+            utilizar_dados_pessoais = 1
+        else:
+            utilizar_dados_pessoais = 0
 
-                    ementa = Ementa.objects.all().first()
-                    EmentaPratoInscricao.objects.create(ementa=ementa, prato=prato, inscricao=inscricao)
+        messages.add_message(request, messages.SUCCESS, "Utilizador EDITADO com sucesso")
 
-                return redirect('/inscricao/home')"""
-            return redirect('/utilizadores/consultar_utilizadores')
+        Utilizador.objects.filter(pk=pk).update(
+                                            nome=nome, email=email,
+                                            numero_telemovel=numero_telemovel,
+                                            cartao_cidadao=cartao_cidadao,
+                                            permitir_localizacao=permitir_localizacao,
+                                            utilizar_dados_pessoais=utilizar_dados_pessoais,
+                                            )
 
 
+        return redirect('/utilizadores/consultar_utilizadores')
+
+# def get_object(self):
+#        id_ = self.kwargs.get("id")
+#       return get_object_or_404 (Utilizador, id=id_)
 
 
-   # def get_object(self):
-    #        id_ = self.kwargs.get("id")
-     #       return get_object_or_404 (Utilizador, id=id_)
-
-
-    #  def password_change(request):
-    #   if request.method == 'POST':
-    #      form = PasswordChangeForm(request.user, request.POST)
-    #     if form.is_valid():
-    #        user = form.save()
-    #       update_session_auth_hash(request, user)
-    #      messages.success(request, 'Your password was successfully updated!')
-    #     return redirect('change_password')
-    # else:
-    #   messages.error(request, 'Please correct the error below.')
-    #   else:
-    #      form = PasswordChangeForm(request.user)
-    # return render(request, 'password_change.html', {
-    #    'form': form
-    # })
-    #
-    # def password_change_done(request):
-    # messages.info(request, "Password changed")
-    # return render(request, 'password_change_done.html')
+#  def password_change(request):
+#   if request.method == 'POST':
+#      form = PasswordChangeForm(request.user, request.POST)
+#     if form.is_valid():
+#        user = form.save()
+#       update_session_auth_hash(request, user)
+#      messages.success(request, 'Your password was successfully updated!')
+#     return redirect('change_password')
+# else:
+#   messages.error(request, 'Please correct the error below.')
+#   else:
+#      form = PasswordChangeForm(request.user)
+# return render(request, 'password_change.html', {
+#    'form': form
+# })
+#
+# def password_change_done(request):
+# messages.info(request, "Password changed")
+# return render(request, 'password_change_done.html')
 
 
 #
+class Validar_user(View):
+    template_name = ''
+
+    def get(self, request, pk):
+        obj = Utilizador.objects.get(pk=pk)
+        form = RegisterForm
+        validado = Utilizador.objects.get(pk=pk).validado
+
+        return render(request, self.template_name, {
+            'obj': obj,
+            'form': form,
+            'validado': validado,
+
+        })
+
+    def post(self, request, pk):
+
+        email = request.POST['email']
+        nome = request.POST['nome']
+        validado = request.POST['validado']
+        if validado == "NULL":
+            validado = 1
+        else:
+            validado = 0
+
+
+        messages.add_message(request, messages.SUCCESS, "Utilizador Validado com sucesso")
+
+        Utilizador.objects.filter(pk=pk).update(
+                                            nome=nome, email=email,
+                                            validado=validado,
+                                            )
+
+
+        return redirect('/utilizadores/consultar_utilizadores')

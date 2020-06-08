@@ -233,10 +233,10 @@ class Atividade(models.Model):
     edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, null=True, blank=True)
     sala = models.ForeignKey(Sala, on_delete=models.CASCADE, null=True, blank=True)
     tipo_local = models.CharField(max_length=255, null=True, blank=True)
-    responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
+   # responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
-        db_table = 'Atividade'
+        db_table = 'atividade'
 
     def get_tipo(self):
         return self.tipo_atividade
