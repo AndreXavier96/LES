@@ -39,7 +39,7 @@ class notificacao(View):
             print(utilizadortipo_value)
 
             teste = form_notificacao['teste'].value()
-            if len(utilizadortipo_value)!=0:
+            if utilizadortipo_value!="escolher":
                 print("1,2")
                 print(teste)
                 id_u= Utilizadortipo.objects.get(tipo=utilizadortipo_value)
@@ -51,8 +51,6 @@ class notificacao(View):
                     Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
                                            prioridade=prioridade, utilizador_env=utilizador_env,
                                            utilizador_rec=x)
-
-            #teste1= Utilizador.objects.get(utilizadortipo=id_u)
             else:
                 utilizador_rec = form_notificacao['utilizador_rec'].value()
                 utilizador_rec1 = Utilizador.objects.get(email=utilizador_rec)
@@ -83,4 +81,3 @@ class Consultar_notificacao(View):
         print(id)
         Notificacao.objects.filter(pk=id).delete()
         return redirect('/notificacao/consultar_notificacao/')
-    #

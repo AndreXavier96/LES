@@ -130,10 +130,12 @@ class register(View):
 
             return redirect('/inscricao/home')"""
         return redirect('/utilizadores/login')
+
 def logout_request(request):
     logout(request)
     messages.info(request, "Terminou a sessão com sucesso")
     return redirect('/utilizadores/login')
+
 def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)

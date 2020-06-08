@@ -1,37 +1,164 @@
-﻿<!DOCTYPE html>
-
+﻿{% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="{% static 'dist/js/wickedpicker.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'dist/css/wickedpicker.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
+    <script>
+        // suppose the `id` attribute of element is `message_container`.
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+        // Timeout is 3 sec, you can change it
+
+</script>
     <title></title>
+    <style>
+.notices{
+            position: fixed;
+            display: flex;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8em;
+            overflow: hidden;
+            z-index: 1000;
+            pointer-events: none;
+        }
+</style>
 </head>
+
+<script>
+        let options = {
+            twentyFour: true,
+            now: "08:00",
+            close: 'wickedpicker__close',
+            hoverState: 'hover-state',
+            title: 'Escolher Hora',
+            minutesInterval: 5,
+        };
+        $(document).ready(function () {
+            $('.timepicker-12-hr').wickedpicker(options);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 <body>
-<h1>Login</h1>
-
 {% block content %}
-<div class="container">
-        <form method="POST">
-        {% csrf_token %}
+<form method="POST">
+    {% csrf_token %}
 
-            <p>Insira o seu email: {{ form.username}}</p>
-            <p>Insira a sua password: {{ form.password}}</p>
-            <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
+    <div data-v-8716d23a="" id="app">
+        <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+            <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+        </div>
+        <div data-v-8716d23a="" id="page-content">
+            <div data-v-8716d23a="" class="card">
+                <div data-v-8716d23a="" class="card-content">
+                    <div data-v-8716d23a="" class="columns">
+                        <div class="column" align="center">
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <img data-v-a67fe1ba="" alt="Dia Aberto" src="{% static 'main/img/logo-large.png' %}">
+                        </div>
+                        <div class="column">
+                            <nav aria-label="breadcrumbs" class="breadcrumb">
+                            </nav>
+                            <div style="padding: 3rem 2vw 1rem;">
+                                <div class="b-steps">
+                                    <nav class="steps is-success">
+                                        <ul class="step-items">
+                                            <li class="step-item is-success is-active">
+                                                <a class="step-link">
+                                                    <div class="step-marker"><span class="icon"><i
+                                                            class="mdi mdi-account-details mdi-24px"></i></span></div>
+                                                    <div class="step-details"><span
+                                                            class="step-title">Login</span></div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    <section class="step-content">
+                                        <div class="step-item" style="">
+                                            <div style="padding: 1rem 2vw 0px;">
+                                                <hr>
+                                                <div class="column is-offset-3 is-6">
 
-        </form>
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-      {{ message }}
+                                                    <div class="block">
+                                                        <div class="field">
+                                                            <label class="label">Insira o seu email</label>
+                                                        </div>
+                                                        <div class="control is-clearfix">
+                                                            <input type="text" placeholder="Email" autocomplete="on" class="input" {{ form.username}}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="block">
+                                                        <div class="field">
+                                                            <label class="label">Insira a sua password</label>
+                                                        </div>
+                                                        <div class="control is-clearfix">
+                                                            <input type="password" placeholder="Password" autocomplete="on" class="input" {{ form.password}}
+                                                        </div>
+                                                    </div>
+                                                          {% if messages %}
+                                                                    {% for message in messages %}
+                                                                    <div id="message_container" class="notices is-bottom"><div role="alert" {% if message.tags == 'error' %} class="toast is-danger is-bottom" {% else %} class="toast is-success is-bottom" {% endif %} style=""><div>{{ message }}</div></div></div>
+                                                                    {% endfor %}
+                                                            {% endif %}
+
+                                                    Não possui conta? <a href="/utilizadores/register" target="blank"><strong>Registe-se aqui</strong></a>
+                                                        <p></p>
+                                                    Não se lembra da password? <a href="/password_reset" target="blank"><strong>Recupere-a aqui</strong></a>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <div class="column is-8 is-offset-2">
+                                            <div class="level-right">
+                                                <button type="submit" value="Submeter" class="button is-large is-success is-outlined">
+                                                    <!----> <span> Login </span> <!----></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
     </div>
-    {% endfor %}
-    {% endif %}
 
-        Don't have an account? <a href="{% url 'add' %}" target="blank"><strong>register here</strong></a>!
-        <p></p>
-        <a href="/utilizadores/password_reset" target="blank"><strong>Forget your password?</strong></a>!
-    </div>
+
+</form>
+
 {% endblock %}
 
-
 </body>
+
+</html>
