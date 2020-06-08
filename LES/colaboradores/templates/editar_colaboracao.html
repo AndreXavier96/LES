@@ -92,7 +92,7 @@
                                                             <label class="label">Em que dia quer colaborar?</label>
                                                         </div>
                                                         <input type="date" id="datemax" value={{data_colaboracao}} name="data_colaboracao"
-                                                           min={{data_inicio}} max={{data_fim}}>
+                                                           min={{data_inicio}} max={{data_fim}} required>
                                                     </div>
 
                                                     <div class="columns">
@@ -102,7 +102,7 @@
                                                                 <label class="label">Horário de Início</label>
                                                                 <input type="text" id="timepicker-two"
                                                                        name="hora_inicio_colab"
-                                                                       class="timepicker-12-hr">
+                                                                       class="timepicker-12-hr" required>
                                                             </div>
                                                         </div>
 
@@ -110,7 +110,7 @@
                                                             <div class="field">
                                                                 <label class="label">Horário de Fim</label>
                                                                 <input type="text" id="timepicker-one"
-                                                                       name="hora_fim_colab" class="timepicker-12-hr">
+                                                                       name="hora_fim_colab" class="timepicker-12-hr" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -171,7 +171,7 @@
                                                 <!----></a></div>
                                             <div class="level-right">
                                                 <button type="submit" value="Submeter" class="button is-large is-success is-outlined">
-                                                    <!----> <span> Editar Colaboração </span> <!----></button>
+                                                    <!----> <span> Guardar </span> <!----></button>
                                             </div>
                                         </div>
                                     </div>

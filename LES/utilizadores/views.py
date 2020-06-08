@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -7,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 
 from .forms import RegisterForm
-from .models import Utilizador, Utilizadortipo, UnidadeOrganica, Departamento, UnidadeorganicaDepartamento
+from .models import Utilizador, Utilizadortipo, UnidadeOrganica, Departamento, UnidadeorganicaDepartamento, AuthUser
 
 
 class register(View):
@@ -45,9 +47,6 @@ class register(View):
             password_digest = request.POST['password_digest']
             #password_conf = form_register['password_conf'].value()
             password_conf = request.POST['password_conf']
-            if password_digest != password_conf:
-                messages.error(request, "as passwords não coincidem")
-                return redirect('/utilizadores/register/')
             #nome = form_register['nome'].value()
             nome = request.POST['nome']
             data_nascimento = request.POST['data_nascimento']
@@ -110,13 +109,40 @@ class register(View):
             #departamento = request.POST['departamento']
            # departamento = Departamento.objects.get(nome=departamento)
 
-            User.objects.create_user(username=email, password=password_digest)
+            # erros--------------------------------------------------------------------------------
+            if len(password_digest) < 5:
+                messages.error(request, "a password é demasiado pequena")
+                return redirect('/utilizadores/register/')
+
+            if password_digest != password_conf:
+                messages.error(request, "As passwords não coincidem")
+                return redirect('/utilizadores/register/')
+
+            regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+            if (re.search(regex, email)):
+                print("Valid Email")
+            else:
+                messages.error(request, "O email nao tem o formato apropriado")
+                return redirect('/utilizadores/register/')
+
+            if len(numero_telemovel) != 9:
+                messages.error(request, "O numero de telemovel deve conter 9 algarismos")
+                return redirect('/utilizadores/register/')
+
+            if len(cartao_cidadao) != 8:
+                messages.error(request, "O numero do cartao de cidadão deve conter 8 algarismos")
+                return redirect('/utilizadores/register/')
+            # ------------------------------------------------------------------------------
+
             Utilizador.objects.create(utilizadortipo=utilizadortipo, email=email,
                                       nome=nome, data_nascimento=data_nascimento, numero_telemovel=numero_telemovel,
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
                                       unidadeorganica=unidadeorganica, departamento=departamento)
+            obj_user=Utilizador.objects.get(email=email)
+            User.objects.create_user(username=email, password=password_digest,email=email)
+            AuthUser.objects.filter(username=email).update(utilizador=obj_user)
             """escola = Escola.objects.get(nome=nome)
             Inscricao.objects.create(escola=escola)
             inscricao = Inscricao.objects.get(escola=escola)
