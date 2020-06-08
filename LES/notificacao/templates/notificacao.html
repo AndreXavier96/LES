@@ -100,7 +100,7 @@
                                                         <span class="select is-fullwidth is-empty">
                                                             <select name="utilizadortipo" id="utilizadortipo"
                                                                     onchange="user_type(this.value)">
-                                                                <option hidden>Escolher</option>
+                                                                <option value="escolher" hidden>Escolher</option>
                                                                 {% for u in utilizadortipo %}
                                                                     {% if utilizador_env.utilizadortipo.tipo == "Administrador" %}
                                                                         {% if u.tipo != 'Administrador' %}
@@ -152,7 +152,7 @@
                                                                 <label class="label">Prioridade</label>
                                                                 <div class="b-numberinput field has-addons">
                                                                     <p class="control">
-                                                                        <button type="button" class="button is-primary">
+                                                                        <button onclick="incremental('minus', 'id_prioridade')" type="button" class="button is-primary">
                                                                     <span class="icon">
                                                                         <i class="mdi mdi-minus mdi-24px"></i>
                                                                     </span>
@@ -165,7 +165,7 @@
                                                                                id="id_prioridade">
                                                                     </div>
                                                                     <p class="control">
-                                                                        <button type="button" class="button is-primary">
+                                                                        <button onclick="incremental('add', 'id_prioridade')" type="button" class="button is-primary">
                                                                         <span class="icon">
                                                                             <i class="mdi mdi-plus mdi-24px"></i>
                                                                         </span>
@@ -189,7 +189,7 @@
                                                     <button type="button" id="confirmacao"
                                                             class="button is-large is-success is-outlined"
                                                             onclick="confirmacao_notificacao(this.id)">
-                                                        <span> Submeter </span>
+                                                        <span> Enviar </span>
                                                         <span class="icon is-medium">
                                                             <i class="mdi mdi-forward mdi-36px"></i>
                                                         </span>

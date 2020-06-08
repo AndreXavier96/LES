@@ -14,10 +14,20 @@
 <script type="text/javascript">
     function user_type(val) {
         let element = document.getElementById('asda');
+        let esec = document.getElementById('esec');
+        let ess = document.getElementById('ess');
+        let ese = document.getElementById('ese');
+        let fchs = document.getElementById('fchs');
+        let fct = document.getElementById('fct');
         if (val === "Docente" || val === "Colaborador" || val === "Coordenador" ){
             element.style.display = 'block';
         } else if (val === "Participante Individual" || val === "Participante em Grupo") {
             element.style.display = 'none';
+            esec.setAttribute("hidden", "True");
+            ess.setAttribute("hidden", "True");
+            ese.setAttribute("hidden", "True");
+            fchs.setAttribute("hidden", "True");
+            fct.setAttribute("hidden", "True");
         }
     }
 
@@ -170,57 +180,64 @@
                                     <div class="step-item" style="">
                                         <div style="padding: 1rem 2vw 0px;">
                                             <hr>
+                                                <h3 style="color:red;">
+                                                    {% if messages %}
+                                                        {% for message in messages %}
+                                                    <p style="text-align:center"> {{ message }} </p>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </h3>
                                             <div class="column is-offset-3 is-6">
                                                 <div class="field"><label class="label">Nome:</label>
                                                     <div class="control is-clearfix"><input type="text"
                                                                                             autocomplete="on"
                                                                                             class="input"
-                                                                                            name="nome">
+                                                                                            name="nome" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Email:</label>
                                                     <div class="control is-clearfix"><input type="text"
                                                                                             autocomplete="on"
-                                                                                            class="input" name="email">
+                                                                                            class="input" name="email" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Password:</label>
                                                     <div class="control is-clearfix"><input type="password"
                                                                                             class="input"
-                                                                                            name="password_digest">
+                                                                                            name="password_digest" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Confirme a sua password:</label>
                                                     <div class="control is-clearfix"><input type="password"
                                                                                             class="input"
-                                                                                            name="password_conf">
+                                                                                            name="password_conf" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Data de nascimento:</label>
                                                     <div class="control is-clearfix"><input type="date"
                                                                                             autocomplete="on" id="date"
                                                                                             class="input"
-                                                                                            name="data_nascimento">
+                                                                                            name="data_nascimento" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Numero de telemóvel:</label>
                                                     <div class="control is-clearfix"><input type="number"
                                                                                             autocomplete="on"
                                                                                             class="input"
-                                                                                            name="numero_telemovel">
+                                                                                            name="numero_telemovel" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Cartão de Cidadão:</label>
                                                     <div class="control is-clearfix"><input type="number"
                                                                                             autocomplete="on"
                                                                                             class="input"
-                                                                                            name="cartao_cidadao">
+                                                                                            name="cartao_cidadao" required>
                                                     </div>
                                                 </div>
                                                 <div class="field"><label class="label">Tem alguma deficiência?:</label>
                                                     <div class="control is-clearfix"><input type="radio" id="sim3"
                                                                                             name="deficiencias"
-                                                                                            value="sim">
+                                                                                            value="sim" required>
                                                         <label for="sim3">SIM</label>
                                                         <input type="radio" id="nao3" name="deficiencias" value="nao">
                                                         <label for="nao3">NAO</label>
@@ -237,7 +254,7 @@
                                                     localização?</label>
                                                     <div class="control is-clearfix"><input type="radio" id="sim1"
                                                                                             name="permitir_localizacao"
-                                                                                            value="sim">
+                                                                                            value="sim" required>
                                                         <label for="sim1">SIM</label>
                                                         <input type="radio" id="nao1" name="permitir_localizacao"
                                                                value="nao">
@@ -248,7 +265,7 @@
                                                     dados pessoais?</label>
                                                     <div class="control is-clearfix"><input type="radio" id="sim2"
                                                                                             name="utilizar_dados_pessoais"
-                                                                                            value="sim">
+                                                                                            value="sim" required>
                                                         <label for="sim2">SIM</label>
                                                         <input type="radio" id="nao2" name="utilizar_dados_pessoais"
                                                                value="nao">

@@ -75,12 +75,27 @@ class Utilizador(models.Model):
     departamento = models.ForeignKey(Departamento, models.DO_NOTHING, blank=True, null=True)
 
 
-
-
-
     class Meta:
         managed = False
         db_table = 'utilizador'
+
+
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
+    utilizador = models.ForeignKey('Utilizador', models.DO_NOTHING, db_column='utilizador', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
 
 
 class Colaboracao(models.Model):
@@ -120,6 +135,38 @@ class UnidadeorganicaDepartamento(models.Model):
         managed = False
         db_table = 'unidadeorganica_departamento'
 
+class Atividade(models.Model):
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField(blank=True, null=True)
+    duracao = models.IntegerField()
+    validada = models.IntegerField()
+    tipo_atividade = models.TextField(blank=True, null=True)
+    publico_alvo = models.CharField(max_length=45, blank=True, null=True)
+    #localizacao = models.ForeignKey('Localizacaoatividade', models.DO_NOTHING, db_column='localizacao', blank=True, null=True)
+    docente = models.ForeignKey('Utilizador', models.DO_NOTHING,related_name='1+')
+
+    class Meta:
+        managed = False
+        db_table = 'atividade'
+
+class Sessao(models.Model):
+    hora_inicio = models.TimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'sessao'
+
+class SessaoAtividade(models.Model):
+    atividade = models.ForeignKey(Atividade, models.DO_NOTHING)
+    sessao = models.ForeignKey(Sessao, models.DO_NOTHING)
+    data = models.DateField()
+    n_alunos = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'sessao_atividade'
+
+
 class Tarefa(models.Model):
     nome = models.CharField(max_length=45)
     descricao = models.TextField()
@@ -129,7 +176,7 @@ class Tarefa(models.Model):
     destino = models.CharField(max_length=255, blank=True, null=True)
     horario = models.TimeField(blank=True, null=True)
     dia = models.DateField()
-    #sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)#import do models inscrição
+    sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)#import do models inscrição
     sessao_origem_id = models.IntegerField(blank=True, null=True)
     sessao_destino_id = models.IntegerField(blank=True, null=True)
     colaborador_id = models.IntegerField()

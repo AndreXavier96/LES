@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View
 
@@ -5,7 +6,7 @@ from django.views.generic import View
 
 
 # from .forms import Criar_Colab_Form, Editar_Colab_From
-from utilizadores.models import Colaboracao, Diaaberto, UtilizadorTarefa
+from utilizadores.models import Colaboracao, Diaaberto, UtilizadorTarefa, AuthUser, Utilizador
 
 
 def remove_all_space(string):
@@ -57,10 +58,13 @@ class Criar_colab(View):
             percurso = form_colab['percurso'].value()
         '''
         user_id=request.user
-        Colaboracao.objects.create(colaborador_id=user_id.pk, data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
+        #print(user_id.utilizadores)
+        pk_user=AuthUser.objects.get(pk=user_id.pk).utilizador#################
+        print(pk_user.pk)
+        Colaboracao.objects.create(colaborador_id=pk_user.pk, data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
                                    percurso=percurso, hora_inicio_colab=hora_inicio_colab,
                                    hora_fim_colab=hora_fim_colab)
-
+        #user_id.pk
         return redirect('/colaboradores/consultar_colab/')
 
 
@@ -160,7 +164,8 @@ class Consultar_colab(View):
         lista_colab3 = []
         user_id=request.user
         print(user_id.pk)
-        lista_colab_final = Colaboracao.objects.filter(colaborador_id=user_id.pk)
+        pk_user = AuthUser.objects.get(pk=user_id.pk).utilizador
+        lista_colab_final = Colaboracao.objects.filter(colaborador_id=pk_user.pk)
         # for x in lista_colab:
         #     lista_colab3.append(str(x.data_colaboracao))
         #     lista_colab_final =  zip(lista_colab, lista_colab3)

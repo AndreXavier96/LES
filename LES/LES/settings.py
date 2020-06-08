@@ -26,6 +26,8 @@ SECRET_KEY = '53d0d40f-fe52-45e5-a3c2-d715b76a69d4'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+#if DEBUG:
+   # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
@@ -126,10 +128,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'lesgrupo7@gmail.com'
 EMAIL_HOST_PASSWORD = 'g7123456789'
+DEFAULT_FROM_EMAIL = 'Grupo7 LES Team <noreply@G7LESteam.com'
+
+
+
+
+
 
