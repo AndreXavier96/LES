@@ -1,12 +1,13 @@
 from datetime import date, time
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from LES.utils import render_to_pdf
-from utilizadores.models import Utilizador
+from utilizadores.models import Utilizador, AuthUser
 from .models import Ementa, Escola, Inscricao, EmentaInscricao, Transporteproprio, Atividade, SessaoAtividade, \
     SessaoAtividadeInscricao, InscricaoGrupo, InscricaoIndividual, TransporteproprioPercursos
 
@@ -32,7 +33,8 @@ class CriarInscricaoView(View):
 
     def get(self, request):
         auth_user = request.user
-        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        utilizador = AuthUser.objects.get(pk=auth_user.pk).utilizador
+        # utilizador = Utilizador.objects.get(pk=auth_user.id)
         if utilizador.utilizadortipo.tipo == "Participante Individual" or \
                 utilizador.utilizadortipo.tipo == "Participante em Grupo":
             values = Ementa.objects.all
@@ -48,7 +50,6 @@ class CriarInscricaoView(View):
                 'escolas': escolas,
                 'atividades': atividades,
                 'sessaoatividade': sessaoatividade,
-                'auth_user': auth_user,
                 'utilizador': utilizador,
                 'age': age,
             })
@@ -74,7 +75,8 @@ class CriarInscricaoView(View):
             # ------------inscricao grupo/individual
             # session user--------------------------------------
             auth_user = request.user
-            utilizador = Utilizador.objects.get(pk=auth_user.id)
+            # utilizador = Utilizador.objects.get(pk=auth_user.id)
+            utilizador = AuthUser.objects.get(pk=auth_user.pk).utilizador
             # session user--------------------------------------
             area_estudos = request.POST['area_estudos']
             ano_estudos = request.POST['ano_estudos']
@@ -242,7 +244,7 @@ class ConsultarInscricaoView(View):
     def get(self, request):
         # session user--------------------------------------
         auth_user = request.user
-        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        utilizador = AuthUser.objects.get(pk=auth_user.pk).utilizador
         if utilizador.utilizadortipo.tipo == "Participante Individual" or \
                 utilizador.utilizadortipo.tipo == "Participante em Grupo" or \
                 utilizador.utilizadortipo.tipo == "Administrador" or \
@@ -307,7 +309,8 @@ class EditarInscricaoView(View):
     def get(self, request, pk):
         # session user--------------------------------------
         auth_user = request.user
-        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        # utilizador = Utilizador.objects.get(pk=auth_user.id)
+        utilizador = AuthUser.objects.get(pk=auth_user.pk).utilizador
         if utilizador.utilizadortipo.tipo == "Participante Individual" or \
                 utilizador.utilizadortipo.tipo == "Participante em Grupo":
             if Inscricao.objects.get(pk=pk).utilizador.id == utilizador.id:
@@ -338,7 +341,6 @@ class EditarInscricaoView(View):
                     'escolas': escolas,
                     'atividades': atividades,
                     'sessaoatividade': sessaoatividade,
-                    'auth_user': auth_user,
                     'utilizador': utilizador,
                     'age': age,
 
@@ -370,7 +372,8 @@ class EditarInscricaoView(View):
             escola = Escola.objects.get(nome=escola_escolhida)
         # session user--------------------------------------
         auth_user = request.user
-        utilizador = Utilizador.objects.get(pk=auth_user.id)
+        # utilizador = Utilizador.objects.get(pk=auth_user.id)
+        utilizador = AuthUser.objects.get(pk=auth_user.pk).utilizador
         # session user--------------------------------------
         area_estudos = request.POST['area_estudos']
         ano_estudos = request.POST['ano_estudos']
