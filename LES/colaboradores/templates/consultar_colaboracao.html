@@ -67,6 +67,10 @@ function deleteSessao(val) {
     document.getElementById('popup_eliminar_sessao').style.display = ''
 }
 
+function cancelSessao(val) {
+    document.getElementById('popup_eliminar_sessao').style.display = 'none'
+}
+
 
 
 
@@ -95,7 +99,7 @@ function deleteSessao(val) {
 <!--                            href="/colaboradores/consultar_colab">-->
 <!--                        Cancelar-->
 <!--                    </button>-->
-                    <div class="level-left"><a href="/colaboradores/consultar_colab" class="button is-outlined"
+                    <div class="level-left"><a onclick="cancelSessao(this.value)" class="button is-outlined"
                                                                        type="button"><!----> <span> Cancelar </span>
                                                 <!----></a></div>&nbsp;
                     <button type="submit" name="del" id="del" class="button is-success" value="">

@@ -150,40 +150,40 @@ th, td {
                                                 </a></td>
                                                 <!---->
                                                 <td data-label="Data" class="">
-                                                    {{ lt.tarefa.dia | date:'d-m-Y' }}
+                                                    {{ lt.dia | date:'d-m-Y' }}
                                                 </td>
                                                 <td data-label="Hora" class="">
-                                                    {{ lt.tarefa.horario | date:'H:i' }}
+                                                    {{ lt.horario | date:'H:i' }}
                                                 </td>
                                                 <td data-label="Nome Atividade" class="">
-                                                    {% ifequal "s" lt.tarefa.tipo_tarefa %}
-                                                        {{ lt.tarefa.sessaoatividade.atividade.nome }}
+                                                    {% ifequal "AV" lt.tipo_tarefa %}
+                                                        {{ lt.sessaoatividade.atividade.nome }}
                                                     {% else %}
                                                         &#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8212;&#8212;
                                                     {% endifequal %}
                                                 </td>
                                                 <td data-label="Sala Origem" class="">
-                                                    {{ lt.tarefa.origem }}
+                                                    {{ lt.origem }}
                                                 </td>
                                                 <td data-label="Sala Destino" class="">
 <!--                                                    {{ lt.tarefa.destino }}-->
-                                                    {% ifequal "p" lt.tarefa.tipo_tarefa %}
-                                                        {{ lt.tarefa.destino }}
+                                                    {% ifequal "PE" lt.tipo_tarefa %}
+                                                        {{ lt.destino }}
                                                     {% else %}
                                                         &#8194;&#8194;&#8212;&#8212;
                                                     {% endifequal %}
                                                 </td>
                                                 <td data-label="Grupo" class="">
 <!--                                                    {{ lt.tarefa.grupo }}-->
-                                                    {% ifequal "p" lt.tarefa.tipo_tarefa %}
-                                                        {{ lt.tarefa.grupo }}
+                                                    {% ifequal "PE" lt.tipo_tarefa %}
+                                                        {{ lt.grupo }}
                                                     {% else %}
                                                         &#8194;&#8212;&#8212;
                                                     {% endifequal %}
                                                 </td>
                                                 <td data-label="Tipo" class="">
 <!--                                                    {{ lt.tarefa.tipo_tarefa }}-->
-                                                    {% ifequal "p" lt.tarefa.tipo_tarefa %}
+                                                    {% ifequal "PE" lt.tipo_tarefa %}
                                                         <i style='font-size:24px' class='fas'>&#xf4d7;</i>&nbsp;
 <!--                                                        {{ lt.tarefa.tipo_tarefa }}-->
                                                     {% else %}
