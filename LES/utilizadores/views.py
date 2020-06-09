@@ -72,7 +72,9 @@ class register(View):
             if utilizadortipo_value == "Participante Individual" or utilizadortipo_value == "Participante em Grupo":
                 unidadeorganica = None
                 departamento = None
+                validado=1
             else:
+                validado=0
                 unidadeorganica1 = request.POST['unidadeorganica']
                 print(unidadeorganica1)
                 unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica1)
@@ -138,7 +140,7 @@ class register(View):
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                      unidadeorganica=unidadeorganica, departamento=departamento)
+                                      unidadeorganica=unidadeorganica, departamento=departamento, validado=validado)
             obj_user=Utilizador.objects.get(email=email)
             User.objects.create_user(username=email, password=password_digest,email=email)
             AuthUser.objects.filter(username=email).update(utilizador=obj_user)
