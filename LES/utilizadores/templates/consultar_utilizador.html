@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{% static 'main/css/filter.css' %}">
 
     <script src="{% static 'main/js/consultar_inscricao.js' %}"></script>
-
+    <script src="{% static 'main/js/utilizadores.js' %}"></script>
 </head>
 <style>
 .notices{
@@ -75,9 +75,18 @@
                            {% for message in messages %}
                           <div id="message_container" class="notices is-top">
                           <div role="alert"
+
                      {% if message.tags == 'error' %}
 
-               <div class="toast is-danger is-bottom" {% else %} class="toast is-success is-bottom" {% endif %} style=""><div>{{ message }}</div></div></div>
+               <div class="toast is-danger is-top"
+                    {% else %}
+                    class="toast is-success is-top"
+                    {% endif %}
+                    style="">
+                   <div>{{ message }}</div>
+               </div>
+                          </div>
+
                  {% endfor %}
                  {% endif %}
 
@@ -139,6 +148,40 @@
                                             <p>{{instance.departamento}}</p>
                                             {% endif %}
                                         </td>
+                                        {#------------------------------------------validar-----------------------------------#}
+
+                                        <td data-label="Validar Utilizador" class="">
+                                            {% if instance.validado == None or instance.validado == 0  %}
+                                             <div class="field is-grouped">
+                                            <p class="control">
+                                                <button class="button is-success is-outlined"
+                                                        type="button"
+                                                        id="validar"
+                                                        name=""
+                                                        value="{{ instance.id }}"
+                                                        onclick="confirmacao(this.id, this.value)">
+                                                                                <span class="">
+                                                                                    <i class="mdi mdi mdi-24px diogo">Validar</i>
+                                                                                </span>
+                                                </button>
+                                            </p>
+                                            </div>
+                                            {% elif instance.validado == 1 %}
+                                            <div class="control">
+                                            <button class="button is-outlined" title="Disabled button" disabled>
+                                                <p class=""
+                                                        type=""
+                                                        id="validar"
+                                                        name=""
+
+                                                                                <span class="">
+                                                                                    <i class="mdi mdi mdi-24px diogo">Validado</i>
+                                                                                </span>
+                                            </button>
+                                            {% endif %}
+
+                                        </td>
+
                                         {#------------------------------------------BUTOES-----------------------------------#}
                                         <td data-label="buttons" class="">
                                             <div class="field is-grouped">
@@ -154,10 +197,10 @@
                                             <p class="control">
                                                 <button class="button is-danger is-outlined"
                                                         type="button"
-                                                        id=""
+                                                        id="apagar"
                                                         name=""
                                                         value="{{ instance.id }}"
-                                                        onclick="location.href='apagar_utilizadores/{{instance.id}}';">
+                                                        onclick="confirmacao(this.id, this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
@@ -288,7 +331,7 @@
                                             <div class="th-wrap">Departamento</div>
                                         </th>
                                          <th class="is-sortable">
-                                            <div class="th-wrap">Validar Utilizador</div>
+                                            <div class="th-wrap"></div>
                                         </th>
 
                                         <th class="">
@@ -327,24 +370,37 @@
                                             <p>{{instance.departamento}}</p>
                                             {% endif %}
                                         </td>
+                                        {#------------------------------------------validado n validado-----------------------------------#}
                                         <td data-label="Validar Utilizador" class="">
-                                            {% if instance.validado == None %}
-                                            <option hidden></option>
-                                            {% else %}
-                                            {#------------------------------------------validado n validado-----------------------------------#}
-                                            <p>{{instance.validado}}</p>
-                                            {% endif %}
-                                            <div class="field is-grouped">
+                                            {% if instance.validado == None or instance.validado == 0  %}
+                                             <div class="field is-grouped">
                                             <p class="control">
                                                 <button class="button is-success is-outlined"
                                                         type="button"
-                                                        onclick=" location.href='consultar_utilizadores/{{instance.validado}}';">
-                                                                                <span class="icon">
-                                                                                    <i class="mdi mdi-check mdi-24px"></i>
+                                                        id="validar"
+                                                        name=""
+                                                        value="{{ instance.id }}"
+                                                        onclick="confirmacao(this.id, this.value)">
+                                                                                <span class="">
+                                                                                    <i class="mdi mdi mdi-24px diogo">Validar</i>
                                                                                 </span>
                                                 </button>
                                             </p>
                                             </div>
+                                            {% elif instance.validado == 1 %}
+                                            <div class="control">
+                                            <button class="button is-outlined" title="Disabled button" disabled>
+                                                <p class=""
+                                                        type=""
+                                                        id="validar"
+                                                        name=""
+
+                                                                                <span class="">
+                                                                                    <i class="mdi mdi mdi-24px diogo">Validado</i>
+                                                                                </span>
+                                            </button>
+                                            {% endif %}
+
                                         </td>
 
                                         {#------------------------------------------BUTOES-----------------------------------#}
@@ -362,10 +418,10 @@
                                             <p class="control">
                                                 <button class="button is-danger is-outlined"
                                                         type="button"
-                                                        id=""
+                                                        id="apagar"
                                                         name=""
                                                         value="{{ instance.id }}"
-                                                        onclick="location.href='apagar_utilizadores/{{instance.id}}';">
+                                                        onclick="confirmacao(this.id, this.value)">
                                                                                     <span class="icon">
                                                                                         <i class="mdi mdi-close mdi-24px"></i>
                                                                                     </span>
@@ -483,25 +539,30 @@
                     </div>
                     {% include 'includes/footer.html' %}
                 </div>
-                {#---------------------------script time-------------------------------------------------------#}
-                 <script> var message_ele =document.getElementById(elementid: "message_container");
-            setTimeout(handler: function(){
-                       message_ele.style.display = "none";
-                    }, timeout: 4000);</script>
+
+                    <script>
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+       </script>
+                    {#-----------------------------hidden inputs-------------------------------------------------------#}
+        <input type="number" id="type" name="type" value="" hidden>
                     {#-----------------------------validar user-------------------------------------------------------#}
                       <div id="popup_validar" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>
             <div class="modal-card animation-content">
                 <section class="modal-card-body is-titleless">
                     <div class="media">
-                        <div class="media-content"><p>Tem a certeza que pretende Validar o utilizador "{{ obj.nome }}"?</p></div>
+                        <div class="media-content"><p>Tem a certeza que pretende Validar este utilizador {{ obj.email }} ?</p></div>
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button id="popup_cancel" class="button" onclick="confirmacao_validar(this.id)">
+                    <button id="popup_cancel" class="button" type="button" onclick="confirmacao('popup_validar')">
                         Cancelar
                     </button>
-                    <button type="submit" id="popup_notificacao" class="button is-success" onclick>
+                    <button type="submit" id="val" name="val" class="button is-success" onclick>
                         Confirmar
                     </button>
                 </footer>
@@ -509,24 +570,24 @@
         </div>
                 {#-----------------------------eliminar user-------------------------------------------------------#}
                  <div id="popup_eliminar_utilizador" class="dialog modal is-active" style="display: none">
-            <div class="modal-background"></div>
-            <div class="modal-card animation-content">
-                <section class="modal-card-body is-titleless">
-                    <div class="media">
-                        <div class="media-content" id="content_delete_utilizador"></div>
+                    <div class="modal-background"></div>
+                    <div class="modal-card animation-content">
+                        <section class="modal-card-body is-titleless">
+                            <div class="media">
+                                <div class="media-content" id="content_delete_utilizador">Tem a certeza que pretende apagar este utilizador {{ obj.nome }} ?</div>
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot">
+                            <button type="button" id="popup_cancel" class="button"
+                                    onclick="confirmacao('popup_eliminar_utilizador')">
+                                Cancelar
+                            </button>
+                            <button type="submit" name="del" id="del" class="button is-success" value="">
+                                Confirmar
+                            </button>
+                        </footer>
                     </div>
-                </section>
-                <footer class="modal-card-foot">
-                    <button type="button" id="popup_cancel" class="button"
-                            onclick="canceldelete('popup_eliminar_sessao')">
-                        Cancelar
-                    </button>
-                    <button type="submit" name="del2" id="del2" class="button is-success" value="">
-                        Confirmar
-                    </button>
-                </footer>
-            </div>
-        </div>
+                </div>
                 </footer>
             </div>
         </div>

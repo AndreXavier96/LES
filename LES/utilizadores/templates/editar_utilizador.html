@@ -114,8 +114,20 @@
                                 </div>
 
 
+
                                 <form method="POST">
                                     {% csrf_token %}
+                                    <section class="step-content">
+                                    <div class="step-item" style="">
+                                        <div style="padding: 1rem 2vw 0px;">
+                                            <hr>
+                                                <h3 style="color:red;">
+                                                    {% if messages1 %}
+                                                        {% for message in messages1 %}
+                                                    <p style="text-align:center"> {{ message }} </p>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </h3>
 
                                     <div class="col s6 m6 is-centered">
                                         <label for="text">Nome</label>
@@ -141,46 +153,76 @@
                                                     <br>
                                                     {% ifequal 1 obj.permitir_localizacao %}
                                                     Permite o acesso à sua localização?
-                                                    <input type="radio" id="sim2" name="permitir_localizacao"
-                                                           value="sim" checked="checked">
-                                                    <label for="sim2">SIM</label>
-                                                    <input type="radio" id="nao2" name="permitir_localizacao"
-                                                           value="nao">
-                                                    <label for="nao2">NAO </label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="permitir_localizacao"
+                                                                                        value="sim"
+                                                                                        checked="checked">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Sim </span>
+                                                    </label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="permitir_localizacao"
+                                                                                        value="nao">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Não </span>
+                                                    </label>
                                                     {% endifequal %}
 
                                                     {% ifequal 0 obj.permitir_localizacao %}
                                                     Permite o acesso à sua localização?
-                                                    <input type="radio" id="sim3" name="permitir_localizacao"
-                                                           value="sim">
-                                                    <label for="sim3">SIM</label>
-                                                    <input type="radio" id="nao3" name="permitir_localizacao"
-                                                           value="nao" checked="checked">
-                                                    <label for="nao3">NAO</label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="permitir_localizacao"
+                                                                                        value="sim"
+                                                                                        >
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Sim </span>
+                                                    </label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="permitir_localizacao"
+                                                                                        value="nao"
+                                                    checked="checked">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Não </span>
+                                                    </label>
                                                     {% endifequal %}
                                                     <br>
                                                     <br>
-                                                    {% ifequal 1 obj.utilizar_dados_pessoais %}
+
+                                                   {% ifequal 1 obj.utilizar_dados_pessoais %}
                                                     Permite a utilização dos seus dados pessoais?
-                                                    <input type="radio" id="sim4" name="utilizar_dados_pessoais"
-                                                           value="sim" checked="checked">
-                                                    <label for="sim4">SIM</label>
-                                                    <input type="radio" id="nao4" name="utilizar_dados_pessoais"
-                                                           value="nao">
-                                                    <label for="nao4">NAO</label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="utilizar_dados_pessoais"
+                                                                                        value="sim"
+                                                                                        checked="checked">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Sim </span>
+                                                    </label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="utilizar_dados_pessoais"
+                                                                                        value="nao">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Não </span>
+                                                    </label>
                                                     {% endifequal %}
 
                                                     {% ifequal 0 obj.utilizar_dados_pessoais %}
                                                     Permite a utilização dos seus dados pessoais?
-                                                    <input type="radio" id="sim5" name="utilizar_dados_pessoais"
-                                                           value="sim">
-                                                    <label for="sim5">SIM</label>
-                                                    <input type="radio" id="nao5" name="utilizar_dados_pessoais"
-                                                           value="nao" checked="checked">
-                                                    <label for="nao5">NAO</label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="utilizar_dados_pessoais"
+                                                                                        value="sim"
+                                                                                        >
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Sim </span>
+                                                    </label>
+                                                    <label class="b-radio radio"><input type="radio"
+                                                                                        name="utilizar_dados_pessoais"
+                                                                                        value="nao"
+                                                    checked="checked">
+                                                        <span class="check"></span>
+                                                        <span class="control-label"> Não </span>
+                                                    </label>
 
                                                     {% endifequal %}
-
 
                                                 </div>
                                             </div>
@@ -200,8 +242,8 @@
             </div>
         </div>
     </div>
-    {% include 'includes/footer.html' %}
 </div>
+ {% include 'includes/footer.html' %}
 
  <script> var message_ele =document.getElementById(elementid: "message_container");
             setTimeout(handler: function(){
