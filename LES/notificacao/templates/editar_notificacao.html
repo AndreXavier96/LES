@@ -69,7 +69,7 @@
                                                         <div class="step-marker"><span class="icon"><i
                                                                 class="mdi mdi-bell mdi-24px"></i></span></div>
                                                         <div class="step-details"><span
-                                                                class="step-title">Enviar Notificação</span></div>
+                                                                class="step-title">Editar {{ tiponotificacao }}</span></div>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -82,51 +82,15 @@
 
                                                         <div class="block">
                                                             <div class="field">
-                                                                <label class="label">Enviar para um único
-                                                                    utilizador</label>
+                                                                <label class="label">Está a enviar para </label>
                                                             </div>
                                                             <div class="control is-clearfix">
-                                                                {{ form.utilizador_rec }}
-                                                            </div>
-                                                        </div>
+                                                                {% if tiponotificacao == "notificação indvidual" %}
+                                                                    {{ obj.utilizador_rec.nome }}
+                                                                {% elif tiponotificacao == "notificação grupo" %}
+                                                                    {{ obj.utilizador_rec.utilizadortipo.tipo }}
+                                                                {% endif %}
 
-                                                        <div class="block">
-                                                            <!--                                                        <div class="field">-->
-                                                            <label class="label">Enviar para um grupo</label>
-                                                            <!--                                                        </div>-->
-                                                            <!--                                                        <div class="control is-clearfix">-->
-                                                            <!--                                                            <input type="text" autocomplete="on" class="input" {{form.teste}}-->
-                                                            <!--                                                        </div>-->
-                                                            <div class="control is-expanded">
-                                                        <span class="select is-fullwidth is-empty">
-                                                            <select name="utilizadortipo" id="utilizadortipo"
-                                                                    onchange="user_type(this.value)">
-                                                                <option value="escolher" hidden>Escolher</option>
-                                                                {% for u in utilizadortipo %}
-                                                                    {% if utilizador_env.utilizadortipo.tipo == "Administrador" %}
-                                                                        {% if u.tipo != 'Administrador' %}
-                                                                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                                                                        {% endif %}
-                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Participante Individual" %}
-                                                                        {% if u.tipo != 'Coordenador' and u.tipo != 'Docente' and u.tipo != 'Colaborador' and u.tipo != 'Participante em Grupo' and u.tipo != 'Participante Individual' %}
-                                                                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                                                                        {% endif %}
-                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Coordenador" %}
-                                                                        {% if u.tipo != 'Administrador' and u.tipo != 'Coordenador' and u.tipo != 'Participante em Grupo' and u.tipo != 'Participante Individual' %}
-                                                                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                                                                        {% endif %}
-                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Colaborador" %}
-                                                                        {% if u.tipo != 'Administrador' and u.tipo != 'Colaborador' and u.tipo != 'Participante em Grupo' and u.tipo != 'Participante Individual' %}
-                                                                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                                                                        {% endif %}
-                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Docente" %}
-                                                                        {% if u.tipo != 'Administrador' and u.tipo != 'Participante em Grupo' and u.tipo != 'Participante Individual' and u.tipo != 'Docente' %}
-                                                                            <option value="{{ u.tipo }}">{{ u.tipo }}</option>
-                                                                        {% endif %}
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            </select>
-                                                        </span>
                                                             </div>
                                                         </div>
 
@@ -135,7 +99,7 @@
                                                                 <label class="label">Assunto</label>
                                                             </div>
                                                             <div class="control is-clearfix">
-                                                                {{ form.assunto }}
+                                                                <input value="{{ obj.assunto }}" type="text" name="assunto" class="input" maxlength="200" required="" id="id_assunto">
                                                             </div>
                                                         </div>
 
@@ -144,7 +108,7 @@
                                                                 <label class="label">Conteúdo</label>
                                                             </div>
                                                             <div class="control is-clearfix">
-                                                                {{ form.conteudo }}
+                                                                <input value="{{ obj.conteudo }}" type="text" name="conteudo" class="input" maxlength="200" required="" id="id_conteudo">
                                                             </div>
                                                         </div>
 
@@ -161,8 +125,8 @@
                                                                     </p>
                                                                     <div class="control is-clearfix">
                                                                         {#                                                                       {{ form.prioridade }}#}
-                                                                        <input type="number" autocomplete="on" step="1"
-                                                                               class="input" name="prioridade" min="0"
+                                                                        <input value="{{ obj.prioridade }}" type="number" autocomplete="on" step="1"
+                                                                               class="input" name="prioridade" min="0" max="5" 
                                                                                id="id_prioridade">
                                                                     </div>
                                                                     <p class="control">

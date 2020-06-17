@@ -27,11 +27,12 @@ Including another URLconf
 
 from django.urls import path
 from . import views
-from .views import notificacao, Consultar_notificacao
+from .views import notificacao, Consultar_notificacao, Editar_notificacao
 
 app_name = "notificacao"
 
 urlpatterns = [
     path("notificacao/", notificacao.as_view(), name='notificacao'),
     path("consultar_notificacao/", Consultar_notificacao.as_view(), name='consultar_notificacao'),
+    path("consultar_notificacao/editar_notificacao/<int:pk>", Editar_notificacao.as_view(), name='editar_notificacao'),
 ]
