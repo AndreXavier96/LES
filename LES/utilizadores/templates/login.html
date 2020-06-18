@@ -8,16 +8,7 @@
 
     <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
-    <script>
-        // suppose the `id` attribute of element is `message_container`.
-        var message_ele = document.getElementById("message_container");
 
-        setTimeout(function(){
-           message_ele.style.display = "none";
-        }, 4000);
-        // Timeout is 3 sec, you can change it
-
-</script>
     <title></title>
     <style>
 .notices{
@@ -160,5 +151,13 @@
 {% endblock %}
 
 </body>
+<script>
 
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+
+</script>
 </html>
