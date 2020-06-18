@@ -115,31 +115,29 @@
             <div class="half">
                 <h2>Transportes</h2>
                 <p>Transporte para Ualg: {{ transporte.tipo_transporte }}</p>
-                <p>Hora Chegada: {{ transporte.hora_chegada|date:"H:i" }}</p>
-                <p>Hora Partida: {{ transporte.hora_partida|date:"H:i" }}</p>
-                {% if transporte.transporte_para_campus == '' %}
+                <p>Hora Chegada: {{ transporte.hora_chegada }}</p>
+                <p>Hora Partida: {{ transporte.hora_partida }}</p>
+                {% if transporte.transporte_para_campus == 'nao' %}
                     <p>Requer Transporte Da Estação para Campus: Não</p>
-                {% else %}
-                    <p>Requer Transporte Da Estação para Campus: Sim,{{ transporte.transporte_para_campus }}</p>
+                {% elif transporte.transporte_para_campus == 'sim' %}
+                    <p>Requer Transporte Da Estação para Campus: Sim</p>
                 {% endif %}
-                {% if transporte.transporte_entre_campus == '' %}
+                {% if transporte.transporte_entre_campus == 'nao' %}
                     <p>Requer Transporte entre Campus: Não</p>
-                {% else %}
-                    <p>Requer Transporte entre Campus: Sim,{{ transporte.transporte_entre_campus }}
-                        ás {{ transporte.hora_entre_campus }}</p>
+                {% elif transporte.transporte_entre_campus == 'só ida' %}
+                    <p>Requer Transporte entre Campus: Sim, {{ transporte.transporte_entre_campus }}</p>
+                {% elif transporte.transporte_entre_campus == 'ida e volta' %}
+                    <p>Requer Transporte entre Campus: Sim, {{ transporte.transporte_entre_campus }}</p>
                 {% endif %}
             </div>
             <div class="half">
                 <h2>Refeição</h2>
-                {% if eminsc.numero_aluno_normal == 0 and eminsc.numero_outro_normal == 0 %}
+                {% if eminsc.numero_aluno_normal == '0' and eminsc.numero_outro_normal == '0' %}
                     <p>Requer Refeição: Não</p>
                 {% else %}
                     <p>Requer Refeição: Sim</p>
-                    <p>Refeiçoes para Aluno: {{ eminsc.numero_aluno_normal }} /cada
-                        {{ eminsc.ementa.preco_aluno_normal }}&euro;</p>
-                    <p>Refeiçoes para Outro: {{ eminsc.numero_outro_normal }} /cada
-                        {{ eminsc.ementa.preco_outro_normal }}&euro;</p>
-                    <p>Preço Total:{{ preco_total }}&euro;</p>
+                    <p>Refeiçoes para Aluno: {{ eminsc.numero_aluno_normal }}, {{ eminsc.ementa.preco_aluno_normal }}&euro;/cada</p>
+                    <p>Refeiçoes para Outro: {{ eminsc.numero_outro_normal }}, {{ eminsc.ementa.preco_outro_normal }}&euro;/cada</p>
                 {% endif %}
             </div>
             <div class="half">

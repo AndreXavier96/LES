@@ -72,7 +72,9 @@ class register(View):
             if utilizadortipo_value == "Participante Individual" or utilizadortipo_value == "Participante em Grupo":
                 unidadeorganica = None
                 departamento = None
+                validado=1
             else:
+                validado=0
                 unidadeorganica1 = request.POST['unidadeorganica']
                 print(unidadeorganica1)
                 unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica1)
@@ -138,7 +140,7 @@ class register(View):
                                       cartao_cidadao=cartao_cidadao, deficiencias=deficiencias,
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                      unidadeorganica=unidadeorganica, departamento=departamento)
+                                      unidadeorganica=unidadeorganica, departamento=departamento, validado=validado)
             obj_user=Utilizador.objects.get(email=email)
             User.objects.create_user(username=email, password=password_digest,email=email)
             AuthUser.objects.filter(username=email).update(utilizador=obj_user)
@@ -212,37 +214,29 @@ class Consultar_user(View):
             "object_list": queryset,
             "utilizador": utilizador
         }
-        return render(request, "consultar_utilizador..html", context)
+        return render(request, "consultar_utilizador.html", context)
 
     def post(self, request):
             post = request.POST
-            id = post['del']
-            print(id)
-            Utilizador.objects.filter(pk=id).delete()
-            return redirect('/utilizadores/consultar_utilizador/')
+            type =post['type']
+            if type == "1":
+                id = post['del']
+                print(id)
+                Utilizador.objects.get(pk=id).delete()
+                messages.add_message(request, messages.WARNING, "Utilizador APAGADO com sucesso")
+            elif type == "0":
+                print("GGGGGGGGGGGGG")
+                id = post['val']
+                user = Utilizador.objects.get(pk=id)
+                print(user.validado)
+                user.validado=1
+                user.save()
+                print(user.validado)
 
 
+            return redirect('/utilizadores/consultar_utilizadores/')
 
 
-class Apagar_user(View):
-    template_name = 'apagar_utilizador.html'
-
-    def get(self, request, pk):
-        obj = Utilizador.objects.get(pk=pk)
-        context = {
-            "obj": obj
-        }
-
-        return render(request, 'apagar_utilizador.html', context)
-
-    def post(self, request, pk):
-        post = request.POST
-        id = post['del']
-        print(id)
-        Utilizador.objects.filter(pk=id).delete()
-        messages.add_message(request, messages.WARNING, "Utilizador APAGADO com sucesso")
-
-        return redirect('/utilizadores/consultar_utilizadores/')
 
 
 class Editar_user(View):
@@ -260,6 +254,7 @@ class Editar_user(View):
         permitir_localizacao = Utilizador.objects.get(pk=pk).permitir_localizacao
         utilizar_dados_pessoais = Utilizador.objects.get(pk=pk).utilizar_dados_pessoais
 
+
         return render(request, self.template_name, {
             'obj': obj,
             'form': form,
@@ -273,6 +268,7 @@ class Editar_user(View):
             'utilizar_dados_pessoais': utilizar_dados_pessoais,
 
         })
+
 
     def post(self, request, pk):
 
@@ -293,7 +289,25 @@ class Editar_user(View):
         else:
             utilizar_dados_pessoais = 0
 
+
         messages.add_message(request, messages.SUCCESS, "Utilizador EDITADO com sucesso")
+
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if (re.search(regex, email)):
+            print("Valid Email")
+        else:
+            messages.error(request, "O email nao tem o formato apropriado")
+
+
+        if len(numero_telemovel) != 9:
+            messages.error(request, "O numero de telemovel deve conter 9 algarismos")
+
+
+        if len(cartao_cidadao) != 8:
+            messages.error(request, "O numero do cartao de cidadão deve conter 8 algarismos")
+
+        # ------------------------------------------------------------------------------
+
 
         Utilizador.objects.filter(pk=pk).update(
                                             nome=nome, email=email,

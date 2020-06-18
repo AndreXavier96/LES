@@ -167,8 +167,28 @@ class SessaoAtividade(models.Model):
         db_table = 'sessao_atividade'
 
 
+# class Tarefa(models.Model):
+#     nome = models.CharField(max_length=45)
+#     descricao = models.TextField()
+#     tipo_tarefa = models.CharField(max_length=2)
+#     localizacao_grupo = models.TextField(blank=True, null=True)
+#     origem = models.CharField(max_length=255)
+#     destino = models.CharField(max_length=255, blank=True, null=True)
+#     horario = models.TimeField(blank=True, null=True)
+#     dia = models.DateField()
+#     sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)#import do models inscrição
+#     sessao_origem_id = models.IntegerField(blank=True, null=True)
+#     sessao_destino_id = models.IntegerField(blank=True, null=True)
+#     colaborador_id = models.IntegerField()
+#     grupo = models.CharField(max_length=255)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'tarefa'
+
 class Tarefa(models.Model):
-    nome = models.CharField(max_length=45)
+    name = models.CharField(max_length=45)
+    estado = models.CharField(max_length=2, blank=True, null=True)
     descricao = models.TextField()
     tipo_tarefa = models.CharField(max_length=2)
     localizacao_grupo = models.TextField(blank=True, null=True)
@@ -176,16 +196,17 @@ class Tarefa(models.Model):
     destino = models.CharField(max_length=255, blank=True, null=True)
     horario = models.TimeField(blank=True, null=True)
     dia = models.DateField()
-    sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)#import do models inscrição
+    sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)
+    colaborador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
+    coordenador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
+    colaboracao = models.ForeignKey(Colaboracao, models.DO_NOTHING, blank=True, null=True, related_name='1+')
     sessao_origem_id = models.IntegerField(blank=True, null=True)
     sessao_destino_id = models.IntegerField(blank=True, null=True)
-    colaborador_id = models.IntegerField()
     grupo = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'tarefa'
-
 
 class Tematica(models.Model):
     tema = models.CharField(unique=True, max_length=255)

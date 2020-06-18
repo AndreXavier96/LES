@@ -21,11 +21,14 @@ class Escola(models.Model):
 
 
 class Inscricao(models.Model):
-    dia = models.DateField(auto_now_add=True)
+    dia = models.DateField(default=datetime.date.today)
     escola = models.ForeignKey(Escola, models.DO_NOTHING, blank=True, null=True)
-    # estado = models.CharField(max_length=45, blank=True, null=True)
     hora_check_in = models.TimeField()
     unidadeorganica_checkin = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, db_column='unidadeorganica_checkin', blank=True, null=True)
+    check_in = models.IntegerField(default=0)
+    area_estudos = models.CharField(max_length=45)
+    ano_estudos = models.IntegerField()
+    utilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='utilizador')
 
     class Meta:
         managed = False
@@ -54,9 +57,7 @@ class EmentaInscricao(models.Model):
     ementa = models.ForeignKey(Ementa, models.DO_NOTHING)
     inscricao = models.ForeignKey('Inscricao', models.DO_NOTHING)
     numero_aluno_normal = models.IntegerField(blank=True, null=True)
-    numero_aluno_economico = models.IntegerField(blank=True, null=True)
     numero_outro_normal = models.IntegerField(blank=True, null=True)
-    numero_outro_economico = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -80,7 +81,7 @@ class Transporteproprio(models.Model):
         db_table = 'transporteproprio'
 
 
-class Percursos(models.Model):
+class TransporteproprioPercursos(models.Model):
     origem = models.CharField(max_length=255)
     destino = models.CharField(max_length=255)
     hora = models.TimeField()
@@ -88,45 +89,32 @@ class Percursos(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'percursos'
+        db_table = 'transporteproprio_percursos'
 
     def __str__(self):
         return self.origem+' '+self.destino
 
 
-class Utilizadorparticipante(models.Model):
-    utilizador = models.ForeignKey(Utilizador, models.DO_NOTHING, db_column='utilizador')
-    escola = models.ForeignKey(Escola, models.DO_NOTHING, db_column='escola')
-    area_estudos = models.CharField(max_length=45)
-    ano_estudos = models.IntegerField()
-    check_in = models.IntegerField(blank=True, null=True)
+class InscricaoIndividual(models.Model):
+    autorizacao = models.IntegerField(blank=True, null=True)
+    ficheiro_autorizacao = models.CharField(max_length=255, blank=True, null=True)
+    acompanhantes = models.IntegerField()
     inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'utilizadorparticipante'
+        db_table = 'inscricao_individual'
 
 
-class ParticipanteIndividual(models.Model):
-    autorizacao = models.IntegerField()
-    ficheiro_autorizacao = models.CharField(max_length=255)
-    acompanhantes = models.IntegerField()
-    participante = models.ForeignKey(Utilizadorparticipante, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'participante_individual'
-
-
-class ParticipanteGrupo(models.Model):
+class InscricaoGrupo(models.Model):
     total_participantes = models.IntegerField()
     total_professores = models.IntegerField()
     turma = models.CharField(max_length=255)
-    participante = models.ForeignKey(Utilizadorparticipante, models.DO_NOTHING)
+    inscricao = models.ForeignKey(Inscricao, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'participante_grupo'
+        db_table = 'inscricao_grupo'
 
 
 # -------------------------------------------------------------------------------------
@@ -236,7 +224,7 @@ class Atividade(models.Model):
    # responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
-        db_table = 'atividade'
+        db_table = 'Atividade'
 
     def get_tipo(self):
         return self.tipo_atividade

@@ -6,7 +6,7 @@ from django.views.generic import View
 
 
 # from .forms import Criar_Colab_Form, Editar_Colab_From
-from utilizadores.models import Colaboracao, Diaaberto, UtilizadorTarefa, AuthUser, Utilizador
+from utilizadores.models import Colaboracao, Diaaberto, UtilizadorTarefa, AuthUser, Utilizador, Tarefa
 
 
 def remove_all_space(string):
@@ -166,6 +166,8 @@ class Consultar_colab(View):
         print(user_id.pk)
         pk_user = AuthUser.objects.get(pk=user_id.pk).utilizador
         lista_colab_final = Colaboracao.objects.filter(colaborador_id=pk_user.pk)
+        lista_tarefa_atrib = Tarefa.objects.filter(colaborador_id=pk_user.pk)
+        print(lista_tarefa_atrib)
         # for x in lista_colab:
         #     lista_colab3.append(str(x.data_colaboracao))
         #     lista_colab_final =  zip(lista_colab, lista_colab3)
@@ -194,7 +196,8 @@ class Consultar_tarefa(View):
     def get(self, request):
         lista_colab3 = []
         user_id=request.user
-        lista_tarefa = UtilizadorTarefa.objects.filter(colaborador_id=user_id.pk)
+        # lista_tarefa = UtilizadorTarefa.objects.filter(colaborador_id=user_id.pk)
+        lista_tarefa = Tarefa.objects.filter(colaborador_id=user_id.pk)
         print(lista_tarefa)
         # for x in lista_colab:
         #     lista_colab3.append(str(x.data_colaboracao))

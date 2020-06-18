@@ -18,7 +18,7 @@ from django.contrib.auth import views as auth_views
 
 from django.urls import path
 from . import views
-from .views import register, Consultar_user, Apagar_user, Editar_user
+from .views import register, Consultar_user, Editar_user
 
 app_name = "Utilizadores"
 
@@ -31,7 +31,6 @@ urlpatterns = [
     path("success/", views.success, name="success"),
     path("consultar_utilizadores/", Consultar_user.as_view(), name='consultar_user'),
     path("consultar_utilizadores/editar_utilizadores/<int:pk>/", Editar_user.as_view(), name='editar_user'),
-    path("consultar_utilizadores/apagar_utilizadores/<int:pk>/", Apagar_user.as_view(), name='apagar_user'),
 
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='registration/password_change.html',
                                                                    success_url=reverse_lazy(

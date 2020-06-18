@@ -4,6 +4,7 @@
     <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
     <meta charset="utf-8"/>
     <title>Dia Aberto - Criar Inscrição</title>
+
     {#    jquery  #}
     <script src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
             integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs=" crossorigin="anonymous"></script>
@@ -20,7 +21,7 @@
 
     <script src="{% static 'main/js/inscricao.js' %}"></script>
     <link rel="stylesheet" href="{% static 'main/css/filter.css' %}">
-
+    <script src="{% static 'main/js/inscricao_errors.js' %}"></script>
 
     {#    paf   css #}
     <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
@@ -121,7 +122,8 @@
                                                         <span class="select is-fullwidth">
                                                             <label for="id_area_estudos"></label>
                                                             <select name="area_estudos" id="id_area_estudos">
-                                                                <option value="escolha" hidden="hidden">Escolher</option>
+                                                                <option value="escolha"
+                                                                        hidden="hidden">Escolher</option>
                                                                 <option value="Ciências e Tecnologias">Ciências e Tecnologias</option>
                                                                 <option value="Línguas e Humanidades">Línguas e Humanidades</option>
                                                                 <option value="Artes Visuais">Artes Visuais</option>
@@ -135,12 +137,13 @@
                                                         <div class="field">
                                                             <label class="label" for="id_ano_estudos">Ano
                                                                 Escolar:</label>
-                                                            <div class="control">
+                                                            <div id="id_ano_estudos_div" class="control">
                                                                 <input class="input" type="number" name="ano_estudos"
-                                                                       required="required"
                                                                        id="id_ano_estudos" min="0"
-                                                                       max="12">
+                                                                       oninput="formerror(this.name, this.id, 'anoescolar')">
+                                                                <span id="id_ano_estudos_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                             </div>
+                                                            <p id="id_ano_estudos_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                     </div>
                                                     {% if utilizador.utilizadortipo.tipo == "Participante Individual" %}
@@ -148,25 +151,29 @@
                                                             <div class="field">
                                                                 <label class="label"
                                                                        for="id_acompanhantes">Acompanhantes:</label>
-                                                                <div class="control">
+                                                                <div class="control" id="id_acompanhantes_div">
                                                                     <input class="input" type="number"
                                                                            name="acompanhantes"
                                                                            required=""
                                                                            id="id_acompanhantes"
-                                                                           min="0">
+                                                                           min="0" oninput="formerror(this.name, this.id, 'number')">
+                                                                    <span id="id_acompanhantes_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                        <p id="id_acompanhantes_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                     {% elif utilizador.utilizadortipo.tipo == "Participante em Grupo" %}
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label class="label"
                                                                        for="id_turma">Turma:</label>
-                                                                <div class="control">
+                                                                <div class="control" id="id_turma_div">
                                                                     <input class="input" type="text" name="turma"
-                                                                           required="" id="id_turma">
+                                                                           required="" id="id_turma" oninput="formerror(this.name, this.id, 'mixed')">
+                                                                    <span id="id_turma_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                        <p id="id_turma_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                     {% endif %}
                                                 </div>
@@ -202,25 +209,8 @@
                                                                     </span>
                                                                     </label>
                                                                 </div>
+                                                                <p class="has-text-success">Apenas PDF e PNG</p>
                                                             </div>
-                                                            {#------------------------------------------------------------------------------------------------------#}
-                                                            {#                                                            <div class="file has-name">#}
-                                                            {#                                                                <label class="file-label">#}
-                                                            {#                                                                    <input class="file-input" type="file" name="resume"#}
-                                                            {#                                                                           id="file_upload" onchange="showFileName()">#}
-                                                            {#                                                                    <span class="file-cta">#}
-                                                            {#                                                                              <span class="file-icon">#}
-                                                            {#                                                                                <i class="fas fa-upload"></i>#}
-                                                            {#                                                                              </span>#}
-                                                            {#                                                                              <span class="file-label">#}
-                                                            {#                                                                                Choose a file…#}
-                                                            {#                                                                              </span>#}
-                                                            {#                                                                            </span>#}
-                                                            {#                                                                    <span class="file-name" id="filename_upload"></span>#}
-                                                            {#                                                                </label>#}
-                                                            {#                                                            </div>#}
-                                                            {#------------------------------------------------------------------------------------------------------#}
-
                                                         </div>
                                                         <div class="column"></div>
                                                     </div>
@@ -244,8 +234,7 @@
                                                                 <label for="id_total_participantes"></label>
                                                                 <input type="number" autocomplete="on" step="1"
                                                                        class="input" name="total_participantes"
-                                                                       value="0" min="0" required=""
-                                                                       id="id_total_participantes">
+                                                                       value="0" min="0" id="id_total_participantes">
                                                             </div>
                                                             <p class="control">
                                                                 <button type="button" class="button is-primary"
@@ -271,8 +260,7 @@
                                                                     <label for="id_total_professores"></label>
                                                                     <input type="number" autocomplete="on" step="1"
                                                                            class="input" name="total_professores"
-                                                                           value="0" min="0" required=""
-                                                                           id="id_total_professores">
+                                                                           value="0" min="0" id="id_total_professores">
                                                                 </div>
                                                                 <p class="control">
                                                                     <button type="button" class="button is-primary"
@@ -325,60 +313,68 @@
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_nome">Nome da Escola</label>
-                                                                <div class="control is-clearfix">
+                                                                <div class="control is-clearfix" id="id_nome_div">
                                                                     <input class="input" type="text" name="nome"
-                                                                           maxlength="50" id="id_nome"
-                                                                           required="required">
+                                                                           maxlength="70" id="id_nome"
+                                                                           oninput="formerror(this.name, this.id, 'mixed')">
+                                                                    <span id="id_nome_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                            <p id="id_nome_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_morada">Morada</label>
-                                                                <div class="control is-clearfix">
+                                                                <div class="control is-clearfix" id="id_morada_div">
                                                                     <input class="input" type="text" name="morada"
-                                                                           maxlength="50" id="id_morada"
-                                                                           required="required">
+                                                                           maxlength="70" id="id_morada"
+                                                                           oninput="formerror(this.name, this.id, 'mixed')">
+                                                                    <span id="id_morada_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                            <p id="id_morada_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                     </div>
                                                     <div class="columns">
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_codigo_postal">Código Postal</label>
-                                                                <div class="control is-clearfix">
+                                                                <div class="control is-clearfix" id="id_codigo_postal_div">
                                                                     <input class="input" type="text"
-                                                                           name="codigo_postal" maxlength="8"
+                                                                           name="codigo_postal"
                                                                            id="id_codigo_postal"
-                                                                           required="required"
-                                                                           pattern="\d{4}[ -]\d{3}"
-                                                                           placeholder="xxxx-xxx">
+                                                                           placeholder="xxxx-xxx"
+                                                                           onchange="formerror(this.name, this.id, 'postalcode')">
+                                                                    <span id="id_codigo_postal_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                            <p id="id_codigo_postal_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_localidade">Localidade</label>
-                                                                <div class="control is-clearfix">
+                                                                <div class="control is-clearfix" id="id_localidade_div">
                                                                     <input class="input" type="text"
                                                                            name="localidade"
                                                                            maxlength="50" id="id_localidade"
-                                                                           required="required">
+                                                                           oninput="formerror(this.name, this.id, 'textandnumber')">
+                                                                    <span id="id_localidade_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                            <p id="id_localidade_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label for="id_contacto">Contacto</label>
-                                                                <div class="control is-clearfix">
+                                                                <div class="control is-clearfix" id="id_contacto_div">
                                                                     <input class="input" type="number"
                                                                            name="contacto"
-                                                                           min="0"
-                                                                           max="999999999" id="id_contacto"
-                                                                           required="required">
+                                                                           id="id_contacto"
+                                                                           onchange="formerror(this.name, this.id, 'movel')">
+                                                                    <span id="id_contacto_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
                                                                 </div>
                                                             </div>
+                                                            <p id="id_contacto_msg" class="help is-danger" style="display: none">Por favor, preencha este campo corretamente.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -521,7 +517,7 @@
                                                                     <select name="tipo_transporte" id="tipo_transporte"
                                                                             onchange="tipoTransporte(this.value)"
                                                                             required>
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="proprio">Transporte próprio</option>
                                                                         <option value="autocarro">Autocarro Publico</option>
                                                                         <option value="comboio">Comboio</option>
@@ -558,7 +554,7 @@
                                                     <div class="control is-expanded">
                                                                 <span class="select">
                                                                     <select name="qual" id="qual_campus_2">
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="penha">Campus da Penha</option>
                                                                         <option value="gambelas">Campus das Gambelas</option>
                                                                     </select>
@@ -631,7 +627,7 @@
                                                                     <select name="transporte_campus"
                                                                             id="transporte_campus"
                                                                             onchange="entreCampusRelogio(this.value)">
-                                                                        <option hidden>Escolher</option>
+                                                                        <option value="escolher" hidden>Escolher</option>
                                                                         <option value="penha_para_gambelas">Campus da Penha para Gambelas</option>
                                                                         <option value="gambelas_para_penha">Campus das Gambelas para Penha</option>
                                                                     </select>
@@ -917,7 +913,6 @@
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>
-
                                                                                 {% endif %}
                                                                             {% endfor %}
                                                                             </tbody>
@@ -1051,7 +1046,8 @@
                                                 <button type="button" id="confirmacao"
                                                         class="button is-large is-success is-outlined"
                                                         style="display: none"
-                                                        onclick="pagination(this.id)">
+                                                        {#onclick="pagination(this.id)">#}
+                                                        onclick="validateForm(this.id, '{{ utilizador.utilizadortipo.tipo }}')">
                                                     <span> Submeter </span>
                                                     <span class="icon is-medium">
                                                             <i class="mdi mdi-forward mdi-36px"></i>
@@ -1072,8 +1068,7 @@
                                     <label for="row_deletedd" hidden></label>
                                     <input type="number" id="row_deletedd" name="row_deletedd" value="" hidden>
                                     <label for="max_incritos_id" hidden></label>
-                                    <input type="number" id="max_incritos_id" value="" hidden
-
+                                    <input type="number" id="max_incritos_id" value="" hidden>
                                 </div>
                             </div>
                         </div>
@@ -1081,8 +1076,8 @@
                 </div>
             </div>
             {% include 'includes/footer.html' %}
-
         </div>
+        {#    popup#}
         <div id="popup_confirmacao" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>
             <div class="modal-card animation-content">
