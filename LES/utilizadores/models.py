@@ -186,23 +186,68 @@ class SessaoAtividade(models.Model):
 #         managed = False
 #         db_table = 'tarefa'
 
+# class Tarefa(models.Model):
+#     nome = models.CharField(max_length=45)
+#     estado = models.CharField(max_length=2, blank=True, null=True)
+#     descricao = models.TextField()
+#     tipo_tarefa = models.CharField(max_length=2)
+#     localizacao_grupo = models.TextField(blank=True, null=True)
+#     origem = models.CharField(max_length=255)
+#     destino = models.CharField(max_length=255, blank=True, null=True)
+#     horario = models.TimeField(blank=True, null=True)
+#     dia = models.DateField()
+#     sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)
+#     colaborador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
+#     coordenador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
+#     colaboracao = models.ForeignKey(Colaboracao, models.DO_NOTHING, blank=True, null=True, related_name='1+')
+#     sessao_origem_id = models.IntegerField(blank=True, null=True)
+#     sessao_destino_id = models.IntegerField(blank=True, null=True)
+#     grupo = models.CharField(max_length=255)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'tarefa'
+
+class Edificio(models.Model):
+    nome = models.CharField(max_length=40)
+    campus = models.ForeignKey('Campus', models.DO_NOTHING, related_name='1+')
+
+    class Meta:
+        managed = False
+        db_table = 'Edificio'
+        unique_together = (('nome', 'campus'),)
+
+
+class Sala(models.Model):
+    identificacao = models.CharField(max_length=40)
+    edificio = models.ForeignKey(Edificio, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Sala'
+        unique_together = (('identificacao', 'edificio'),)
+
+
 class Tarefa(models.Model):
-    name = models.CharField(max_length=45)
+    nome = models.CharField(max_length=45)
     estado = models.CharField(max_length=2, blank=True, null=True)
     descricao = models.TextField()
     tipo_tarefa = models.CharField(max_length=2)
-    localizacao_grupo = models.TextField(blank=True, null=True)
-    origem = models.CharField(max_length=255)
-    destino = models.CharField(max_length=255, blank=True, null=True)
+    # localizacao_grupoo = models.TextField(blank=True, null=True)
+    # origemm = models.CharField(max_length=255)
+    # destinoo = models.CharField(max_length=255, blank=True, null=True)
     horario = models.TimeField(blank=True, null=True)
     dia = models.DateField()
-    sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)
+    # sessaoatividade = models.ForeignKey(SessaoAtividade, models.DO_NOTHING, blank=True, null=True)
     colaborador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
     coordenador = models.ForeignKey('Utilizador', models.DO_NOTHING, blank=True, null=True, related_name='1+')
     colaboracao = models.ForeignKey(Colaboracao, models.DO_NOTHING, blank=True, null=True, related_name='1+')
-    sessao_origem_id = models.IntegerField(blank=True, null=True)
-    sessao_destino_id = models.IntegerField(blank=True, null=True)
+    # sessao_origem_id = models.IntegerField(blank=True, null=True)
+    # sessao_destino_id = models.IntegerField(blank=True, null=True)
     grupo = models.CharField(max_length=255)
+    atividade = models.ForeignKey(Atividade, models.DO_NOTHING, blank=True, null=True)
+    destino = models.ForeignKey(Sala, models.DO_NOTHING, blank=True, null=True,related_name='1+')
+    localizacao_grupo = models.ForeignKey(Sala, models.DO_NOTHING, blank=True, null=True,related_name='1+')
 
     class Meta:
         managed = False

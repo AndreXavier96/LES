@@ -191,7 +191,9 @@ function cancelSessao(val) {
                                                     {% endif %}
                                                 </td>
                                                 <td data-label="Ações" class="has-text-centered">
+
                                                     {% if lc.tarefa_atribuida != 1 %}
+
                                                     <button type="button"
                                                            onclick="location.href='editar_colab/{{lc.id}}';"
                                                            value="Editar"><i style='font-size:18px' class='material-icons'>&#xe254;</i>
@@ -202,6 +204,8 @@ function cancelSessao(val) {
                                                     </button>
 <!--                                                    <span type="submit" id="2" name="del" value="{{lc.id}}" class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>-->
 <!--                                                    <span class="icon has-text-danger"><i class="mdi mdi-close-box mdi-24px"></i></span>-->
+
+
                                                     {% endif %}
                                                 </td> <!---->
                                             </tr>

@@ -20,12 +20,14 @@ class register(View):
         departamento = Departamento.objects.all
         unidadeorganica = UnidadeOrganica.objects.all
         unidadeorganica_dep = UnidadeorganicaDepartamento.objects.all
+        all_users = Utilizador.objects.all
         return render(request, self.template_name, {
             'form': form,
             'utilizadortipo': utilizadortipo,
             'departamento': departamento,
             'unidadeorganica': unidadeorganica,
-            'unidadeorganica_dep': unidadeorganica_dep
+            'unidadeorganica_dep': unidadeorganica_dep,
+            'all_users': all_users,
         })
 
     def post(self, request):
@@ -111,6 +113,15 @@ class register(View):
            # departamento = Departamento.objects.get(nome=departamento)
 
             # erros--------------------------------------------------------------------------------
+            # all_users = Utilizador.objects.all
+            # users_emails = all_users.email
+            # print(all_users)
+            # for all_emails in all_users:
+            #     if all_emails.email == email:
+            #         messages.error(request, "O email já existe na base de dados")
+            #         return redirect('/utilizadores/register/')
+
+
             if len(password_digest) < 5:
                 messages.error(request, "a password é demasiado pequena")
                 return redirect('/utilizadores/register/')
@@ -157,6 +168,8 @@ class register(View):
 
             return redirect('/inscricao/home')"""
         return redirect('/utilizadores/login')
+
+
 def logout_request(request):
     logout(request)
     messages.info(request, "Terminou a sessão com sucesso")
