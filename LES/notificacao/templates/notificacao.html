@@ -34,6 +34,7 @@
             element.style.display = 'none';
         }
     }
+
 </script>
 <body>
 {% block content %}
@@ -181,7 +182,7 @@
                                         </section>
                                         <div class="column is-8 is-offset-2">
                                             <div class="level">
-                                                <div class="level-left"><a href="/tarefas" class="button is-outlined"
+                                                <div class="level-left"><a  class="button is-outlined"
                                                                            type="button"> <span> Cancelar </span>
                                                 </a>
                                                 </div>
@@ -215,7 +216,7 @@
                     </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button id="popup_cancel" class="button" onclick="confirmacao_notificacao(this.id)">
+                    <button type="button" id="popup_cancel" class="button" onclick="confirmacao_notificacao(this.id)">
                         Cancelar
                     </button>
                     <button type="submit" id="popup_notificacao" class="button is-success" onclick>
