@@ -302,7 +302,7 @@ class ConsultarInscricaoView(View):
             sai.sessaoAtividade.n_alunos = sai.sessaoAtividade.n_alunos + sai.numero_alunos
             sai.sessaoAtividade.save()
             sai.delete()
-            messages.success(request, 'Sessão inscrita apagada com sucesso!')
+            messages.success(request, 'Sessão inscrita  apagada com sucesso!')
         return redirect('/inscricao/consultar')
 
 
@@ -339,6 +339,7 @@ class EditarInscricaoView(View):
                 for s in sessoesinscritas:
                     s.sessaoAtividade.n_alunos = s.sessaoAtividade.n_alunos + s.numero_alunos
                     s.sessaoAtividade.save()
+                print(transporteproprio.hora_chegada)
                 return render(request, self.template_name, {
                     'values': values,
                     'escolas': escolas,

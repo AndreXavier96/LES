@@ -316,3 +316,9 @@ function incremental(type, id) {
     document.getElementById(id).setAttribute('value', value)
 }
 
+function check_n_emails(val,counter) {
+    let all_emails = document.getElementById('all_emails');
+    let email_final = document.getElementById('email_final');
+    allemails.insertAdjacentHTML("afterend",'<input type="text" name="'+val+counter+'" id="id'+val+counter+'">');
+    all_emails.insertAdjacentHTML("afterend", "<span style='color:red'>My span</span>");
+}
