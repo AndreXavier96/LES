@@ -24,46 +24,8 @@
     <script src="{% static 'main/js/consultar_inscricao.js' %}"></script>
 
 </head>
-<style>
-    .notices {
-        position: fixed;
-        display: flex;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 8em;
-        overflow: hidden;
-        z-index: 1000;
-        pointer-events: none;
-    }
-</style>
 <body>
 {% block content %}
-
-    {% if messages %}
-        {% for message in messages %}
-            <div id="message_container" class="notices is-bottom">
-                <div role="alert" {% if message.tags == 'error' %} class="toast is-danger is-bottom" {% else %}
-                     class="toast is-success is-bottom" {% endif %} style="">
-                    <div>{{ message }}</div>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
-    <script>
-        // suppose the `id` attribute of element is `message_container`.
-        var message_ele = document.getElementById("message_container");
-
-        setTimeout(function () {
-            message_ele.style.display = "none";
-        }, 4000);
-        // Timeout is 3 sec, you can change it
-
-    </script>
-
-
-
     <form method="POST">
         {% csrf_token %}
         <div data-v-8716d23a="" id="app">
@@ -126,8 +88,7 @@
                                                 </thead>
                                                 <tbody>
                                                 {% for p in inscricao %}
-                                                    <tr draggable="false" class=""
-                                                        onclick="calcrefeicaototal({{ p.id }})">
+                                                    <tr draggable="false" class="" onclick="calcrefeicaototal({{ p.id }})">
                                                         <td class="chevron-cell toggle pointer"
                                                             onclick="expandAtividade('{{ p.id }}')">
                                                             <a role="button">
@@ -453,16 +414,13 @@
                                                                                                         class="">Sim
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class=""
-                                                                                                        id="normal{{ p.id }}">{{ emi.numero_aluno_normal }}
+                                                                                                        class="" id="normal{{ p.id }}">{{ emi.numero_aluno_normal }}
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class=""
-                                                                                                        id="outro{{ p.id }}">{{ emi.numero_outro_normal }}
+                                                                                                        class="" id="outro{{ p.id }}">{{ emi.numero_outro_normal }}
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
-                                                                                                        class=""
-                                                                                                        id="preco_total{{ p.id }}">
+                                                                                                        class="" id="preco_total{{ p.id }}">
                                                                                                     </td>
                                                                                                     <td data-label="atividade"
                                                                                                         class=""></td>
@@ -636,8 +594,7 @@
                                                 <tbody>
                                                 {% for p in inscricao %}
                                                     {% if p.utilizador.id == utilizador.id %}
-                                                        <tr draggable="false" class=""
-                                                            onclick="calcrefeicaototal({{ p.id }})">
+                                                        <tr draggable="false" class="" onclick="calcrefeicaototal({{ p.id }})">
                                                             <td class="chevron-cell toggle pointer"
                                                                 onclick="expandAtividade('{{ p.id }}')">
                                                                 <a role="button">
@@ -1463,10 +1420,8 @@
         </div>
         {#-----------------------------hidden inputs-------------------------------------------------------#}
         <input type="number" id="type" name="type" value="" hidden>
-        <input type="number" id="preco_aluno_normal" name="preco_aluno_normal" value="{{ ementa.preco_aluno_normal }}"
-               hidden>
-        <input type="number" id="preco_outro_normal" name="preco_outro_normal" value="{{ ementa.preco_outro_normal }}"
-               hidden>
+        <input type="number" id="preco_aluno_normal" name="preco_aluno_normal" value="{{ ementa.preco_aluno_normal }}" hidden>
+        <input type="number" id="preco_outro_normal" name="preco_outro_normal" value="{{ ementa.preco_outro_normal }}" hidden>
         {#------------------------popup eliminar Insricao---------------------------------------------#}
         <div id="popup_eliminar_inscricao" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>

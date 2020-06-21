@@ -23,37 +23,8 @@
             crossorigin="anonymous"></script>
 
 </head>
-<style>
-    .notices {
-        position: fixed;
-        display: flex;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 8em;
-        overflow: hidden;
-        z-index: 1000;
-        pointer-events: none;
-    }
-</style>
 <body onload="document.inscricao_form.reset();">
 {% block content %}
-    <div id="msgdiv">
-        <div id="message_container" class="notices is-bottom">
-            <div role="alert" class="toast is-success is-bottom" style="">
-                <div id="msg_here">
-                    Inscrição criada com sucesso
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        var message_ele = document.getElementById("message_container");
-        setTimeout(function () {
-            message_ele.style.display = "none";
-        }, 4000);
-    </script>
     <div data-v-8716d23a="" id="app">
         {% include "includes/navbar.html" %}
         <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">

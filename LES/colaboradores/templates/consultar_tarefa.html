@@ -157,18 +157,22 @@ th, td {
                                                 </td>
                                                 <td data-label="Nome Atividade" class="">
                                                     {% ifequal "AV" lt.tipo_tarefa %}
-                                                        {{ lt.sessaoatividade.atividade.nome }}
+                                                        {{ lt.atividade.nome }}
                                                     {% else %}
-                                                        &#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8212;&#8212;
+                                                        {% ifequal "OT" lt.tipo_tarefa %}
+                                                            {{ lt.atividade.nome }}
+                                                        {% else %}
+                                                            &#8194;&#8194;&#8194;&#8194;&#8194;&#8194;&#8212;&#8212;
+                                                        {% endifequal %}
                                                     {% endifequal %}
                                                 </td>
                                                 <td data-label="Sala Origem" class="">
-                                                    {{ lt.origem }}
+                                                    {{ lt.localizacao_grupo.identificacao }}
                                                 </td>
                                                 <td data-label="Sala Destino" class="">
 <!--                                                    {{ lt.tarefa.destino }}-->
                                                     {% ifequal "PE" lt.tipo_tarefa %}
-                                                        {{ lt.destino }}
+                                                        {{ lt.localizacao_grupo.identificacao }}
                                                     {% else %}
                                                         &#8194;&#8194;&#8212;&#8212;
                                                     {% endifequal %}

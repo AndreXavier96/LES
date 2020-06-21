@@ -12,6 +12,8 @@
     <title></title>
 
 </head>
+
+<script type="text/javascript" src="{% static 'main/js/criar_colab_errors.js' %}"></script>
 <script>
         let options = {
             twentyFour: true,
@@ -24,6 +26,10 @@
         $(document).ready(function () {
             $('.timepicker-12-hr').wickedpicker(options);
         });
+
+function cancel_reg(val) {
+    document.getElementById('popup_confirmacao').style.display = 'none'
+}
 
 </script>
 <script>
@@ -43,9 +49,26 @@
 </script>
 <body>
 {% block content %}
-<form method="POST">
+<form method="POST" name="criar_colab_form">
     {% csrf_token %}
-
+    <div id="popup_confirmacao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content"><p>Tem a certeza que pretende criar esta colaboração?</p></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button id="popup_cancel" type="button" class="button" onclick="cancel_reg()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="button is-success">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
+        </div>
     <div data-v-8716d23a="" id="app">
         {% include "includes/navbar.html" %}
         <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
@@ -81,6 +104,7 @@
                                             </li>
                                         </ul>
                                     </nav>
+                                    {% include "includes/msg.html" %}
                                     <section class="step-content">
                                         <div class="step-item" style="">
                                             <div style="padding: 1rem 2vw 0px;">
@@ -100,17 +124,22 @@
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label class="label">Horário de Início</label>
-                                                                <input type="text" id="timepicker-two"
-                                                                       name="hora_inicio_colab"
-                                                                       class="timepicker-12-hr" required>
+                                                                <input type="time" value={{inicio_colab}}
+                                                                       name="hora_inicio_colab" required>
+<!--                                                                       id="timepicker-two"-->
+
+<!--                                                                       class="timepicker-12-hr" -->
                                                             </div>
                                                         </div>
 
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label class="label">Horário de Fim</label>
-                                                                <input type="text" id="timepicker-one"
-                                                                       name="hora_fim_colab" class="timepicker-12-hr" required>
+                                                                <input type="time" name="hora_fim_colab"
+                                                                       value={{fim_colab}} required>
+<!--                                                                       id="timepicker-one"-->
+<!--                                                                       name="hora_fim_colab" -->
+<!--                                                                       class="timepicker-12-hr" -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -121,19 +150,45 @@
                                                         </div>
                                                         {% ifequal 1 obj.sala_de_aula %}
 <!--                                                        Quer auxiliar na sala de aula?-->
-                                                        <input type="radio" id="sim5" name="sala_de_aula" value="sim"
-                                                               checked="checked">
-                                                        <label for="sim5">SIM</label>
-                                                        <input type="radio" id="nao5" name="sala_de_aula" value="nao">
-                                                        <label for="nao5">NAO</label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="sim"
+                                                                                        checked="checked">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="nao">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim5" name="sala_de_aula" value="sim"-->
+<!--                                                               checked="checked">-->
+<!--                                                        <label for="sim5">SIM</label>-->
+<!--                                                        <input type="radio" id="nao5" name="sala_de_aula" value="nao">-->
+<!--                                                        <label for="nao5">NAO</label>-->
                                                         {% endifequal %}
                                                         {% ifequal 0 obj.sala_de_aula %}
 <!--                                                        Quer auxiliar na sala de aula?-->
-                                                        <input type="radio" id="sim6" name="sala_de_aula" value="sim">
-                                                        <label for="sim6">SIM</label>
-                                                        <input type="radio" id="nao6" name="sala_de_aula" value="nao"
-                                                               checked="checked">
-                                                        <label for="nao6">NAO</label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="sim">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="nao"
+                                                                                        checked="checked">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim6" name="sala_de_aula" value="sim">-->
+<!--                                                        <label for="sim6">SIM</label>-->
+<!--                                                        <input type="radio" id="nao6" name="sala_de_aula" value="nao"-->
+<!--                                                               checked="checked">-->
+<!--                                                        <label for="nao6">NAO</label>-->
                                                         {% endifequal %}
                                                     </div>
 
@@ -143,19 +198,45 @@
                                                         </div>
                                                         {% ifequal 1 obj.percurso %}
 <!--                                                        Quer auxiliar no percurso?-->
-                                                        <input type="radio" id="sim7" name="percurso" value="sim"
-                                                               checked="checked">
-                                                        <label for="sim7">SIM</label>
-                                                        <input type="radio" id="nao7" name="percurso" value="nao">
-                                                        <label for="nao7">NAO</label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="sim"
+                                                                                        checked="checked">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="nao">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim7" name="percurso" value="sim"-->
+<!--                                                               checked="checked">-->
+<!--                                                        <label for="sim7">SIM</label>-->
+<!--                                                        <input type="radio" id="nao7" name="percurso" value="nao">-->
+<!--                                                        <label for="nao7">NAO</label>-->
                                                         {% endifequal %}
                                                         {% ifequal 0 obj.percurso %}
 <!--                                                        Quer auxiliar no percurso?-->
-                                                        <input type="radio" id="sim8" name="percurso" value="sim">
-                                                        <label for="sim8">SIM</label>
-                                                        <input type="radio" id="nao8" name="percurso" value="nao"
-                                                               checked="checked">
-                                                        <label for="nao8">NAO</label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="sim">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="nao"
+                                                                                        checked="checked">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim8" name="percurso" value="sim">-->
+<!--                                                        <label for="sim8">SIM</label>-->
+<!--                                                        <input type="radio" id="nao8" name="percurso" value="nao"-->
+<!--                                                               checked="checked">-->
+<!--                                                        <label for="nao8">NAO</label>-->
                                                         {% endifequal %}
                                                     </div>
 
@@ -170,8 +251,10 @@
                                                                        type="button"><!----> <span> Cancelar </span>
                                                 <!----></a></div>
                                             <div class="level-right">
-                                                <button type="submit" value="Submeter" class="button is-large is-success is-outlined">
-                                                    <!----> <span> Guardar </span> <!----></button>
+                                                <button type="button" id="confirmacao" onclick="validateForm(this.id)" class="button is-large is-success is-outlined"><!---->
+                                                <span> Guardar </span> <!----></button>
+<!--                                                <button type="submit" value="Submeter" class="button is-large is-success is-outlined">-->
+<!--                                                    &lt;!&ndash;&ndash;&gt; <span> Guardar </span> &lt;!&ndash;&ndash;&gt;</button>-->
                                             </div>
                                         </div>
                                     </div>

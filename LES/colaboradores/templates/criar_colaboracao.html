@@ -12,6 +12,7 @@
     <title></title>
 </head>
 
+<script type="text/javascript" src="{% static 'main/js/criar_colab_errors.js' %}"></script>
 <script>
         let options = {
             twentyFour: true,
@@ -25,7 +26,9 @@
             $('.timepicker-12-hr').wickedpicker(options);
         });
 
-
+function cancel_reg(val) {
+    document.getElementById('popup_confirmacao').style.display = 'none'
+}
 
 
 
@@ -39,9 +42,26 @@
 </script>
 <body>
 {% block content %}
-<form method="POST">
+<form method="POST" name="criar_colab_form">
     {% csrf_token %}
-
+    <div id="popup_confirmacao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content"><p>Tem a certeza que pretende criar esta colaboração?</p></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button id="popup_cancel" type="button" class="button" onclick="cancel_reg()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="button is-success">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
+        </div>
     <div data-v-8716d23a="" id="app">
         {% include "includes/navbar.html" %}
         <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
@@ -77,6 +97,7 @@
                                             </li>
                                         </ul>
                                     </nav>
+                                    {% include "includes/msg.html" %}
                                     <section class="step-content">
                                         <div class="step-item" style="">
                                             <div style="padding: 1rem 2vw 0px;">
@@ -96,17 +117,23 @@
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label class="label">Horário de Início</label>
-                                                                <input type="text" id="timepicker-two"
-                                                                       name="hora_inicio_colab"
-                                                                       class="timepicker-12-hr">
+                                                                <input type="time" min="08:00" max="18:00"
+                                                                       name="hora_inicio_colab" required>
+<!--                                                                       id="timepicker-two"-->
+
+<!--                                                                       class="timepicker-12-hr"-->
+
                                                             </div>
                                                         </div>
 
                                                         <div class="column">
                                                             <div class="field">
                                                                 <label class="label">Horário de Fim</label>
-                                                                <input type="text" id="timepicker-one"
-                                                                       name="hora_fim_colab" class="timepicker-12-hr">
+                                                                <input type="time" min="08:00" max="18:00"
+                                                                       name="hora_fim_colab" required>
+<!--                                                                       id="timepicker-one"-->
+
+<!--                                                                       class="timepicker-12-hr"-->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -115,20 +142,44 @@
                                                         <div class="field">
                                                             <label class="label">Quer auxiliar na sala de aula?</label>
                                                         </div>
-                                                        <input type="radio" id="sim3" name="sala_de_aula" value="sim" required>
-                                                        <label for="sim3">SIM</label>
-                                                        <input type="radio" id="nao4" name="sala_de_aula" value="nao" required>
-                                                        <label for="nao4">NAO</label>
+                                                         <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="sim">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="sala_de_aula"
+                                                                                        value="nao">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim3" name="sala_de_aula" value="sim" required>-->
+<!--                                                        <label for="sim3">SIM</label>-->
+<!--                                                        <input type="radio" id="nao4" name="sala_de_aula" value="nao" required>-->
+<!--                                                        <label for="nao4">NAO</label>-->
                                                     </div>
 
                                                     <div class="block" >
                                                         <div class="field">
                                                             <label class="label">Quer auxiliar no percurso?</label>
                                                         </div>
-                                                        <input type="radio" id="sim5" name="percurso" value="sim" required>
-                                                        <label for="sim5">SIM</label>
-                                                        <input type="radio" id="nao5" name="percurso" value="nao" required>
-                                                        <label for="nao5">NAO</label>
+                                                            <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="sim">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Sim </span>
+                                                        </label>
+                                                        <label class="b-radio radio"><input type="radio"
+                                                                                        name="percurso"
+                                                                                        value="nao">
+                                                            <span class="check"></span>
+                                                            <span class="control-label"> Não </span>
+                                                        </label>
+<!--                                                        <input type="radio" id="sim5" name="percurso" value="sim" required>-->
+<!--                                                        <label for="sim5">SIM</label>-->
+<!--                                                        <input type="radio" id="nao5" name="percurso" value="nao" required>-->
+<!--                                                        <label for="nao5">NAO</label>-->
                                                     </div>
 
                                                 </div>
@@ -138,12 +189,14 @@
                                     </section>
                                     <div class="column is-8 is-offset-2">
                                         <div class="level">
-                                            <div class="level-left"><a href="/tarefas" class="button is-outlined"
+                                            <div class="level-left"><a href="/colaboradores/consultar_colab" class="button is-outlined"
                                                                        type="button"><!----> <span> Cancelar </span>
                                                 <!----></a></div>
                                             <div class="level-right">
-                                                <button type="submit" value="Submeter" class="button is-large is-success is-outlined">
-                                                    <!----> <span> Adicionar Colaboração </span> <!----></button>
+                                                <button type="button" id="confirmacao" onclick="validateForm(this.id)" class="button is-large is-success is-outlined"><!---->
+                                                <span> Adicionar Colaboração </span> <!----></button>
+<!--                                                <button type="submit" value="Submeter" class="button is-large is-success is-outlined">-->
+<!--                                                    &lt;!&ndash;&ndash;&gt; <span> Adicionar Colaboração </span> &lt;!&ndash;&ndash;&gt;</button>-->
                                             </div>
                                         </div>
                                     </div>

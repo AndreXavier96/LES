@@ -1,6 +1,5 @@
 from datetime import date, time
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.models import AnonymousUser
 from django.core.files.storage import FileSystemStorage
 from django.core.mail import EmailMessage
@@ -295,14 +294,12 @@ class ConsultarInscricaoView(View):
             trans.delete()
             sai.delete()
             insc.delete()
-            messages.success(request, 'Inscrição apagada com sucesso!')
         elif typee == "2":
             del2 = request.POST['del2']
             sai = SessaoAtividadeInscricao.objects.get(pk=del2)
             sai.sessaoAtividade.n_alunos = sai.sessaoAtividade.n_alunos + sai.numero_alunos
             sai.sessaoAtividade.save()
             sai.delete()
-            messages.success(request, 'Sessão inscrita apagada com sucesso!')
         return redirect('/inscricao/consultar')
 
 
@@ -540,5 +537,5 @@ class EditarInscricaoView(View):
             # -------------------------------------------------------
             email.attach('inscricao.pdf', pdf.getvalue(), 'application/pdf')
             email.send()
-            messages.success(request, 'Inscrição editada com sucesso!')
+
             return redirect('/inscricao/consultar')

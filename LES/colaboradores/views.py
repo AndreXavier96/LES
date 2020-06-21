@@ -82,6 +82,7 @@ class Editar_colab(View):
 
         print(inicio_colab)
         inicio_colab= inicio_colab[:-3]
+        fim_colab = fim_colab[:-3]
         print(inicio_colab)
         # form = Editar_Colab_Form()
         # form = Editar_Colab_Form(instance=Utilizador.objects.get(pk=3))
@@ -180,6 +181,7 @@ class Consultar_colab(View):
             #'hora_str': hora_str,
             #'lista_colab3': lista_colab3,
             'lista_colab_final': lista_colab_final,
+            'lista_tarefa_atrib': lista_tarefa_atrib,
         })
 
     def post(self, request):
