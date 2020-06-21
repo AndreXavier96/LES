@@ -35,6 +35,20 @@
         }
     }
 
+    function Checknotificacao(val) {
+      let Grupo = document.getElementById('Grupo');
+      let Individual = document.getElementById('Individual');
+      if (val === "Individual") {
+      Grupo.style.display = 'none';
+      Individual.style.display = '';
+      document.getElementById('utilizadortipo').value = 'escolher';
+      } else if (val === "Grupo") {
+       Grupo.style.display = '';
+       Individual.style.display = 'none';
+       document.getElementById('id_utilizador_rec').value = '';
+      }
+    }
+
 </script>
 <body>
 {% block content %}
@@ -79,8 +93,16 @@
                                                 <div style="padding: 1rem 2vw 0px;">
                                                     <hr>
                                                     <div class="column is-offset-3 is-6">
-
                                                         <div class="block">
+                                                            <div class="field">
+                                                                <p style="display: inline-block; padding-right: 2rem;"> Tipo de notificação:</p>
+                                                                <label class="b-radio radio"><input type="radio" name="Tiponotificacao" value="Individual" onchange="Checknotificacao(this.value);" required="" id="id_Tiponotificacao_0">
+                                                    <span class="check"></span> <span class="control-label"> Individual </span></label>
+                                                                <label class="b-radio radio"><input type="radio" name="Tiponotificacao" value="Grupo" onchange="Checknotificacao(this.value);" required="" id="id_Tiponotificacao_1">
+                                                    <span class="check"></span> <span class="control-label"> Grupo </span></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="block" style="display: none" id="Individual">
                                                             <div class="field">
                                                                 <label class="label">Enviar para um único
                                                                     utilizador</label>
@@ -90,7 +112,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="block">
+                                                        <div class="block" style="display: none" id="Grupo">
                                                             <!--                                                        <div class="field">-->
                                                             <label class="label">Enviar para um grupo</label>
                                                             <!--                                                        </div>-->
