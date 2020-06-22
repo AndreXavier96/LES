@@ -78,6 +78,21 @@
             });
 
         });
+
+        function srcImage(p1) {
+            event.preventDefault();
+            var modal = document.querySelector('.modal');
+            var html = document.querySelector('html');
+            var modalcontent = document.querySelector('#modalImage');
+            modal.classList.add('is-active');
+            html.classList.add('is-clipped');
+            modalcontent.src = p1;
+            modal.querySelector('button#close-modal').addEventListener('click', function (e) {
+                e.preventDefault();
+                modal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+            });
+        };
     </script>
 
 </head>
@@ -815,6 +830,15 @@
                                                                                         <td data-label="Campus"
                                                                                             class="principal">
                                                                                             {{ atividade.campus.nome }}
+                                                                                            {% if atividade.campus.mapa_imagem %}
+                                                                                                <p>
+                                                                                                    <a id="open-modal"
+                                                                                                       onclick="srcImage('{{ atividade.campus.mapa_imagem.url }}')">
+                                                                                                        <small>Ver no
+                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small>
+                                                                                                    </a>
+                                                                                                </p>
+                                                                                            {% endif %}
                                                                                         </td>
                                                                                     </tr>
                                                                                     {#  ------------------sessoes----------- #}
@@ -895,12 +919,47 @@
                                                                                                                                 </td>
                                                                                                                                 <td data-label="Vagas"
                                                                                                                                     class="">{{ s.n_alunos }}</td>
-                                                                                                                                {% if atividade.edificio.nome == None %}
-                                                                                                                                    <td data-label="Espaço"
-                                                                                                                                        class="">{{ atividade.tipo_local }}</td>
+                                                                                                                                {% if atividade.edificio or atividade.sala %}
+                                                                                                                                    {% if atividade.edificio and atividade.sala %}
+                                                                                                                                        <td>
+                                                                                                                                            Edificio: {{ atividade.edificio }}
+                                                                                                                                        </td>
+                                                                                                                                    {% endif %}
+                                                                                                                                    {% if atividade.edificio and not atividade.sala %}
+                                                                                                                                        <td>
+                                                                                                                                            Edificio: {{ atividade.edificio }}
+                                                                                                                                            {% if atividade.edificio.mapa_imagem %}
+                                                                                                                                                <p>
+                                                                                                                                                    <a id="open-modal"
+                                                                                                                                                       onclick="srcImage('{{ atividade.edificio.mapa_imagem.url }}')"><small>Ver
+                                                                                                                                                        no
+                                                                                                                                                        mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                                                </p>
+                                                                                                                                            {% endif %}
+                                                                                                                                        </td>
+                                                                                                                                    {% endif %}
+                                                                                                                                    {% if atividade.sala %}
+                                                                                                                                        <td>
+                                                                                                                                            Sala: {{ atividade.sala }}
+                                                                                                                                            {% if atividade.sala.mapa_imagem %}
+                                                                                                                                                <p>
+                                                                                                                                                    <a id="open-modal"
+                                                                                                                                                       onclick="srcImage('{{ atividade.sala.mapa_imagem.url }}')"><small>Ver
+                                                                                                                                                        no
+                                                                                                                                                        mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                                                </p>
+                                                                                                                                            {% endif %}
+                                                                                                                                        </td>
+                                                                                                                                    {% endif %}
+                                                                                                                                {% elif atividade.tipo_local %}
+                                                                                                                                    <td>
+                                                                                                                                        Local: {{ atividade.tipo_local }}</td>
                                                                                                                                 {% else %}
-                                                                                                                                    <td data-label="Espaço"
-                                                                                                                                        class="">{{ atividade.edificio.nome }} {{ atividade.sala.identificacao }}</td>
+                                                                                                                                    <td>
+                                                                                                                                        Local:
+                                                                                                                                        Não
+                                                                                                                                        especificado
+                                                                                                                                    </td>
                                                                                                                                 {% endif %}
                                                                                                                                 <td data-label="Inscrever"
                                                                                                                                     class="">
@@ -1127,6 +1186,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal">
+                <div class="modal-background">
+                </div>
+                <div class="modal-content has-text-centered">
+                    <img id="modalImage" src="{% static '../../media/maps/default.png' %}" alt="">
+                </div>
+                <button id="close-modal" class="modal-close is-large" aria-label="close"></button>
             </div>
             {% include 'includes/footer.html' %}
 
