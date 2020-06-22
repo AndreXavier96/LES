@@ -130,7 +130,13 @@ th, td {
                                                     <div class="th-wrap is-centered">Utilizador <span class="icon is-small"
                                                                                                  style="display: none;"><i
                                                             class="mdi mdi-menu-up"></i></span></div>
-                                                </th> <!----></tr>
+                                                </th>
+                                                <th class="">
+                                                    <div class="th-wrap is-centered">Ação <span class="icon is-small"
+                                                                                                 style="display: none;"><i
+                                                            class="mdi mdi-menu-up"></i></span></div>
+                                                </th>
+                                            </tr>
                                             </thead>
                                             <tbody>
                                             {% for lc in lista_notificacao_final %}
@@ -152,7 +158,14 @@ th, td {
                                                 </td>
                                                 <td data-label="Utilizador" class="has-text-centered">
                                                     {{ lc.utilizador_rec.email }}
-                                                </td> <!---->
+                                                </td>
+                                                <td data-label="Ação" class="has-text-centered">
+
+                                                    <button type="button"
+                                                           onclick="location.href='editar_notificacao/{{lc.id}}';"
+                                                           value="Editar"><i style='font-size:18px' class='material-icons'>&#xe254;</i>
+                                                    </button>
+                                                </td><!---->
                                             </tr>
                                             {% endfor %}
                                             </tbody>
