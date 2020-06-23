@@ -184,7 +184,7 @@
                                                                     <div class="control is-clearfix">
                                                                         {#                                                                       {{ form.prioridade }}#}
                                                                         <input type="number" autocomplete="on" step="1"
-                                                                               class="input" name="prioridade" min="0"
+                                                                               class="input" name="prioridade" min="0" max="5"
                                                                                id="id_prioridade">
                                                                     </div>
                                                                     <p class="control">
@@ -248,6 +248,25 @@
             </div>
         </div>
     </form>
+    {% if messages %}
+        {% for message in messages %}
+            <div id="message_container" class="notices is-bottom">
+                <div role="alert"
+                     {% if message.tags == 'error' %}
+                        class="toast is-danger is-bottom"
+                {% else %}
+                    class="toast is-success is-bottom"
+                {% endif %} style="">
+                    <div>{{ message }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    var message_ele = document.getElementById("message_container");
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
 
 {% endblock %}
 

@@ -175,7 +175,7 @@ function formerror(name, id, type,) {
             hiddeerror(id)
         }
     } else if (type === "email") {
-        if (!RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}').test(x)) {
+        if (!RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,3}').test(x)) {
             showerror(id)
         } else {
             hiddeerror(id)
@@ -197,12 +197,15 @@ function formerror(name, id, type,) {
     console.log(x)
 }
 
+
 function showerror(id) {
     document.getElementById(id + "_div").classList.add("has-icons-right")
     document.getElementById(id).classList.add("is-danger")
     document.getElementById(id + "_icon").style.display = ""
     document.getElementById(id + "_msg").style.display = ""
 }
+
+
 
 function hiddeerror(id) {
     document.getElementById(id + "_div").classList.remove("has-icons-right")
