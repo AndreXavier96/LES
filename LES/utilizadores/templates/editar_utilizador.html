@@ -76,11 +76,88 @@
 	background: white;
 }
 
-
-
-
-
 </style>
+<script type="text/javascript">
+    function formerror(name, id, type) {
+    let x = document.forms["edit_user"][name].value;
+    console.log(x);
+    if (type === "number") {
+        if (x === ""  x < 0) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "anoescolar") {
+        if (x === ""  x <= 0 || x > 12) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "text") {
+        if (!RegExp('^[A-zÀ-ÿ ]+$').test(x)) {
+            showerror(id)
+        } else if (RegExp('^[ ]+$').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "mixed") {
+        if (!RegExp('^[A-zÀ-ÿ0-9ºª ]+$').test(x)) {
+            showerror(id)
+        } else if (RegExp('^[ ]+$').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "postalcode") {
+        if (!RegExp('^[0-9]{4}-[0-9]{3}$').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "movel") {
+        if (!RegExp('^[0-9]{9}$').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    } else if (type === "textandnumber") {
+        if (!RegExp('^[A-zÀ-ÿ0-9 ]+$').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    }  else if (type === "email") {
+        if (!RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}').test(x)) {
+            showerror(id)
+        } else {
+            hiddeerror(id)
+        }
+    }
+    console.log(x)
+}
+
+ function showerror(id) {
+    document.getElementById(id + "_div").classList.add("has-icons-right")
+    document.getElementById(id).classList.add("is-danger")
+    document.getElementById(id + "_icon").style.display = ""
+    document.getElementById(id + "_msg").style.display = ""
+}
+
+function hiddeerror(id) {
+    document.getElementById(id + "_div").classList.remove("has-icons-right")
+    document.getElementById(id).classList.remove("is-danger")
+    document.getElementById(id + "_icon").style.display = "none"
+    document.getElementById(id + "_msg").style.display = "none"
+}
+function check_n_emails(val,counter) {
+    let all_emails = document.getElementById('all_emails');
+    let email_final = document.getElementById('email_final');
+    all_emails.insertAdjacentHTML("beforebegin",'<input hidden type="text" name="'+val+counter+'" id="id_'+counter+'" value="'+val+'">');
+    email_final.value=counter;
+}
+
+</script>
 
 <body>
 {% block content %}
@@ -115,7 +192,7 @@
 
 
 
-                                <form method="POST">
+                                <form method="POST" name="edit_user">
                                     {% csrf_token %}
                                     <section class="step-content">
                                     <div class="step-item" style="">
@@ -134,21 +211,54 @@
                                         <input type="text" id="text" value={{nome}} name="nome" class="input">
                                         <br>
                                         <br>
+
+
+                                        {#-----------------------------email-------------------------------------------------------#}
                                         <div class="col s12 m6">
-                                            <label for="email">Email</label>
-                                            <input type="text" id="email" value={{email}} name="email" class="input">
+                                            <div class="control" id="id_email_div" >
+                                            <label for="id_email">Email</label>
+                                            <input type="text" id="id_email"
+                                                   value={{email}}
+                                                   name="email"
+                                                   class="input"
+                                                   onchange="formerror(this.name, this.id, 'email')">
+                                                <span id="id_email_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                </div>
+                                            <p id="id_email_msg" style="display: none" class="help is-danger" >Por favor, utilize um email real.</p>
                                             <br>
-                                            <br>
+                                            </div>
+                                        {#-----------------------------telemovel-------------------------------------------------------#}
                                             <div class="col s12 m6">
-                                                <label for="number">Numero telemovel</label>
-                                                <input type="number" id="number" value={{numero_telemovel}}
-                                                       name="numero_telemovel" class="input">
+                                                <div class="field"  >
+                                                <label for="id_tele" >Numero telemovel</label>
+                                                    <div class="control is-clearfix" id="id_tele_div">
+                                                <input type="number"
+                                                       id="id_tele"
+                                                       value={{numero_telemovel}}
+                                                       name="numero_telemovel"
+                                                       class="input"
+                                                       onchange="formerror(this.name, this.id, 'movel')">
+                                                <span id="id_tele_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
+
+                                                    </div>
+                                                    <p id="id_tele_msg" style="display: none" class="help is-danger" >O número de telemovél tem que ter 9 digitos.</p>
                                                 <br>
-                                                <br>
+
+                                         {#----------------------------cc-------------------------------------------------------#}
                                                 <div class="col s12 m6">
-                                                    <label for="number">Cartao de Cidadao</label>
-                                                    <input type="number" id="number1" value={{cartao_cidadao}}
-                                                           name="cartao_cidadao" class="input">
+                                                    <div class="field">
+                                                    <label  for="id_cartao">Cartao de Cidadao</label>
+                                                        <div class="control is-clearfix" id="id_cartao_div">
+                                                    <input type="number"
+                                                           id="id_cartao"
+                                                           value={{cartao_cidadao}}
+                                                           name="cartao_cidadao"
+                                                           class="input"
+                                                           onchange="formerror(this.name, this.id, 'cartao')">
+                                                         <span id="id_cartao_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
+
+                                                    </div>
+                                                    <p id="id_cartao_msg" style="display: none" class="help is-danger" >O número de cartao de cidadão tem que ter 8 digitos.</p>
                                                     <br>
                                                     <br>
                                                     {% ifequal 1 obj.permitir_localizacao %}
@@ -245,10 +355,13 @@
 </div>
  {% include 'includes/footer.html' %}
 
- <script> var message_ele =document.getElementById(elementid: "message_container");
-            setTimeout(handler: function(){
-                       message_ele.style.display = "none";
-                    }, timeout: 4000);</script>
+  <script>
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+       </script>
 
 {% endblock %}
 

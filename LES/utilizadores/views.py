@@ -212,14 +212,12 @@ class Consultar_user(View):
 
     def get(self, request):
         queryset = Utilizador.objects.all()
-        ut1 = Utilizador.objects.get(pk=6).utilizadortipo
-        ut = str(ut1)
+
 
         authuser = request.user
-        utilizador = Utilizador.objects.get(pk=authuser.id)
+        utilizador = AuthUser.objects.get(pk=authuser.pk).utilizador
 
         context = {
-            "ut": ut,
             "object_list": queryset,
             "utilizador": utilizador
         }
