@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
-
+    <script src="{% static 'main/js/loginerrors.js' %}"></script>
     <title></title>
     <style>
 .notices{
@@ -39,21 +39,10 @@
             $('.timepicker-12-hr').wickedpicker(options);
         });
 
-
-
-
-
-
-
-
-
-
-
-
 </script>
 <body>
 {% block content %}
-<form method="POST">
+<form method="POST" name="login_form">
     {% csrf_token %}
 
     <div data-v-8716d23a="" id="app">
@@ -101,22 +90,38 @@
                                                         <div class="field">
                                                             <label class="label">Insira o seu email</label>
                                                         </div>
-                                                        <div class="control is-clearfix">
-                                                            <input type="text" placeholder="Email" autocomplete="on" class="input" {{ form.username}}
+                                                        <div class="control is-clearfix" id="id_username_div">
+                                                            <input type="text" placeholder="Email" autocomplete="on" class="input" name="username" autofocus="" autocapitalize="none" maxlength="150" required="" id="id_username" onchange="formerror(this.name, this.id, 'email')">
+                                                            <span id="id_turma_icon" style="display: none"
+                                                                          class="icon is-right has-text-danger"><i
+                                                                            class="mdi mdi-alert-circle mdi-24px"></i>
+                                                            </span>
                                                         </div>
                                                     </div>
+                                                    <p id="id_turma_msg" class="help is-danger"
+                                                               style="display: none">Por favor, preencha este campo
+                                                                corretamente.</p>
 
                                                     <div class="block">
                                                         <div class="field">
                                                             <label class="label">Insira a sua password</label>
                                                         </div>
                                                         <div class="control is-clearfix">
-                                                            <input type="password" placeholder="Password" autocomplete="on" class="input" {{ form.password}}
+                                                            <input type="password" placeholder="Password" autocomplete="on" class="input"  name="password" required="" id="id_password">
                                                         </div>
                                                     </div>
                                                           {% if messages %}
                                                                     {% for message in messages %}
-                                                                    <div id="message_container" class="notices is-bottom"><div role="alert" {% if message.tags == 'error' %} class="toast is-danger is-bottom" {% else %} class="toast is-success is-bottom" {% endif %} style=""><div>{{ message }}</div></div></div>
+                                                                    <div id="message_container" class="notices is-bottom">
+                                                                        <div role="alert"
+                                                                             {% if message.tags == 'error' %}
+                                                                        class="toast is-danger is-bottom"
+                                                                        {% else %}
+                                                                        class="toast is-success is-bottom"
+                                                                        {% endif %} style="">
+                                                                        <div>{{ message }}</div>
+                                                                    </div>
+                                                                    </div>
                                                                     {% endfor %}
                                                             {% endif %}
 
@@ -142,9 +147,8 @@
                 </div>
             </div>
         </div>
-        {% include 'includes/footer.html' %}
     </div>
-
+{% include 'includes/footer.html' %}
 
 </form>
 

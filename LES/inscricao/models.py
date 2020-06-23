@@ -24,7 +24,8 @@ class Inscricao(models.Model):
     dia = models.DateField(default=datetime.date.today)
     escola = models.ForeignKey(Escola, models.DO_NOTHING, blank=True, null=True)
     hora_check_in = models.TimeField()
-    unidadeorganica_checkin = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, db_column='unidadeorganica_checkin', blank=True, null=True)
+    unidadeorganica_checkin = models.ForeignKey(UnidadeOrganica, models.DO_NOTHING, db_column='unidadeorganica_checkin',
+                                                blank=True, null=True)
     check_in = models.IntegerField(default=0)
     area_estudos = models.CharField(max_length=45)
     ano_estudos = models.IntegerField()
@@ -92,7 +93,7 @@ class TransporteproprioPercursos(models.Model):
         db_table = 'transporteproprio_percursos'
 
     def __str__(self):
-        return self.origem+' '+self.destino
+        return self.origem + ' ' + self.destino
 
 
 class InscricaoIndividual(models.Model):
@@ -120,26 +121,32 @@ class InscricaoGrupo(models.Model):
 # -------------------------------------------------------------------------------------
 
 class Edificio(models.Model):
+    # Campos
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=40)
-    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
+    campus = models.ForeignKey(Campus, on_delete=models.PROTECT, null=True)
+    mapa_imagem = models.ImageField(upload_to='diaabertoapp/maps/', default='diaabertoapp/maps/default.png')
 
     class Meta:
         db_table = 'Edificio'
         unique_together = (("nome", "campus"),)
+        # Métodos
 
     def __str__(self):
         return self.nome
 
 
 class Sala(models.Model):
+    # Campos
     id = models.AutoField(primary_key=True)
     identificacao = models.CharField(max_length=40)
-    edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, null=True)
+    edificio = models.ForeignKey(Edificio, on_delete=models.PROTECT, null=True)
+    mapa_imagem = models.ImageField(upload_to='diaabertoapp/maps/', default='diaabertoapp/maps/default.png')
 
     class Meta:
         db_table = 'Sala'
         unique_together = (("identificacao", "edificio"),)
+        # Métodos
 
     def __str__(self):
         return self.identificacao
@@ -221,7 +228,8 @@ class Atividade(models.Model):
     edificio = models.ForeignKey(Edificio, on_delete=models.CASCADE, null=True, blank=True)
     sala = models.ForeignKey(Sala, on_delete=models.CASCADE, null=True, blank=True)
     tipo_local = models.CharField(max_length=255, null=True, blank=True)
-   # responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
+
+    # responsavel = models.ForeignKey(Utilizador, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         db_table = 'Atividade'

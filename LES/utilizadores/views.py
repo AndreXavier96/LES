@@ -41,21 +41,21 @@ class register(View):
             # print(form_register.errors)
             utilizadortipo_value = request.POST['utilizadortipo']
             utilizadortipo = Utilizadortipo.objects.get(tipo=utilizadortipo_value)
-            #email = form_register['email'].value()
-            email =request.POST['email']
+            # email = form_register['email'].value()
+            email = request.POST['email']
             print(email)
-            #password_digest = form_register['password_digest'].value()
+            # password_digest = form_register['password_digest'].value()
             password_digest = request.POST['password_digest']
-            #password_conf = form_register['password_conf'].value()
+            # password_conf = form_register['password_conf'].value()
             password_conf = request.POST['password_conf']
-            #nome = form_register['nome'].value()
+            # nome = form_register['nome'].value()
             nome = request.POST['nome']
             data_nascimento = request.POST['data_nascimento']
-            #numero_telemovel = form_register['numero_telemovel'].value()
+            # numero_telemovel = form_register['numero_telemovel'].value()
             numero_telemovel = request.POST['numero_telemovel']
-            #cartao_cidadao = form_register['cartao_cidadao'].value()
+            # cartao_cidadao = form_register['cartao_cidadao'].value()
             cartao_cidadao = request.POST['cartao_cidadao']
-            #deficiencias = form_register['deficiencias'].value()
+            # deficiencias = form_register['deficiencias'].value()
             deficiencias = request.POST['deficiencias']
             # permitir_localizacao = form_register['permitir_localizacao'].value()
             permitir_localizacao = request.POST['permitir_localizacao']
@@ -74,9 +74,9 @@ class register(View):
             if utilizadortipo_value == "Participante Individual" or utilizadortipo_value == "Participante em Grupo":
                 unidadeorganica = None
                 departamento = None
-                validado=1
+                validado = 1
             else:
-                validado=0
+                validado = 0
                 unidadeorganica1 = request.POST['unidadeorganica']
                 print(unidadeorganica1)
                 unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica1)
@@ -106,11 +106,11 @@ class register(View):
                         departamento = Departamento.objects.get(nome=departamento)
 
             print(unidadeorganica)
-            #departamento = request.POST['departamento']
+            # departamento = request.POST['departamento']
             print(departamento)
-            #unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica)
-            #departamento = request.POST['departamento']
-           # departamento = Departamento.objects.get(nome=departamento)
+            # unidadeorganica = UnidadeOrganica.objects.get(nome=unidadeorganica)
+            # departamento = request.POST['departamento']
+            # departamento = Departamento.objects.get(nome=departamento)
 
             # erros--------------------------------------------------------------------------------
             # all_users = Utilizador.objects.all
@@ -120,7 +120,6 @@ class register(View):
             #     if all_emails.email == email:
             #         messages.error(request, "O email já existe na base de dados")
             #         return redirect('/utilizadores/register/')
-
 
             if len(password_digest) < 5:
                 messages.error(request, "a password é demasiado pequena")
@@ -152,8 +151,8 @@ class register(View):
                                       permitir_localizacao=permitir_localizacao,
                                       utilizar_dados_pessoais=utilizar_dados_pessoais,
                                       unidadeorganica=unidadeorganica, departamento=departamento, validado=validado)
-            obj_user=Utilizador.objects.get(email=email)
-            User.objects.create_user(username=email, password=password_digest,email=email)
+            obj_user = Utilizador.objects.get(email=email)
+            User.objects.create_user(username=email, password=password_digest, email=email)
             AuthUser.objects.filter(username=email).update(utilizador=obj_user)
             """escola = Escola.objects.get(nome=nome)
             Inscricao.objects.create(escola=escola)
@@ -174,6 +173,7 @@ def logout_request(request):
     logout(request)
     messages.info(request, "Terminou a sessão com sucesso")
     return redirect('/utilizadores/login')
+
 
 def login_request(request):
     if request.method == 'POST':
@@ -198,16 +198,13 @@ def login_request(request):
                   template_name="login.html",
                   context={"form": form})
 
+
 def success(request):
     context = {}
     context['user'] = request.user
     return render(request=request,
                   template_name="success.html",
                   context={})
-
-
-
-
 
 
 class Consultar_user(View):
@@ -221,7 +218,6 @@ class Consultar_user(View):
         authuser = request.user
         utilizador = Utilizador.objects.get(pk=authuser.id)
 
-
         context = {
             "ut": ut,
             "object_list": queryset,
@@ -230,26 +226,23 @@ class Consultar_user(View):
         return render(request, "consultar_utilizador.html", context)
 
     def post(self, request):
-            post = request.POST
-            type =post['type']
-            if type == "1":
-                id = post['del']
-                print(id)
-                Utilizador.objects.get(pk=id).delete()
-                messages.add_message(request, messages.WARNING, "Utilizador APAGADO com sucesso")
-            elif type == "0":
-                print("GGGGGGGGGGGGG")
-                id = post['val']
-                user = Utilizador.objects.get(pk=id)
-                print(user.validado)
-                user.validado=1
-                user.save()
-                print(user.validado)
+        post = request.POST
+        type = post['type']
+        if type == "1":
+            id = post['del']
+            print(id)
+            Utilizador.objects.get(pk=id).delete()
+            messages.add_message(request, messages.WARNING, "Utilizador APAGADO com sucesso")
+        elif type == "0":
+            print("GGGGGGGGGGGGG")
+            id = post['val']
+            user = Utilizador.objects.get(pk=id)
+            print(user.validado)
+            user.validado = 1
+            user.save()
+            print(user.validado)
 
-
-            return redirect('/utilizadores/consultar_utilizadores/')
-
-
+        return redirect('/utilizadores/consultar_utilizadores/')
 
 
 class Editar_user(View):
@@ -267,7 +260,6 @@ class Editar_user(View):
         permitir_localizacao = Utilizador.objects.get(pk=pk).permitir_localizacao
         utilizar_dados_pessoais = Utilizador.objects.get(pk=pk).utilizar_dados_pessoais
 
-
         return render(request, self.template_name, {
             'obj': obj,
             'form': form,
@@ -282,14 +274,13 @@ class Editar_user(View):
 
         })
 
-
     def post(self, request, pk):
 
         email = request.POST['email']
         nome = request.POST['nome']
         numero_telemovel = request.POST['numero_telemovel']
         cartao_cidadao = request.POST['cartao_cidadao']
-        #deficiencias = request.POST['deficiencias']
+        # deficiencias = request.POST['deficiencias']
 
         permitir_localizacao = request.POST['permitir_localizacao']
         if permitir_localizacao == "sim":
@@ -302,7 +293,6 @@ class Editar_user(View):
         else:
             utilizar_dados_pessoais = 0
 
-
         messages.add_message(request, messages.SUCCESS, "Utilizador EDITADO com sucesso")
 
         regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -311,27 +301,24 @@ class Editar_user(View):
         else:
             messages.error(request, "O email nao tem o formato apropriado")
 
-
         if len(numero_telemovel) != 9:
             messages.error(request, "O numero de telemovel deve conter 9 algarismos")
-
 
         if len(cartao_cidadao) != 8:
             messages.error(request, "O numero do cartao de cidadão deve conter 8 algarismos")
 
         # ------------------------------------------------------------------------------
 
-
         Utilizador.objects.filter(pk=pk).update(
-                                            nome=nome, email=email,
-                                            numero_telemovel=numero_telemovel,
-                                            cartao_cidadao=cartao_cidadao,
-                                            permitir_localizacao=permitir_localizacao,
-                                            utilizar_dados_pessoais=utilizar_dados_pessoais,
-                                            )
-
+            nome=nome, email=email,
+            numero_telemovel=numero_telemovel,
+            cartao_cidadao=cartao_cidadao,
+            permitir_localizacao=permitir_localizacao,
+            utilizar_dados_pessoais=utilizar_dados_pessoais,
+        )
 
         return redirect('/utilizadores/consultar_utilizadores')
+
 
 # def get_object(self):
 #        id_ = self.kwargs.get("id")
@@ -385,13 +372,11 @@ class Validar_user(View):
         else:
             validado = 0
 
-
         messages.add_message(request, messages.SUCCESS, "Utilizador Validado com sucesso")
 
         Utilizador.objects.filter(pk=pk).update(
-                                            nome=nome, email=email,
-                                            validado=validado,
-                                            )
-
+            nome=nome, email=email,
+            validado=validado,
+        )
 
         return redirect('/utilizadores/consultar_utilizadores')
