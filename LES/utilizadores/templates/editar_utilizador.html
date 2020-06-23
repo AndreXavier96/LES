@@ -5,76 +5,75 @@
     <title>Dia Aberto-Editar Utilizador</title>
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-
     <link rel="stylesheet" href="{% static 'main/css/bulma.css' %}">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.5.95/css/materialdesignicons.min.css">
-
+    <script src="{% static 'main/js/editarutilizador_erros.js' %}"></script>
 
 </head>
 <style>
     /* The container */
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
-/* Hide the browser's default radio button */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
+    /* Hide the browser's default radio button */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
 
-/* Create a custom radio button */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-  border-radius: 50%;
-}
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        border-radius: 50%;
+    }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
 
-/* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
+    /* When the radio button is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
 
-/* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
+    /* Show the indicator (dot/circle) when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
 
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
- 	top: 9px;
-	left: 9px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: white;
-}
+    /* Style the indicator (dot/circle) */
+    .container .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+    }
 
 </style>
 
@@ -82,206 +81,232 @@
 <body>
 {% block content %}
 
-<div data-v-8716d23a="" id="app">
-    {% include "includes/navbar.html" %}
-    <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
-        <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
-    </div>
-    <div data-v-8716d23a="" id="page-content">
-        <div data-v-8716d23a="" class="card">
-            <div data-v-8716d23a="" class="card-content">
-                <div data-v-8716d23a="" id="top">
-                    <div class="column">
-                        <nav aria-label="breadcrumbs" class="breadcrumb">
-                            <ul>
-                                <li><a href="/" class="router-link-active">Início</a></li>
-                                <li class="is-active"><a href="/utilizadores/consultar_utilizadores/"
-                                                         class="router-link-exact-active router-link-active">Consultar
-                                    Utilizadores</a></li>
-                                <li class="is-active"><a href="/Utilizadores"
-                                                         class="router-link-exact-active router-link-active">Editar
-                                    Utilizador</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div style="padding: 2rem 2vw 1rem;">
-                            <div class="b-steps">
-                                <div style="text-align:center">
-                                    <span style="font-size: 24pt;font-weight:bold">Editar Utilizador</span>
+    <div data-v-8716d23a="" id="app">
+        {% include "includes/navbar.html" %}
+        <div data-v-8716d23a="" id="top-hero" class="hero is-primary is-bold">
+            <div data-v-8716d23a="" id="top-hero-body" class="hero-body"></div>
+        </div>
+        <div data-v-8716d23a="" id="page-content">
+            <div data-v-8716d23a="" class="card">
+                <div data-v-8716d23a="" class="card-content">
+                    <div data-v-8716d23a="" id="top">
+                        <div class="column">
+                            <nav aria-label="breadcrumbs" class="breadcrumb">
+                                <ul>
+                                    <li><a href="/" class="router-link-active">Início</a></li>
+                                    <li class="is-active"><a href="/utilizadores/consultar_utilizadores/"
+                                                             class="router-link-exact-active router-link-active">Consultar
+                                        Utilizadores</a></li>
+                                    <li class="is-active"><a href="/Utilizadores"
+                                                             class="router-link-exact-active router-link-active">Editar
+                                        Utilizador</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <div style="padding: 2rem 2vw 1rem;">
+                                <div class="b-steps">
+                                    <div style="text-align:center">
+                                        <span style="font-size: 24pt;font-weight:bold">Editar Utilizador</span>
+                                    </div>
+
+
+                                    <form method="POST" name="edit_user">
+                                        {% csrf_token %}
+                                        <section class="step-content">
+                                            <div class="step-item" style="">
+                                                <div style="padding: 1rem 2vw 0px;">
+                                                    <hr>
+                                                    <h3 style="color:red;">
+                                                        {% if messages1 %}
+                                                            {% for message in messages1 %}
+                                                                <p style="text-align:center"> {{ message }} </p>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    </h3>
+
+                                                    <div class="col s6 m6 is-centered">
+                                                        <label for="text">Nome</label>
+                                                        <input type="text" id="text" value={{ nome }} name="nome"
+                                                               class="input">
+                                                        <br>
+                                                        <br>
+
+
+                                                        {#-----------------------------email-------------------------------------------------------#}
+                                                        <div class="col s12 m6">
+                                                            <div class="field">
+                                                                <label for="id_email">Email</label>
+                                                                <div class="control" id="id_email_div">
+                                                                    <input type="text" id="id_email"
+                                                                           value="{{ email }}"
+                                                                           name="email"
+                                                                           class="input"
+                                                                           onchange="formerror(this.name, this.id, 'email')">
+                                                                    <span id="id_email_icon" style="display: none"
+                                                                          class="icon is-right has-text-danger"><i
+                                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+                                                                </div>
+                                                                <p id="id_email_msg" style="display: none"
+                                                                   class="help is-danger">Por favor, utilize um email
+                                                                    real.</p>
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                        {#-----------------------------telemovel-------------------------------------------------------#}
+                                                        <div class="col s12 m6">
+                                                            <div class="field">
+                                                                <label for="id_tele">Numero telemovel</label>
+                                                                <div class="control is-clearfix" id="id_tele_div">
+                                                                    <input type="number"
+                                                                           id="id_tele"
+                                                                           value={{ numero_telemovel }}
+                                                                                   name="numero_telemovel"
+                                                                           class="input"
+                                                                           onchange="formerror(this.name, this.id, 'movel')">
+                                                                    <span id="id_tele_icon" style="display: none"
+                                                                          class="icon is-right has-text-danger"><i
+                                                                            class="mdi mdi-alert-circle mdi-24px"></i></span>
+
+                                                                </div>
+                                                                <p id="id_tele_msg" style="display: none"
+                                                                   class="help is-danger">O número de telemovél tem que
+                                                                    ter 9 digitos.</p>
+                                                                <br>
+
+                                                                {#----------------------------cc-------------------------------------------------------#}
+                                                                <div class="col s12 m6">
+                                                                    <div class="field">
+                                                                        <label for="id_cartao">Cartao de Cidadao</label>
+                                                                        <div class="control is-clearfix"
+                                                                             id="id_cartao_div">
+                                                                            <input type="number"
+                                                                                   id="id_cartao"
+                                                                                   value={{ cartao_cidadao }}
+                                                                                           name="cartao_cidadao"
+                                                                                   class="input"
+                                                                                   onchange="formerror(this.name, this.id, 'cartao')">
+                                                                            <span id="id_cartao_icon"
+                                                                                  style="display: none"
+                                                                                  class="icon is-right has-text-danger"><i
+                                                                                    class="mdi mdi-alert-circle mdi-24px"></i></span>
+
+                                                                        </div>
+                                                                        <p id="id_cartao_msg" style="display: none"
+                                                                           class="help is-danger">O número de cartao de
+                                                                            cidadão tem que ter 8 digitos.</p>
+                                                                        <br>
+                                                                        <br>
+                                                                        {% ifequal 1 obj.permitir_localizacao %}
+                                                                            Permite o acesso à sua localização?
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="permitir_localizacao"
+                                                                                    value="sim"
+                                                                                    checked="checked">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Sim </span>
+                                                                            </label>
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="permitir_localizacao"
+                                                                                    value="nao">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Não </span>
+                                                                            </label>
+                                                                        {% endifequal %}
+
+                                                                        {% ifequal 0 obj.permitir_localizacao %}
+                                                                            Permite o acesso à sua localização?
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="permitir_localizacao"
+                                                                                    value="sim"
+                                                                            >
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Sim </span>
+                                                                            </label>
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="permitir_localizacao"
+                                                                                    value="nao"
+                                                                                    checked="checked">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Não </span>
+                                                                            </label>
+                                                                        {% endifequal %}
+                                                                        <br>
+                                                                        <br>
+
+                                                                        {% ifequal 1 obj.utilizar_dados_pessoais %}
+                                                                            Permite a utilização dos seus dados
+                                                                            pessoais?
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="utilizar_dados_pessoais"
+                                                                                    value="sim"
+                                                                                    checked="checked">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Sim </span>
+                                                                            </label>
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="utilizar_dados_pessoais"
+                                                                                    value="nao">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Não </span>
+                                                                            </label>
+                                                                        {% endifequal %}
+
+                                                                        {% ifequal 0 obj.utilizar_dados_pessoais %}
+                                                                            Permite a utilização dos seus dados
+                                                                            pessoais?
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="utilizar_dados_pessoais"
+                                                                                    value="sim"
+                                                                            >
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Sim </span>
+                                                                            </label>
+                                                                            <label class="b-radio radio"><input
+                                                                                    type="radio"
+                                                                                    name="utilizar_dados_pessoais"
+                                                                                    value="nao"
+                                                                                    checked="checked">
+                                                                                <span class="check"></span>
+                                                                                <span class="control-label"> Não </span>
+                                                                            </label>
+
+                                                                        {% endifequal %}
+
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="level-right">
+                                                            <input type="submit" value="Confirmar"
+                                                                   class="button is-large is-success is-outlined">
+                                                        </div>
+                                    </form>
                                 </div>
-
-
-
-                                <form method="POST" name="edit_user">
-                                    {% csrf_token %}
-                                    <section class="step-content">
-                                    <div class="step-item" style="">
-                                        <div style="padding: 1rem 2vw 0px;">
-                                            <hr>
-                                                <h3 style="color:red;">
-                                                    {% if messages1 %}
-                                                        {% for message in messages1 %}
-                                                    <p style="text-align:center"> {{ message }} </p>
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                </h3>
-
-                                    <div class="col s6 m6 is-centered">
-                                        <label for="text">Nome</label>
-                                        <input type="text" id="text" value={{nome}} name="nome" class="input">
-                                        <br>
-                                        <br>
-
-
-                                        {#-----------------------------email-------------------------------------------------------#}
-                                        <div class="col s12 m6">
-                                            <div class="control" id="id_email_div" >
-                                            <label for="id_email">Email</label>
-                                            <input type="text" id="id_email"
-                                                   value={{email}}
-                                                   name="email"
-                                                   class="input"
-                                                   onchange="formerror(this.name, this.id, 'email')">
-                                                <span id="id_email_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
-                                                </div>
-                                            <p id="id_email_msg" style="display: none" class="help is-danger" >Por favor, utilize um email real.</p>
-                                            <br>
-                                            </div>
-                                        {#-----------------------------telemovel-------------------------------------------------------#}
-                                            <div class="col s12 m6">
-                                                <div class="field"  >
-                                                <label for="id_tele" >Numero telemovel</label>
-                                                    <div class="control is-clearfix" id="id_tele_div">
-                                                <input type="number"
-                                                       id="id_tele"
-                                                       value={{numero_telemovel}}
-                                                       name="numero_telemovel"
-                                                       class="input"
-                                                       onchange="formerror(this.name, this.id, 'movel')">
-                                                <span id="id_tele_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
-
-                                                    </div>
-                                                    <p id="id_tele_msg" style="display: none" class="help is-danger" >O número de telemovél tem que ter 9 digitos.</p>
-                                                <br>
-
-                                         {#----------------------------cc-------------------------------------------------------#}
-                                                <div class="col s12 m6">
-                                                    <div class="field">
-                                                    <label  for="id_cartao">Cartao de Cidadao</label>
-                                                        <div class="control is-clearfix" id="id_cartao_div">
-                                                    <input type="number"
-                                                           id="id_cartao"
-                                                           value={{cartao_cidadao}}
-                                                           name="cartao_cidadao"
-                                                           class="input"
-                                                           onchange="formerror(this.name, this.id, 'cartao')">
-                                                         <span id="id_cartao_icon" style="display: none" class="icon is-right has-text-danger"><i class="mdi mdi-alert-circle mdi-24px"></i></span>
-
-                                                    </div>
-                                                    <p id="id_cartao_msg" style="display: none" class="help is-danger" >O número de cartao de cidadão tem que ter 8 digitos.</p>
-                                                    <br>
-                                                    <br>
-                                                    {% ifequal 1 obj.permitir_localizacao %}
-                                                    Permite o acesso à sua localização?
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="permitir_localizacao"
-                                                                                        value="sim"
-                                                                                        checked="checked">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Sim </span>
-                                                    </label>
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="permitir_localizacao"
-                                                                                        value="nao">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Não </span>
-                                                    </label>
-                                                    {% endifequal %}
-
-                                                    {% ifequal 0 obj.permitir_localizacao %}
-                                                    Permite o acesso à sua localização?
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="permitir_localizacao"
-                                                                                        value="sim"
-                                                                                        >
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Sim </span>
-                                                    </label>
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="permitir_localizacao"
-                                                                                        value="nao"
-                                                    checked="checked">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Não </span>
-                                                    </label>
-                                                    {% endifequal %}
-                                                    <br>
-                                                    <br>
-
-                                                   {% ifequal 1 obj.utilizar_dados_pessoais %}
-                                                    Permite a utilização dos seus dados pessoais?
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="utilizar_dados_pessoais"
-                                                                                        value="sim"
-                                                                                        checked="checked">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Sim </span>
-                                                    </label>
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="utilizar_dados_pessoais"
-                                                                                        value="nao">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Não </span>
-                                                    </label>
-                                                    {% endifequal %}
-
-                                                    {% ifequal 0 obj.utilizar_dados_pessoais %}
-                                                    Permite a utilização dos seus dados pessoais?
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="utilizar_dados_pessoais"
-                                                                                        value="sim"
-                                                                                        >
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Sim </span>
-                                                    </label>
-                                                    <label class="b-radio radio"><input type="radio"
-                                                                                        name="utilizar_dados_pessoais"
-                                                                                        value="nao"
-                                                    checked="checked">
-                                                        <span class="check"></span>
-                                                        <span class="control-label"> Não </span>
-                                                    </label>
-
-                                                    {% endifequal %}
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="level-right">
-                                        <input type="submit" value="Confirmar"
-                                               class="button is-large is-success is-outlined">
-                                    </div>
-                                </form>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
- {% include 'includes/footer.html' %}
+    {% include 'includes/footer.html' %}
 
-  <script>
+    <script>
         var message_ele = document.getElementById("message_container");
 
-        setTimeout(function(){
-           message_ele.style.display = "none";
+        setTimeout(function () {
+            message_ele.style.display = "none";
         }, 4000);
-       </script>
+    </script>
 
 {% endblock %}
 
