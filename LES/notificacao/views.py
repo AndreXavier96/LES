@@ -61,7 +61,10 @@ class notificacao(View):
                                            prioridade=prioridade, utilizador_env=utilizador_env,
                                            utilizador_rec=x, notificacao_grupo=notificacao_grupo)
             else:
-                utilizador_rec = form_notificacao['utilizador_rec'].value()
+                utilizador_v = Utilizador.objects.all()
+                #utilizador_email = utilizador_v.email
+                print(utilizador_v)
+                utilizador_rec = request.POST['utilizador_rec']
                 utilizador_rec1 = Utilizador.objects.get(email=utilizador_rec)
                 Notificacao.objects.create(assunto=assunto, conteudo=conteudo, hora=hora,
                                        prioridade=prioridade, utilizador_env=utilizador_env,
