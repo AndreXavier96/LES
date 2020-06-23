@@ -34,18 +34,6 @@
 
     <script src="{% static 'main/js/editarinscricao.js' %}"></script>
     <script>
-        let options = {
-            twentyFour: true,
-            now: "00:00",
-            close: 'wickedpicker__close',
-            hoverState: 'hover-state',
-            title: 'Escolher Hora',
-            minutesInterval: 5,
-        };
-        $(document).ready(function () {
-            $('.timepicker-12-hr').wickedpicker(options);
-        });
-
         $(function () {
             $("#table_atividades").tablesorter();
         });
@@ -634,9 +622,9 @@
                                                         <div class="field">
                                                             <label for="timepicker-one">Hora Chegada</label>
                                                             <div class="control">
-                                                                <input type="text" id="timepicker-one"
+                                                                <input type="time" id="timepicker-one"
                                                                        name="timepicker-one"
-                                                                       class="timepicker-12-hr input">
+                                                                       class="input" value="{{ transporte.hora_chegada | date:'H:i' }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -644,9 +632,9 @@
                                                         <div class="field">
                                                             <label for="timepicker-two">Hora Partida</label>
                                                             <div class="control">
-                                                                <input type="text" id="timepicker-two"
+                                                                <input type="time" id="timepicker-two"
                                                                        name="timepicker-two"
-                                                                       class="timepicker-12-hr input">
+                                                                       class="input" value="{{ transporte.hora_partida | date:'H:i' }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -710,9 +698,9 @@
                                                                        for="timepicker-three">Hora
                                                                     Ida</label>
                                                                 <div class="control">
-                                                                    <input type="text" id="timepicker-three"
+                                                                    <input type="time" id="timepicker-three"
                                                                            name="timepicker-three"
-                                                                           class="timepicker-12-hr input">
+                                                                           class="input" >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -723,9 +711,9 @@
                                                                        for="timepicker-four">Hora
                                                                     Volta</label>
                                                                 <div class="control">
-                                                                    <input type="text" id="timepicker-four"
+                                                                    <input type="time" id="timepicker-four"
                                                                            name="timepicker-four"
-                                                                           class="timepicker-12-hr input">
+                                                                           class="input" >
                                                                 </div>
                                                             </div>
                                                         </div>
