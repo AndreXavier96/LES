@@ -204,6 +204,7 @@ function showerror(id) {
     document.getElementById(id + "_msg").style.display = ""
 }
 
+
 function hiddeerror(id) {
     document.getElementById(id + "_div").classList.remove("has-icons-right")
     document.getElementById(id).classList.remove("is-danger")

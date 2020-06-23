@@ -203,6 +203,7 @@ class Tematica(models.Model):
         managed = False
         db_table = 'Tematica'
 
+
 class UtilizadorTarefa(models.Model):
     tarefa = models.ForeignKey(Tarefa, models.DO_NOTHING)
     coordenador = models.ForeignKey(Utilizador, models.DO_NOTHING, related_name='1+')
