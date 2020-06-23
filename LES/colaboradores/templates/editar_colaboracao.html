@@ -25,6 +25,7 @@
         };
         $(document).ready(function () {
             $('.timepicker-12-hr').wickedpicker(options);
+
         });
 
 function cancel_reg(val) {
@@ -116,7 +117,7 @@ function cancel_reg(val) {
                                                             <label class="label">Em que dia quer colaborar?</label>
                                                         </div>
                                                         <input type="date" id="datemax" value={{data_colaboracao}} name="data_colaboracao"
-                                                           min={{data_inicio}} max={{data_fim}} required>
+                                                           min={{data_inicio}} max={{data_fim}} class="input">
                                                     </div>
 
                                                     <div class="columns">
@@ -125,7 +126,7 @@ function cancel_reg(val) {
                                                             <div class="field">
                                                                 <label class="label">Horário de Início</label>
                                                                 <input type="time" value={{inicio_colab}}
-                                                                       name="hora_inicio_colab" required>
+                                                                       name="hora_inicio_colab" class="input">
 <!--                                                                       id="timepicker-two"-->
 
 <!--                                                                       class="timepicker-12-hr" -->
@@ -136,7 +137,7 @@ function cancel_reg(val) {
                                                             <div class="field">
                                                                 <label class="label">Horário de Fim</label>
                                                                 <input type="time" name="hora_fim_colab"
-                                                                       value={{fim_colab}} required>
+                                                                       value={{fim_colab}} class="input">
 <!--                                                                       id="timepicker-one"-->
 <!--                                                                       name="hora_fim_colab" -->
 <!--                                                                       class="timepicker-12-hr" -->
