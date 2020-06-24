@@ -26,11 +26,14 @@ function validateForm(this_id) {
         '</div>'
 
     let msgdiv = document.getElementById('msgdiv')
-
-
+    let assunto = document.forms["notificacao_form"]["assunto"].value;
+    let conteudo = document.forms["notificacao_form"]["conteudo"].value;
+    let prioridade = document.forms["notificacao_form"]["prioridade"].value;
+    let utilizadortipo = document.forms["notificacao_form"]["utilizadortipo"].value;
+    let tiponotificacao = document.forms["notificacao_form"]["Tiponotificacao"].value;
     let x = document.forms["notificacao_form"]["email_final"].value;
     let mail = document.forms["notificacao_form"]["utilizador_rec"].value;
-    console.log(x)
+    console.log(tiponotificacao)
     let y=1;
     for(let i=1; i<=x;i++){
         let k = document.forms["notificacao_form"]["id_"+i].value;
@@ -40,16 +43,26 @@ function validateForm(this_id) {
         }
     }
     console.log(y);
-
-    if (y===1) {
+    if (tiponotificacao === ""){msgdiv.innerHTML = errormsg1 + 'Deve escolher o tipo de notificação' + errormsg2}
+    else if (y===1 && tiponotificacao === "Individual") {
         msgdiv.innerHTML = errormsg1 + 'O Utilizador não existe' + errormsg2
-    }else {
+    } else if (tiponotificacao === "Grupo" && utilizadortipo === "escolher"){
+     msgdiv.innerHTML = errormsg1 + 'Deve escolher um grupo' + errormsg2
+    } else if(assunto === "" || RegExp('^[ ]+$').test(assunto) ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher o assunto' + errormsg2
+    } else if(conteudo === "" || RegExp('^[ ]+$').test(conteudo) ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher o conteudo' + errormsg2
+    }else if(prioridade === "" || RegExp('^[ ]+$').test(prioridade) || !RegExp('^[0-9]+$').test(prioridade)  ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher a prioridade' + errormsg2
+    }
+    else {
         document.getElementById('popup_notificacao').style.display=''
     }
     var message_ele = document.getElementById("message_container");
     setTimeout(function () {
         message_ele.style.display = "none";
     }, 4000);
+
 }
 
 
