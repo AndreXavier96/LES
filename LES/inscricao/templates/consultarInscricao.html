@@ -24,6 +24,20 @@
     <script src="{% static 'main/js/consultar_inscricao.js' %}"></script>
 
 </head>
+<style>
+    .notices {
+        position: fixed;
+        display: flex;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 8em;
+        overflow: hidden;
+        z-index: 1000;
+        pointer-events: none;
+    }
+</style>
 <script>
     function srcImage(p1) {
         event.preventDefault();
@@ -534,46 +548,46 @@
                                                                                                 {% endif %}
 
                                                                                                 <td data-label="espaco"
-                                                                                                        style="width: 35%">
-                                                                                                        {% if s.sessaoAtividade.atividade.edificio or s.sessaoAtividade.atividade.sala %}
-                                                                                                            {% if s.sessaoAtividade.atividade.edificio and s.sessaoAtividade.atividade.sala %}
-                                                                                                                Edificio:
-                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
-                                                                                                                1
-                                                                                                            {% endif %}
-                                                                                                            {% if s.sessaoAtividade.atividade.edificio and not s.sessaoAtividade.atividade.sala %}
-                                                                                                                Edificio:
-                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
-                                                                                                                2
-                                                                                                                {% if s.sessaoAtividade.atividade.edificio.mapa_imagem %}
-                                                                                                                    <p>
-                                                                                                                        <a id="open-modal"
-                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.edificio.mapa_imagem.url }}')"><small>Ver
-                                                                                                                            no
-                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
-                                                                                                                    </p>
-                                                                                                                {% endif %}
-                                                                                                            {% endif %}
-                                                                                                            {% if s.sessaoAtividade.atividade.sala %}
-                                                                                                                Sala:
-                                                                                                                {{ s.sessaoAtividade.atividade.sala }}
-                                                                                                                {% if s.sessaoAtividade.atividade.sala.mapa_imagem %}
-                                                                                                                    <p>
-                                                                                                                        <a id="open-modal"
-                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.sala.mapa_imagem.url }}')"><small>Ver
-                                                                                                                            no
-                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
-                                                                                                                    </p>
-                                                                                                                {% endif %}
-                                                                                                            {% endif %}
-                                                                                                        {% elif s.sessaoAtividade.atividade.tipo_local %}
-                                                                                                            Local:
-                                                                                                            {{ s.sessaoAtividade.atividade.tipo_local }}
-                                                                                                        {% else %}
-                                                                                                            Local: Não
-                                                                                                            especificado
+                                                                                                    style="width: 35%">
+                                                                                                    {% if s.sessaoAtividade.atividade.edificio or s.sessaoAtividade.atividade.sala %}
+                                                                                                        {% if s.sessaoAtividade.atividade.edificio and s.sessaoAtividade.atividade.sala %}
+                                                                                                            Edificio:
+                                                                                                            {{ s.sessaoAtividade.atividade.edificio }}
+                                                                                                            1
                                                                                                         {% endif %}
-                                                                                                    </td>
+                                                                                                        {% if s.sessaoAtividade.atividade.edificio and not s.sessaoAtividade.atividade.sala %}
+                                                                                                            Edificio:
+                                                                                                            {{ s.sessaoAtividade.atividade.edificio }}
+                                                                                                            2
+                                                                                                            {% if s.sessaoAtividade.atividade.edificio.mapa_imagem %}
+                                                                                                                <p>
+                                                                                                                    <a id="open-modal"
+                                                                                                                       onclick="srcImage('{{ s.sessaoAtividade.atividade.edificio.mapa_imagem.url }}')"><small>Ver
+                                                                                                                        no
+                                                                                                                        mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                </p>
+                                                                                                            {% endif %}
+                                                                                                        {% endif %}
+                                                                                                        {% if s.sessaoAtividade.atividade.sala %}
+                                                                                                            Sala:
+                                                                                                            {{ s.sessaoAtividade.atividade.sala }}
+                                                                                                            {% if s.sessaoAtividade.atividade.sala.mapa_imagem %}
+                                                                                                                <p>
+                                                                                                                    <a id="open-modal"
+                                                                                                                       onclick="srcImage('{{ s.sessaoAtividade.atividade.sala.mapa_imagem.url }}')"><small>Ver
+                                                                                                                        no
+                                                                                                                        mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                </p>
+                                                                                                            {% endif %}
+                                                                                                        {% endif %}
+                                                                                                    {% elif s.sessaoAtividade.atividade.tipo_local %}
+                                                                                                        Local:
+                                                                                                        {{ s.sessaoAtividade.atividade.tipo_local }}
+                                                                                                    {% else %}
+                                                                                                        Local: Não
+                                                                                                        especificado
+                                                                                                    {% endif %}
+                                                                                                </td>
 
                                                                                             </tr>
                                                                                         {% endif %}
@@ -1438,7 +1452,9 @@
                                                                                                                 </div>
                                                                                                             </th>
                                                                                                             <th>
-                                                                                                                <div class="th-wrap">Local</div>
+                                                                                                                <div class="th-wrap">
+                                                                                                                    Local
+                                                                                                                </div>
                                                                                                             </th>
                                                                                                         </tr>
                                                                                                         </thead>
@@ -1463,46 +1479,47 @@
                                                                                                                         {{ s.numero_alunos }}
                                                                                                                     </td>
                                                                                                                     <td data-label="espaco"
-                                                                                                        style="width: 35%">
-                                                                                                        {% if s.sessaoAtividade.atividade.edificio or s.sessaoAtividade.atividade.sala %}
-                                                                                                            {% if s.sessaoAtividade.atividade.edificio and s.sessaoAtividade.atividade.sala %}
-                                                                                                                Edificio:
-                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
-                                                                                                                1
-                                                                                                            {% endif %}
-                                                                                                            {% if s.sessaoAtividade.atividade.edificio and not s.sessaoAtividade.atividade.sala %}
-                                                                                                                Edificio:
-                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
-                                                                                                                2
-                                                                                                                {% if s.sessaoAtividade.atividade.edificio.mapa_imagem %}
-                                                                                                                    <p>
-                                                                                                                        <a id="open-modal"
-                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.edificio.mapa_imagem.url }}')"><small>Ver
-                                                                                                                            no
-                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
-                                                                                                                    </p>
-                                                                                                                {% endif %}
-                                                                                                            {% endif %}
-                                                                                                            {% if s.sessaoAtividade.atividade.sala %}
-                                                                                                                Sala:
-                                                                                                                {{ s.sessaoAtividade.atividade.sala }}
-                                                                                                                {% if s.sessaoAtividade.atividade.sala.mapa_imagem %}
-                                                                                                                    <p>
-                                                                                                                        <a id="open-modal"
-                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.sala.mapa_imagem.url }}')"><small>Ver
-                                                                                                                            no
-                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
-                                                                                                                    </p>
-                                                                                                                {% endif %}
-                                                                                                            {% endif %}
-                                                                                                        {% elif s.sessaoAtividade.atividade.tipo_local %}
-                                                                                                            Local:
-                                                                                                            {{ s.sessaoAtividade.atividade.tipo_local }}
-                                                                                                        {% else %}
-                                                                                                            Local: Não
-                                                                                                            especificado
-                                                                                                        {% endif %}
-                                                                                                    </td>
+                                                                                                                        style="width: 35%">
+                                                                                                                        {% if s.sessaoAtividade.atividade.edificio or s.sessaoAtividade.atividade.sala %}
+                                                                                                                            {% if s.sessaoAtividade.atividade.edificio and s.sessaoAtividade.atividade.sala %}
+                                                                                                                                Edificio:
+                                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
+                                                                                                                                1
+                                                                                                                            {% endif %}
+                                                                                                                            {% if s.sessaoAtividade.atividade.edificio and not s.sessaoAtividade.atividade.sala %}
+                                                                                                                                Edificio:
+                                                                                                                                {{ s.sessaoAtividade.atividade.edificio }}
+                                                                                                                                2
+                                                                                                                                {% if s.sessaoAtividade.atividade.edificio.mapa_imagem %}
+                                                                                                                                    <p>
+                                                                                                                                        <a id="open-modal"
+                                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.edificio.mapa_imagem.url }}')"><small>Ver
+                                                                                                                                            no
+                                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                                    </p>
+                                                                                                                                {% endif %}
+                                                                                                                            {% endif %}
+                                                                                                                            {% if s.sessaoAtividade.atividade.sala %}
+                                                                                                                                Sala:
+                                                                                                                                {{ s.sessaoAtividade.atividade.sala }}
+                                                                                                                                {% if s.sessaoAtividade.atividade.sala.mapa_imagem %}
+                                                                                                                                    <p>
+                                                                                                                                        <a id="open-modal"
+                                                                                                                                           onclick="srcImage('{{ s.sessaoAtividade.atividade.sala.mapa_imagem.url }}')"><small>Ver
+                                                                                                                                            no
+                                                                                                                                            mapa<i class="mdi mdi-open-in-new"></i></small></a>
+                                                                                                                                    </p>
+                                                                                                                                {% endif %}
+                                                                                                                            {% endif %}
+                                                                                                                        {% elif s.sessaoAtividade.atividade.tipo_local %}
+                                                                                                                            Local:
+                                                                                                                            {{ s.sessaoAtividade.atividade.tipo_local }}
+                                                                                                                        {% else %}
+                                                                                                                            Local:
+                                                                                                                            Não
+                                                                                                                            especificado
+                                                                                                                        {% endif %}
+                                                                                                                    </td>
                                                                                                                 </tr>
                                                                                                             {% endif %}
                                                                                                         {% endfor %}
@@ -1616,6 +1633,21 @@
             </div>
         </div>
     </form>
+     {% if messages %}
+            {% for message in messages %}
+            <div id="message_container" class="notices is-bottom"><div role="alert" {% if message.tags == 'error' %} class="toast is-danger is-bottom" {% else %} class="toast is-success is-bottom" {% endif %} style=""><div>{{ message }}</div></div></div>
+            {% endfor %}
+    {% endif %}
 {% endblock %}
 </body>
+<script>
+        // suppose the `id` attribute of element is `message_container`.
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+        // Timeout is 3 sec, you can change it
+
+</script>
 </html>

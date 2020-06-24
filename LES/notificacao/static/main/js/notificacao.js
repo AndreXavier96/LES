@@ -65,4 +65,33 @@ function validateForm(this_id) {
 
 }
 
+function validate_editarForm(this_id) {
+    let errormsg1 = '<div id="message_container" class="notices is-bottom">\n' +
+        '    <div role="alert" class="toast is-danger is-bottom" style="">\n' +
+        '        <div id="msg_here">'
+    let errormsg2 = '</div>\n' +
+        '    </div>\n' +
+        '</div>'
+
+    let msgdiv = document.getElementById('msgdiv')
+    let assunto = document.forms["notificacao_form"]["assunto"].value;
+    let conteudo = document.forms["notificacao_form"]["conteudo"].value;
+    let prioridade = document.forms["notificacao_form"]["prioridade"].value;
+
+    if(assunto === "" || RegExp('^[ ]+$').test(assunto) ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher o assunto' + errormsg2
+    } else if(conteudo === "" || RegExp('^[ ]+$').test(conteudo) ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher o conteudo' + errormsg2
+    }else if(prioridade === "" || RegExp('^[ ]+$').test(prioridade) || !RegExp('^[0-9]+$').test(prioridade)  ){
+       msgdiv.innerHTML = errormsg1 + 'Deve preencher a prioridade' + errormsg2
+    }
+    else {
+        document.getElementById('popup_notificacao').style.display=''
+    }
+    var message_ele = document.getElementById("message_container");
+    setTimeout(function () {
+        message_ele.style.display = "none";
+    }, 4000);
+
+}
 
