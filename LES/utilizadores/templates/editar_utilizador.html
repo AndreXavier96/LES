@@ -108,25 +108,25 @@
                                     <div style="text-align:center">
                                         <span style="font-size: 24pt;font-weight:bold">Editar Utilizador</span>
                                     </div>
-
-
                                     <form method="POST" name="edit_user">
+                                         {% include "includes/msg.html" %}
                                         {% csrf_token %}
                                         <section class="step-content">
                                             <div class="step-item" style="">
                                                 <div style="padding: 1rem 2vw 0px;">
                                                     <hr>
+                                                    {#-----------------------------popup-------------------------------------------------------#}
                                                     <h3 style="color:red;">
-                                                        {% if messages1 %}
-                                                            {% for message in messages1 %}
-                                                                <p style="text-align:center"> {{ message }} </p>
-                                                            {% endfor %}
-                                                        {% endif %}
-                                                    </h3>
+                                                    {% if messages %}
+                                                        {% for message in messages %}
+                                                    <p style="text-align:center"> {{ message }} </p>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </h3>
 
                                                     <div class="col s6 m6 is-centered">
                                                         <label for="text">Nome</label>
-                                                        <input type="text" id="text" value={{ nome }} name="nome"
+                                                        <input type="text" id="text" value="{{ nome }}" name="nome"
                                                                class="input">
                                                         <br>
                                                         <br>
@@ -137,7 +137,8 @@
                                                             <div class="field">
                                                                 <label for="id_email">Email</label>
                                                                 <div class="control" id="id_email_div">
-                                                                    <input type="text" id="id_email"
+                                                                    <input type="text"
+                                                                           id="id_email"
                                                                            value="{{ email }}"
                                                                            name="email"
                                                                            class="input"
@@ -150,8 +151,8 @@
                                                                    class="help is-danger">Por favor, utilize um email
                                                                     real.</p>
                                                             </div>
-                                                            <br>
                                                         </div>
+                                                        <br>
                                                         {#-----------------------------telemovel-------------------------------------------------------#}
                                                         <div class="col s12 m6">
                                                             <div class="field">
@@ -159,18 +160,19 @@
                                                                 <div class="control is-clearfix" id="id_tele_div">
                                                                     <input type="number"
                                                                            id="id_tele"
-                                                                           value={{ numero_telemovel }}
-                                                                                   name="numero_telemovel"
+                                                                           value="{{ numero_telemovel }}"
+                                                                           name="numero_telemovel"
                                                                            class="input"
                                                                            onchange="formerror(this.name, this.id, 'movel')">
                                                                     <span id="id_tele_icon" style="display: none"
                                                                           class="icon is-right has-text-danger"><i
                                                                             class="mdi mdi-alert-circle mdi-24px"></i></span>
-
                                                                 </div>
                                                                 <p id="id_tele_msg" style="display: none"
                                                                    class="help is-danger">O número de telemovél tem que
                                                                     ter 9 digitos.</p>
+                                                                </div>
+                                                            </div>
                                                                 <br>
 
                                                                 {#----------------------------cc-------------------------------------------------------#}
@@ -181,8 +183,8 @@
                                                                              id="id_cartao_div">
                                                                             <input type="number"
                                                                                    id="id_cartao"
-                                                                                   value={{ cartao_cidadao }}
-                                                                                           name="cartao_cidadao"
+                                                                                   value="{{ cartao_cidadao }}"
+                                                                                   name="cartao_cidadao"
                                                                                    class="input"
                                                                                    onchange="formerror(this.name, this.id, 'cartao')">
                                                                             <span id="id_cartao_icon"
@@ -194,6 +196,8 @@
                                                                         <p id="id_cartao_msg" style="display: none"
                                                                            class="help is-danger">O número de cartao de
                                                                             cidadão tem que ter 8 digitos.</p>
+                                                                        </div>
+                                                                    </div>
                                                                         <br>
                                                                         <br>
                                                                         {% ifequal 1 obj.permitir_localizacao %}
@@ -281,14 +285,24 @@
 
                                                                     </div>
                                                                 </div>
-
                                                             </div>
-                                                        </div>
-                                                        <div class="level-right">
-                                                            <input type="submit" value="Confirmar"
-                                                                   class="button is-large is-success is-outlined">
-                                                        </div>
-                                    </form>
+
+
+
+
+
+                                                         <div class="column is-8 is-offset-2">
+                                    <div class="level">
+                                        <div class="level-left"><a href="/utilizadores/consultar_utilizadores/"
+                                                                   class="button is-outlined"
+                                                                   type="button"><!----> <span> Cancelar </span> <!---->
+                                        </a></div>
+                                        <div class="level-right">
+                                            <button type="submit" id="confirmacao" onclick="validateForm(this.id)" class="button is-large is-success is-outlined"><!---->
+                                                <span> Confirmar </span> <!----></button>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -296,17 +310,9 @@
                     </div>
                 </div>
             </div>
+        {% include 'includes/footer.html' %}
         </div>
-    </div>
-    {% include 'includes/footer.html' %}
 
-    <script>
-        var message_ele = document.getElementById("message_container");
-
-        setTimeout(function () {
-            message_ele.style.display = "none";
-        }, 4000);
-    </script>
 
 {% endblock %}
 
