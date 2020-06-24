@@ -298,7 +298,7 @@
                                                                    type="button"><!----> <span> Cancelar </span> <!---->
                                         </a></div>
                                         <div class="level-right">
-                                            <button type="submit" id="confirmacao" onclick="validateForm(this.id)" class="button is-large is-success is-outlined"><!---->
+                                            <button type="button" id="confirmacao" onclick="validateForm(this.id)" class="button is-large is-success is-outlined"><!---->
                                                 <span> Confirmar </span> <!----></button>
                                         </div>
                                     </div>
@@ -313,7 +313,25 @@
         {% include 'includes/footer.html' %}
         </div>
 
-
+<div id="popup_confirmacao" class="dialog modal is-active" style="display: none">
+            <div class="modal-background"></div>
+            <div class="modal-card animation-content">
+                <section class="modal-card-body is-titleless">
+                    <div class="media">
+                        <div class="media-content"><p>Tem a certeza que submeter a inscrição no Dia Aberto?</p></div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="button" id="popup_cancel" class="button" onclick="cancelbutton(this.id)">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="popup_confirmacao" class="button is-success"
+                            onclick="pagination(this.id)">
+                        Confirmar
+                    </button>
+                </footer>
+            </div>
+        </div>
 {% endblock %}
 
 </body>
