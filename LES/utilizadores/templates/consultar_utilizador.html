@@ -73,14 +73,14 @@
                             {#------------------------------------------mensagens sucesso/insuceso-----------------------------------#}
                             {% if messages %}
                            {% for message in messages %}
-                          <div id="message_container" class="notices is-top">
+                          <div id="message_container" class="notices is-bottom">
                           <div role="alert"
 
                      {% if message.tags == 'error' %}
 
-               <div class="toast is-danger is-top"
+               <div class="toast is-danger is-bottom"
                     {% else %}
-                    class="toast is-success is-top"
+                    class="toast is-success is-bottom"
                     {% endif %}
                     style="">
                    <div>{{ message }}</div>
@@ -98,19 +98,19 @@
                                     <thead>
                                     <tr>
                                         <th width="40px"></th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Tipo de utilizador</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Nome</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Email</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Unidade organica</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Departamento</div>
                                         </th>
                                         <th class="">
@@ -127,30 +127,30 @@
                                                 class="icon">
                                                     <i class="mdi mdi-chevron-right mdi-24px"></i></span></a></td>
                                         <!---->
-                                        <td data-label="Tipo de Utilizador" class=""> {{ instance.utilizadortipo.tipo }}
+                                        <td data-label="Tipo de Utilizador" class="toggle pointer"> {{ instance.utilizadortipo.tipo }}
                                         </td>
-                                        <td data-label="Nome" class="">
+                                        <td data-label="Nome" class="toggle pointer">
                                             {{ instance.nome }}
                                         </td>
-                                        <td data-label="Email" class="">
+                                        <td data-label="Email" class="toggle pointer">
                                             {{ instance.email }}
-                                        <td data-label="Unidade Organica" class="">
+                                        <td data-label="Unidade Organica" class="toggle pointer">
                                             {% if instance.unidadeorganica == None %}
                                             <option hidden></option>
                                             {% else %}
-                                            <p>{{instance.unidadeorganica}}</p>
+                                            <p>{{instance.unidadeorganica.nome}}</p>
                                             {% endif %}
                                         </td>
-                                        <td data-label="Departamento" class="">
+                                        <td data-label="Departamento" class="toggle pointer">
                                             {% if instance.departamento == None %}
                                             <option hidden></option>
                                             {% else %}
-                                            <p>{{instance.departamento}}</p>
+                                            <p>{{instance.departamento.nome}}</p>
                                             {% endif %}
                                         </td>
                                         {#------------------------------------------validar-----------------------------------#}
 
-                                        <td data-label="Validar Utilizador" class="">
+                                        <td data-label="Validar Utilizador" class="toggle pointer">
                                             {% if instance.validado == None or instance.validado == 0  %}
                                              <div class="field is-grouped">
                                             <p class="control">
@@ -315,22 +315,22 @@
                                     <thead>
                                     <tr>
                                         <th width="40px"></th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Tipo de utilizador</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Nome</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Email</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Unidade organica</div>
                                         </th>
-                                        <th class="is-sortable">
+                                        <th class="is-sortable pointer">
                                             <div class="th-wrap">Departamento</div>
                                         </th>
-                                         <th class="is-sortable">
+                                         <th class="is-sortable toggle pointer">
                                             <div class="th-wrap"></div>
                                         </th>
 
@@ -349,29 +349,29 @@
                                                 class="icon">
                                                     <i class="mdi mdi-chevron-right mdi-24px"></i></span></a></td>
                                         <!---->
-                                        <td data-label="Tipo de Utilizador" class=""> {{ instance.utilizadortipo.tipo }}
+                                        <td data-label="Tipo de Utilizador" class=" toggle pointer"> {{ instance.utilizadortipo.tipo }}
                                         </td>
-                                        <td data-label="Nome" class="">
+                                        <td data-label="Nome" class="toggle pointer">
                                             {{ instance.nome }}
                                         </td>
-                                        <td data-label="Email" class="">
+                                        <td data-label="Email" class="toggle pointer">
                                             {{ instance.email }}
-                                        <td data-label="Unidade Organica" class="">
+                                        <td data-label="Unidade Organica" class="toggle pointer">
                                             {% if instance.unidadeorganica == None %}
                                             <option hidden></option>
                                             {% else %}
-                                            <p>{{instance.unidadeorganica}}</p>
+                                            <p>{{instance.unidadeorganica.nome}}</p>
                                             {% endif %}
                                         </td>
-                                        <td data-label="Departamento" class="">
+                                        <td data-label="Departamento" class="toggle pointer">
                                             {% if instance.departamento == None %}
                                             <option hidden></option>
                                             {% else %}
-                                            <p>{{instance.departamento}}</p>
+                                            <p>{{instance.departamento.nome}}</p>
                                             {% endif %}
                                         </td>
                                         {#------------------------------------------validado n validado-----------------------------------#}
-                                        <td data-label="Validar Utilizador" class="">
+                                        <td data-label="Validar Utilizador" class="toggle pointer">
                                             {% if instance.validado == None or instance.validado == 0  %}
                                              <div class="field is-grouped">
                                             <p class="control">

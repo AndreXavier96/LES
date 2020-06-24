@@ -297,13 +297,13 @@ class Editar_user(View):
         if (re.search(regex, email)):
             print("Valid Email")
         else:
-            messages.error(request, "O email nao tem o formato apropriado")
+            messages.error(request, "O 1email nao tem o formato apropriado")
 
         if len(numero_telemovel) != 9:
-            messages.error(request, "O numero de telemovel deve conter 9 algarismos")
+            messages.error(request, "O 1numero de telemovel deve conter 9 algarismos")
 
         if len(cartao_cidadao) != 8:
-            messages.error(request, "O numero do cartao de cidadão deve conter 8 algarismos")
+            messages.error(request, "O 1numero do cartao de cidadão deve conter 8 algarismos")
 
         # ------------------------------------------------------------------------------
 
