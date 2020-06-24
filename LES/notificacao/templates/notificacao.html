@@ -140,7 +140,7 @@
                                                                         {% if u.tipo != 'Administrador' %}
                                                                             <option value="{{ u.tipo }}">{{ u.tipo }}</option>
                                                                         {% endif %}
-                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Participante Individual" %}
+                                                                    {% elif utilizador_env.utilizadortipo.tipo == "Participante Individual" or utilizador_env.utilizadortipo.tipo == "Participante em Grupo" %}
                                                                         {% if u.tipo != 'Coordenador' and u.tipo != 'Docente' and u.tipo != 'Colaborador' and u.tipo != 'Participante em Grupo' and u.tipo != 'Participante Individual' %}
                                                                             <option value="{{ u.tipo }}">{{ u.tipo }}</option>
                                                                         {% endif %}
@@ -218,7 +218,7 @@
                                         </section>
                                         <div class="column is-8 is-offset-2">
                                             <div class="level">
-                                                <div class="level-left"><a class="button is-outlined"
+                                                <div class="level-left"><a href="/notificacao/consultar_notificacao" class="button is-outlined"
                                                                            type="button"> <span> Cancelar </span>
                                                 </a>
                                                 </div>
@@ -280,6 +280,7 @@
                 </div>
             </div>
         {% endfor %}
+
     {% endif %}
     <script>
         var message_ele = document.getElementById("message_container");

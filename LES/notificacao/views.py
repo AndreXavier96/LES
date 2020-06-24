@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.datetime_safe import datetime
 from django.views.generic import View
@@ -37,7 +38,7 @@ class notificacao(View):
             prioridade = form_notificacao['prioridade'].value()
             # utilizador_env = form_notificacao['utilizador_env'].value()
             auth_user = request.user
-            utilizador_env = Utilizador.objects.get(pk=auth_user.id)
+            utilizador_env = AuthUser.objects.get(pk=auth_user.pk).utilizador
             # utilizador_env = Utilizador.objects.get(pk=1)
             # utilizador_env_value = form_notificacao.cleaned_data.get("utilizador_env")
             # print(utilizador_env_value)
@@ -79,8 +80,8 @@ class Consultar_notificacao(View):
 
     def get(self, request):
         lista_colab3 = []
-        user_id = request.user
-        lista_notificacao_final = Notificacao.objects.filter(utilizador_env_id=user_id.pk)
+        auth_user = request.user
+        lista_notificacao_final = Notificacao.objects.filter(utilizador_env_id=AuthUser.objects.get(pk=auth_user.pk).utilizador)
         return render(request, self.template_name, {
             # 'form': form,
             # 'lista_colab': lista_colab,
@@ -103,17 +104,21 @@ class Editar_notificacao(View):
     def get(self, request, pk):
         form = NotificacaoForm()
         obj = Notificacao.objects.get(pk=pk)
-        user_id = request.user
-        if len(Notificacao.objects.filter(notificacao_grupo=obj.notificacao_grupo)) == 1:
-            tiponotificacao = "notificação indvidual"
-        elif len(Notificacao.objects.filter(notificacao_grupo=obj.notificacao_grupo)) > 1:
-            tiponotificacao = "notificação grupo"
-        return render(request, self.template_name, {
-            'form': form,
-            'obj': obj,
-            'user_id': user_id,
-            'tiponotificacao': tiponotificacao,
-        })
+        auth_user = request.user
+        utilizador_env = AuthUser.objects.get(pk=auth_user.pk).utilizador
+        if utilizador_env == obj.utilizador_env:
+            if len(Notificacao.objects.filter(notificacao_grupo=obj.notificacao_grupo)) == 1:
+                tiponotificacao = "notificação indvidual"
+            elif len(Notificacao.objects.filter(notificacao_grupo=obj.notificacao_grupo)) > 1:
+                tiponotificacao = "notificação grupo"
+            return render(request, self.template_name, {
+                'form': form,
+                'obj': obj,
+                'user_id': auth_user,
+                'tiponotificacao': tiponotificacao,
+            })
+        else:
+            return HttpResponse('<h1>Não lhe é permitido aceder a esta página</h1>')
 
     def post(self, request, pk):
         form_notificacao = NotificacaoForm(request.POST)
@@ -126,7 +131,7 @@ class Editar_notificacao(View):
             prioridade = form_notificacao['prioridade'].value()
             # utilizador_env = form_notificacao['utilizador_env'].value()
             auth_user = request.user
-            utilizador_env = Utilizador.objects.get(pk=auth_user.id)
+            utilizador_env = AuthUser.objects.get(pk=auth_user.pk).utilizador
             # utilizador_env = Utilizador.objects.get(pk=1)
             # utilizador_env_value = form_notificacao.cleaned_data.get("utilizador_env")
             # print(utilizador_env_value)

@@ -74,10 +74,10 @@ function validate_editarForm(this_id) {
         '</div>'
 
     let msgdiv = document.getElementById('msgdiv')
-    let assunto = document.forms["notificacao_form"]["assunto"].value;
-    let conteudo = document.forms["notificacao_form"]["conteudo"].value;
-    let prioridade = document.forms["notificacao_form"]["prioridade"].value;
-
+    let assunto = document.forms["editar_notificacao_form"]["assunto"].value;
+    let conteudo = document.forms["editar_notificacao_form"]["conteudo"].value;
+    let prioridade = document.forms["editar_notificacao_form"]["prioridade"].value;
+    console.log(assunto)
     if(assunto === "" || RegExp('^[ ]+$').test(assunto) ){
        msgdiv.innerHTML = errormsg1 + 'Deve preencher o assunto' + errormsg2
     } else if(conteudo === "" || RegExp('^[ ]+$').test(conteudo) ){

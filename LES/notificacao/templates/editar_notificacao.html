@@ -13,19 +13,6 @@
 </head>
 
 <script>
-    let options = {
-        twentyFour: true,
-        now: "08:00",
-        close: 'wickedpicker__close',
-        hoverState: 'hover-state',
-        title: 'Escolher Hora',
-        minutesInterval: 5,
-    };
-    $(document).ready(function () {
-        $('.timepicker-12-hr').wickedpicker(options);
-    });
-
-
     function user_type(val) {
         let element = document.getElementById('asda');
         if (val === "Docente" || val === "Colaborador" || val === "Coordenador") {
@@ -34,11 +21,10 @@
             element.style.display = 'none';
         }
     }
-
 </script>
 <body>
 {% block content %}
-    <form method="POST">
+    <form method="POST" name="editar_notificacao_form">
         {% csrf_token %}
 
         <div data-v-8716d23a="" id="app">
@@ -61,6 +47,7 @@
                                     </ul>
                                 </nav>
                                 <div style="padding: 3rem 2vw 1rem;">
+                                    {% include "includes/msg.html" %}
                                     <div class="b-steps">
                                         <nav class="steps is-success">
                                             <ul class="step-items">
@@ -147,14 +134,14 @@
                                         </section>
                                         <div class="column is-8 is-offset-2">
                                             <div class="level">
-                                                <div class="level-left"><a  class="button is-outlined"
+                                                <div class="level-left"><a href="/notificacao/consultar_notificacao"  class="button is-outlined"
                                                                            type="button"> <span> Cancelar </span>
                                                 </a>
                                                 </div>
                                                 <div class="level-right">
                                                     <button type="button" id="confirmacao"
                                                             class="button is-large is-success is-outlined"
-                                                            onclick="confirmacao_notificacao(this.id)">
+                                                            onclick="validate_editarForm(this.id)">
                                                         <span> Enviar </span>
                                                         <span class="icon is-medium">
                                                             <i class="mdi mdi-forward mdi-36px"></i>
