@@ -1,6 +1,9 @@
 {% load static %}
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <link rel="icon" type="image/png" href="{% static 'main/img/favicon.ico' %}"/>
+    <meta charset="UTF-8">
+    <title>Dia Aberto - Consultar Colaborações</title>
     <meta charset="utf-8"/>
     <title></title>
 
@@ -41,7 +44,18 @@ th, td {
     background-color: #bed4f3;
 }
 
-
+.notices{
+            position: fixed;
+            display: flex;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8em;
+            overflow: hidden;
+            z-index: 1000;
+            pointer-events: none;
+        }
 
 
 
@@ -70,7 +84,6 @@ function deleteSessao(val) {
 function cancelSessao(val) {
     document.getElementById('popup_eliminar_sessao').style.display = 'none'
 }
-
 
 
 
@@ -223,6 +236,25 @@ function cancelSessao(val) {
         </div>
     {% include 'includes/footer.html' %}
     </div>
+    {% if messages %}
+    {% for message in messages %}
+        <div id="message_container" class="notices is-bottom">
+            <div role="alert" class="toast is-success is-bottom" style="">
+                <div>{{message}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <script>
+        // suppose the id attribute of element is message_container.
+        var message_ele = document.getElementById("message_container");
+
+        setTimeout(function(){
+           message_ele.style.display = "none";
+        }, 4000);
+        // Timeout is 3 sec, you can change it
+
+    </script>
     <input type="number" id="type" name="type" value="" hidden>
 
 

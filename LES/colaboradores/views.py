@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib import messages
 
 # from .models import Utilizador
 
@@ -61,6 +62,7 @@ class Criar_colab(View):
         #print(user_id.utilizadores)
         pk_user=AuthUser.objects.get(pk=user_id.pk).utilizador#################
         print(pk_user.pk)
+        messages.error(request, "Colaboração criada com sucesso!")
         Colaboracao.objects.create(colaborador_id=pk_user.pk, data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
                                    percurso=percurso, hora_inicio_colab=hora_inicio_colab,
                                    hora_fim_colab=hora_fim_colab)
@@ -137,6 +139,7 @@ class Editar_colab(View):
         Colaboracao.objects.filter(pk=pk).update(data_colaboracao=data_colaboracao, sala_de_aula=sala_de_aula,
                                             percurso=percurso, hora_inicio_colab=hora_inicio_colab,
                                             hora_fim_colab=hora_fim_colab)
+        messages.error(request, "Colaboração editada com sucesso!")
         return redirect('/colaboradores/consultar_colab/')
 
 
