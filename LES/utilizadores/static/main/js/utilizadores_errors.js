@@ -30,6 +30,11 @@ function validateForm(this_id) {
     if(password_digest!=password_conf){
         pass='dif'
     }
+    if(password_digest.length<5){
+        pass='null1'
+    }if(password_conf.length<5){
+        pass='null2'
+    }
 
 
     let permitir_localizacao = document.forms["register_form"]["permitir_localizacao"].value;
@@ -46,6 +51,24 @@ function validateForm(this_id) {
     let email = document.forms["register_form"]["email"].value;
     if(email===''){
         email='null'
+    }if(!RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,3}').test(email)){
+        email='null1'
+    }
+
+
+    let numero_telemovel = document.forms["register_form"]["numero_telemovel"].value;
+    if(numero_telemovel===''){
+        numero_telemovel='null'
+    }if(!RegExp('^[0-9]{9}$').test(numero_telemovel)){
+        numero_telemovel='null1'
+    }
+
+    let cartao_cidadao = document.forms["register_form"]["cartao_cidadao"].value;
+    if(cartao_cidadao===''){
+        cartao_cidadao='null'
+    }
+    if(!RegExp('^[0-9]{8}$').test(cartao_cidadao)){
+        cartao_cidadao='null1'
     }
 
     let data_nascimento = document.forms["register_form"]["data_nascimento"].value;
@@ -90,7 +113,7 @@ function validateForm(this_id) {
     console.log(y);
 
 
-    if (nome === "" || RegExp('^[ ]+$').test(nome)) {
+    if (nome === "" || RegExp('^[ ]+$').test(nome) || !RegExp('^[A-zÀ-ÿ ]+$').test(nome)) {
         msgdiv.innerHTML = errormsg1 + 'Deve escrever um nome real' + errormsg2
     }else if(deficiencias1==='null'){
         msgdiv.innerHTML = errormsg1 + 'Deve indicar se tem deficiências' + errormsg2
@@ -110,10 +133,24 @@ function validateForm(this_id) {
         msgdiv.innerHTML = errormsg1 + 'Deve indicar a sua data de nascimento' + errormsg2
     }else if(pass==='dif'){
         msgdiv.innerHTML = errormsg1 + 'As passwords não coicidem' + errormsg2
+    }else if(pass==='null1'){
+        msgdiv.innerHTML = errormsg1 + 'A password deve de ter o número de caracteres indicado' + errormsg2
+    }else if(pass==='null2'){
+        msgdiv.innerHTML = errormsg1 + 'A password de confirmação deve de ter o número de caracteres indicado' + errormsg2
     }else if(email==='null'){
         msgdiv.innerHTML = errormsg1 + 'Deve de escrever um email' + errormsg2
+    }else if(email==='null1'){
+        msgdiv.innerHTML = errormsg1 + 'Deve de escrever um email válido' + errormsg2
     }else if(y===0){
         msgdiv.innerHTML = errormsg1 + 'Este email já existe' + errormsg2
+    }else if(numero_telemovel==='null'){
+        msgdiv.innerHTML = errormsg1 + 'Deve de inserir um número de telemovel' + errormsg2
+    }else if(numero_telemovel==='null1'){
+        msgdiv.innerHTML = errormsg1 + 'Deve de inserir um número de telemóvel válido' + errormsg2
+    }else if(cartao_cidadao==='null'){
+        msgdiv.innerHTML = errormsg1 + 'Deve de inserir um número de cartão de cidadão' + errormsg2
+    }else if(cartao_cidadao==='null1'){
+        msgdiv.innerHTML = errormsg1 + 'Deve de inserir um número de cartão de cidadão válido' + errormsg2
     }
     else {
         document.getElementById('popup_confirmacao').style.display=''
@@ -187,7 +224,7 @@ function formerror(name, id, type,) {
             hiddeerror(id)
         }
     }else if (type === "cartao") {
-        if (x.length!=8) {
+        if (!RegExp('^[0-9]{8}$').test(x)) {
             showerror(id)
         } else {
             hiddeerror(id)
