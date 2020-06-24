@@ -13,19 +13,6 @@
 </head>
 
 <script>
-    let options = {
-        twentyFour: true,
-        now: "08:00",
-        close: 'wickedpicker__close',
-        hoverState: 'hover-state',
-        title: 'Escolher Hora',
-        minutesInterval: 5,
-    };
-    $(document).ready(function () {
-        $('.timepicker-12-hr').wickedpicker(options);
-    });
-
-
     function user_type(val) {
         let element = document.getElementById('asda');
         if (val === "Docente" || val === "Colaborador" || val === "Coordenador") {
@@ -36,23 +23,32 @@
     }
 
     function Checknotificacao(val) {
-      let Grupo = document.getElementById('Grupo');
-      let Individual = document.getElementById('Individual');
-      if (val === "Individual") {
-      Grupo.style.display = 'none';
-      Individual.style.display = '';
-      document.getElementById('utilizadortipo').value = 'escolher';
-      } else if (val === "Grupo") {
-       Grupo.style.display = '';
-       Individual.style.display = 'none';
-       document.getElementById('id_utilizador_rec').value = '';
-      }
+        let Grupo = document.getElementById('Grupo');
+        let Individual = document.getElementById('Individual');
+        if (val === "Individual") {
+            Grupo.style.display = 'none';
+            Individual.style.display = '';
+            document.getElementById('utilizadortipo').value = 'escolher';
+        } else if (val === "Grupo") {
+            Grupo.style.display = '';
+            Individual.style.display = 'none';
+            document.getElementById('id_utilizador_rec').value = '';
+        }
+    }
+
+    function check_n_emails(val, counter) {
+        let all_emails = document.getElementById('all_emails');
+        let email_final = document.getElementById('email_final');
+        all_emails.insertAdjacentHTML("beforebegin", '<input type="text" hidden name="' + val + counter + '" id="id_' + counter + '" value="' + val + '">');
+        email_final.value = counter;
     }
 
 </script>
-<body>
+<body onload="{% for d in all_users %}
+    check_n_emails('{{ d.email }}', '{{ forloop.counter }}');
+    {% endfor %}">
 {% block content %}
-    <form method="POST">
+    <form method="POST" name="notificacao_form">
         {% csrf_token %}
 
         <div data-v-8716d23a="" id="app">
@@ -74,6 +70,7 @@
                                         </li>
                                     </ul>
                                 </nav>
+                             {% include "includes/msg.html" %}
                                 <div style="padding: 3rem 2vw 1rem;">
                                     <div class="b-steps">
                                         <nav class="steps is-success">
@@ -95,11 +92,24 @@
                                                     <div class="column is-offset-3 is-6">
                                                         <div class="block">
                                                             <div class="field">
-                                                                <p style="display: inline-block; padding-right: 2rem;"> Tipo de notificação:</p>
-                                                                <label class="b-radio radio"><input type="radio" name="Tiponotificacao" value="Individual" onchange="Checknotificacao(this.value);" required="" id="id_Tiponotificacao_0">
-                                                    <span class="check"></span> <span class="control-label"> Individual </span></label>
-                                                                <label class="b-radio radio"><input type="radio" name="Tiponotificacao" value="Grupo" onchange="Checknotificacao(this.value);" required="" id="id_Tiponotificacao_1">
-                                                    <span class="check"></span> <span class="control-label"> Grupo </span></label>
+                                                                <p style="display: inline-block; padding-right: 2rem;">
+                                                                    Tipo de notificação:</p>
+                                                                <label class="b-radio radio"><input type="radio"
+                                                                                                    name="Tiponotificacao"
+                                                                                                    value="Individual"
+                                                                                                    onchange="Checknotificacao(this.value);"
+                                                                                                    required=""
+                                                                                                    id="id_Tiponotificacao_0">
+                                                                    <span class="check"></span> <span
+                                                                            class="control-label"> Individual </span></label>
+                                                                <label class="b-radio radio"><input type="radio"
+                                                                                                    name="Tiponotificacao"
+                                                                                                    value="Grupo"
+                                                                                                    onchange="Checknotificacao(this.value);"
+                                                                                                    required=""
+                                                                                                    id="id_Tiponotificacao_1">
+                                                                    <span class="check"></span> <span
+                                                                            class="control-label"> Grupo </span></label>
                                                             </div>
                                                         </div>
                                                         <div class="block" style="display: none" id="Individual">
@@ -108,7 +118,8 @@
                                                                     utilizador</label>
                                                             </div>
                                                             <div class="control is-clearfix">
-                                                                {{ form.utilizador_rec }}
+                                                                <input type="text" name="utilizador_rec" class="input"
+                                                                       maxlength="200" id="id_utilizador_rec">
                                                             </div>
                                                         </div>
 
@@ -175,7 +186,8 @@
                                                                 <label class="label">Prioridade</label>
                                                                 <div class="b-numberinput field has-addons">
                                                                     <p class="control">
-                                                                        <button onclick="incremental('minus', 'id_prioridade')" type="button" class="button is-primary">
+                                                                        <button onclick="incremental('minus', 'id_prioridade')"
+                                                                                type="button" class="button is-primary">
                                                                     <span class="icon">
                                                                         <i class="mdi mdi-minus mdi-24px"></i>
                                                                     </span>
@@ -184,11 +196,13 @@
                                                                     <div class="control is-clearfix">
                                                                         {#                                                                       {{ form.prioridade }}#}
                                                                         <input type="number" autocomplete="on" step="1"
-                                                                               class="input" name="prioridade" min="0" max="5"
+                                                                               class="input" name="prioridade" min="0"
+                                                                               max="5"
                                                                                id="id_prioridade">
                                                                     </div>
                                                                     <p class="control">
-                                                                        <button onclick="incremental('add', 'id_prioridade')" type="button" class="button is-primary">
+                                                                        <button onclick="incremental('add', 'id_prioridade')"
+                                                                                type="button" class="button is-primary">
                                                                         <span class="icon">
                                                                             <i class="mdi mdi-plus mdi-24px"></i>
                                                                         </span>
@@ -204,14 +218,14 @@
                                         </section>
                                         <div class="column is-8 is-offset-2">
                                             <div class="level">
-                                                <div class="level-left"><a  class="button is-outlined"
+                                                <div class="level-left"><a class="button is-outlined"
                                                                            type="button"> <span> Cancelar </span>
                                                 </a>
                                                 </div>
                                                 <div class="level-right">
                                                     <button type="button" id="confirmacao"
                                                             class="button is-large is-success is-outlined"
-                                                            onclick="confirmacao_notificacao(this.id)">
+                                                            onclick="validateForm(this.id)">
                                                         <span> Enviar </span>
                                                         <span class="icon is-medium">
                                                             <i class="mdi mdi-forward mdi-36px"></i>
@@ -229,6 +243,11 @@
             </div>
             {% include 'includes/footer.html' %}
         </div>
+        <div id="all_emails">
+
+        </div>
+        <input type="text" id="email_final" value="" hidden>
+
         <div id="popup_notificacao" class="dialog modal is-active" style="display: none">
             <div class="modal-background"></div>
             <div class="modal-card animation-content">
@@ -241,7 +260,7 @@
                     <button type="button" id="popup_cancel" class="button" onclick="confirmacao_notificacao(this.id)">
                         Cancelar
                     </button>
-                    <button type="submit" id="popup_notificacao" class="button is-success" onclick>
+                    <button type="submit" id="popup_notificacao" class="button is-success">
                         Confirmar
                     </button>
                 </footer>
@@ -252,22 +271,22 @@
         {% for message in messages %}
             <div id="message_container" class="notices is-bottom">
                 <div role="alert"
-                     {% if message.tags == 'error' %}
-                        class="toast is-danger is-bottom"
-                {% else %}
-                    class="toast is-success is-bottom"
-                {% endif %} style="">
+                        {% if message.tags == 'error' %}
+                     class="toast is-danger is-bottom"
+                        {% else %}
+                     class="toast is-success is-bottom"
+                        {% endif %} style="">
                     <div>{{ message }}</div>
                 </div>
             </div>
         {% endfor %}
     {% endif %}
-
-    var message_ele = document.getElementById("message_container");
-        setTimeout(function(){
-           message_ele.style.display = "none";
+    <script>
+        var message_ele = document.getElementById("message_container");
+        setTimeout(function () {
+            message_ele.style.display = "none";
         }, 4000);
-
+    </script>
 {% endblock %}
 
 </body>
